@@ -1,0 +1,179 @@
+{
+  "nav": {
+    "work": "Work",
+    "services": "Leistungen",
+    "about": "Über uns",
+    "insights": "Insights",
+    "careers": "Karriere",
+    "contact": "Kontakt",
+    "aiChat": "KI Chat",
+    "menu": "Menü",
+    "close": "Schließen"
+  },
+  "footer": {
+    "tagline": "Wir bauen digitale Lösungen, die wachsen.",
+    "legal": "Impressum",
+    "privacy": "Datenschutz",
+    "faq": "FAQ",
+    "allRights": "Alle Rechte vorbehalten."
+  },
+  "home": {
+    "heroLabel": "Digitalagentur",
+    "heroTitle": "Wir machen Ihr Unternehmen digital stark.",
+    "heroSubtitle": "Von der Webentwicklung bis zur KI-Integration — wir liefern messbare Ergebnisse für Ihr Business.",
+    "heroCta": "Erstgespräch vereinbaren",
+    "heroCtaSecondary": "Unsere Leistungen",
+    "servicesLabel": "Leistungen",
+    "servicesTitle": "Was wir für Sie tun",
+    "servicesSubtitle": "Maßgeschneiderte digitale Lösungen für jede Phase Ihres Wachstums.",
+    "servicesAll": "Alle Leistungen",
+    "workLabel": "Referenzprojekte",
+    "workTitle": "Projekte, auf die wir stolz sind",
+    "workSubtitle": "Echte Projekte, echte Ergebnisse — sehen Sie selbst.",
+    "workAll": "Alle Projekte",
+    "refsLabel": "Referenzen",
+    "refsTitle": "Was unsere Kunden sagen",
+    "aboutLabel": "Über uns",
+    "aboutTitle": "Ein Team, das liefert",
+    "aboutSubtitle": "Wir sind eine spezialisierte Digitalagentur mit Leidenschaft für sauberen Code und messbare Ergebnisse.",
+    "aboutMore": "Mehr über uns",
+    "ctaTitle": "Bereit für Ihr nächstes Projekt?",
+    "ctaSubtitle": "Lassen Sie uns gemeinsam herausfinden, wie wir Ihr Unternehmen digital voranbringen können.",
+    "ctaButton": "Jetzt Kontakt aufnehmen"
+  },
+  "work": {
+    "pageLabel": "Work & Referenzen",
+    "pageTitle": "Projekte & Referenzen",
+    "pageSubtitle": "Eine Auswahl unserer Arbeiten — von Webseiten bis zu komplexen Digitalstrategien.",
+    "projectsTitle": "Projekte",
+    "refsTitle": "Was unsere Kunden sagen",
+    "cta": "Ähnliches Projekt anfragen",
+    "backToWork": "← Zurück zu Work",
+    "challenge": "Ausgangslage",
+    "solution": "Lösung",
+    "result": "Ergebnis",
+    "techStack": "Technologien",
+    "features": "Features"
+  },
+  "services": {
+    "pageLabel": "Leistungen",
+    "pageTitle": "Unsere Leistungen",
+    "pageSubtitle": "Digitale Expertise für jede Herausforderung Ihres Unternehmens.",
+    "learnMore": "Mehr erfahren",
+    "forWhom": "Für wen ist das?",
+    "problems": "Typische Probleme",
+    "deliverables": "Leistungsumfang",
+    "process": "So arbeiten wir",
+    "faqTitle": "Häufige Fragen",
+    "cta": "Anfrage stellen",
+    "ctaSecondary": "Termin vereinbaren",
+    "backToServices": "← Zurück zu Leistungen"
+  },
+  "about": {
+    "pageLabel": "Über uns",
+    "pageTitle": "Das sind wir",
+    "pageSubtitle": "Ein Team aus Entwicklern, Strategen und Kreativen — vereint durch den Anspruch, wirklich gute digitale Arbeit zu leisten.",
+    "teamTitle": "Unser Team",
+    "valuesTitle": "Unsere Werte",
+    "processTitle": "Unsere Arbeitsweise",
+    "cta": "Gemeinsam arbeiten",
+    "statsLabel": "Zahlen & Fakten",
+    "statsTitle": "Das sagen unsere Ergebnisse"
+  },
+  "insights": {
+    "pageLabel": "Blog & Insights",
+    "pageTitle": "Insights",
+    "pageSubtitle": "Wissen, Trends und Perspektiven aus der digitalen Welt.",
+    "readMore": "Weiterlesen",
+    "backToInsights": "← Zurück zu Insights",
+    "categories": {
+      "all": "Alle",
+      "webdev": "Webentwicklung",
+      "marketing": "Marketing",
+      "ai": "KI & Automatisierung",
+      "strategy": "Strategie"
+    }
+  },
+  "careers": {
+    "pageLabel": "Karriere",
+    "pageTitle": "Werde Teil unseres Teams",
+    "pageSubtitle": "Wir wachsen und suchen talentierte Menschen, die mit uns die Zukunft gestalten wollen.",
+    "openPositions": "Offene Stellen",
+    "apply": "Jetzt bewerben",
+    "spontaneous": "Initiativbewerbung",
+    "spontaneousText": "Kein passendes Angebot dabei? Schickt uns einfach eine Initiativbewerbung.",
+    "processTitle": "Bewerbungsprozess"
+  },
+  "contact": {
+    "pageLabel": "Kontakt",
+    "pageTitle": "Sprechen Sie uns an",
+    "pageSubtitle": "Wir melden uns innerhalb von 24 Stunden — versprochen.",
+    "form": {
+      "name": "Ihr Name",
+      "email": "E-Mail-Adresse",
+      "company": "Unternehmen (optional)",
+      "subject": "Betreff",
+      "message": "Ihre Nachricht",
+      "send": "Nachricht senden",
+      "sending": "Wird gesendet...",
+      "success": "Danke! Wir melden uns bald.",
+      "error": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut."
+    },
+    "infoTitle": "Kontaktdaten",
+    "faqTitle": "Häufige Fragen"
+  },
+  "faq": {
+    "pageLabel": "FAQ",
+    "pageTitle": "Häufige Fragen",
+    "pageSubtitle": "Antworten auf die wichtigsten Fragen rund um unsere Leistungen."
+  },
+  "chat": {
+    "title": "KI Assistent",
+    "placeholder": "Stellen Sie uns Ihre Frage...",
+    "send": "Senden",
+    "greeting": "Hallo! Wie kann ich Ihnen helfen? Sie können mich alles zu unseren Leistungen und Projekten fragen.",
+    "close": "Chat schließen"
+  },
+  "common": {
+    "allServices": "Alle Leistungen",
+    "viewProject": "Projekt ansehen",
+    "getInTouch": "Kontakt aufnehmen",
+    "learnMore": "Mehr erfahren",
+    "readMore": "Weiterlesen",
+    "backHome": "Zur Startseite",
+    "loading": "Lädt...",
+    "notFound": "Seite nicht gefunden",
+    "notFoundText": "Die gesuchte Seite existiert leider nicht.",
+    "by": "von"
+  },
+  "meta": {
+    "home": {
+      "title": "DH Agentur — Digitale Lösungen für Ihr Unternehmen",
+      "description": "DH Agentur: Webentwicklung, Prozessoptimierung, Digital Marketing und KI-Projekte für wachsende Unternehmen."
+    },
+    "work": {
+      "title": "Projekte & Referenzen — DH Agentur",
+      "description": "Sehen Sie unsere Referenzprojekte: Webentwicklung, Webapps, Marketing-Kampagnen und mehr."
+    },
+    "services": {
+      "title": "Leistungen — DH Agentur",
+      "description": "Unsere digitalen Leistungen: Webentwicklung, Prozessoptimierung, Digital Marketing, KI-Projekte und mehr."
+    },
+    "about": {
+      "title": "Über uns — DH Agentur",
+      "description": "Lernen Sie das Team hinter DH Agentur kennen — Entwickler, Strategen und Kreative."
+    },
+    "insights": {
+      "title": "Insights & Blog — DH Agentur",
+      "description": "Wissen, Trends und Perspektiven aus der digitalen Welt von DH Agentur."
+    },
+    "careers": {
+      "title": "Karriere — DH Agentur",
+      "description": "Offene Stellen und Karrieremöglichkeiten bei DH Agentur."
+    },
+    "contact": {
+      "title": "Kontakt — DH Agentur",
+      "description": "Nehmen Sie Kontakt auf — wir melden uns innerhalb von 24 Stunden."
+    }
+  }
+}

@@ -1,0 +1,179 @@
+{
+  "nav": {
+    "work": "Work",
+    "services": "Services",
+    "about": "About",
+    "insights": "Insights",
+    "careers": "Careers",
+    "contact": "Contact",
+    "aiChat": "AI Chat",
+    "menu": "Menu",
+    "close": "Close"
+  },
+  "footer": {
+    "tagline": "We build digital solutions that scale.",
+    "legal": "Legal Notice",
+    "privacy": "Privacy Policy",
+    "faq": "FAQ",
+    "allRights": "All rights reserved."
+  },
+  "home": {
+    "heroLabel": "Digital Agency",
+    "heroTitle": "We make your business digitally strong.",
+    "heroSubtitle": "From web development to AI integration — we deliver measurable results for your business.",
+    "heroCta": "Book a discovery call",
+    "heroCtaSecondary": "Our Services",
+    "servicesLabel": "Services",
+    "servicesTitle": "What we do for you",
+    "servicesSubtitle": "Tailored digital solutions for every stage of your growth.",
+    "servicesAll": "All Services",
+    "workLabel": "Case Studies",
+    "workTitle": "Projects we're proud of",
+    "workSubtitle": "Real projects, real results — see for yourself.",
+    "workAll": "All Projects",
+    "refsLabel": "References",
+    "refsTitle": "What our clients say",
+    "aboutLabel": "About",
+    "aboutTitle": "A team that delivers",
+    "aboutSubtitle": "We are a specialized digital agency with a passion for clean code and measurable results.",
+    "aboutMore": "More about us",
+    "ctaTitle": "Ready for your next project?",
+    "ctaSubtitle": "Let's find out together how we can drive your business forward digitally.",
+    "ctaButton": "Get in touch now"
+  },
+  "work": {
+    "pageLabel": "Work & References",
+    "pageTitle": "Projects & References",
+    "pageSubtitle": "A selection of our work — from websites to complex digital strategies.",
+    "projectsTitle": "Projects",
+    "refsTitle": "What our clients say",
+    "cta": "Request a similar project",
+    "backToWork": "← Back to Work",
+    "challenge": "Challenge",
+    "solution": "Solution",
+    "result": "Result",
+    "techStack": "Tech Stack",
+    "features": "Features"
+  },
+  "services": {
+    "pageLabel": "Services",
+    "pageTitle": "Our Services",
+    "pageSubtitle": "Digital expertise for every challenge your business faces.",
+    "learnMore": "Learn more",
+    "forWhom": "Who is this for?",
+    "problems": "Typical problems",
+    "deliverables": "What we deliver",
+    "process": "How we work",
+    "faqTitle": "Frequently asked questions",
+    "cta": "Request a quote",
+    "ctaSecondary": "Book a meeting",
+    "backToServices": "← Back to Services"
+  },
+  "about": {
+    "pageLabel": "About",
+    "pageTitle": "This is us",
+    "pageSubtitle": "A team of developers, strategists and creatives — united by the ambition to do truly great digital work.",
+    "teamTitle": "Our Team",
+    "valuesTitle": "Our Values",
+    "processTitle": "How we work",
+    "cta": "Work with us",
+    "statsLabel": "Numbers & Facts",
+    "statsTitle": "What our results speak"
+  },
+  "insights": {
+    "pageLabel": "Blog & Insights",
+    "pageTitle": "Insights",
+    "pageSubtitle": "Knowledge, trends and perspectives from the digital world.",
+    "readMore": "Read more",
+    "backToInsights": "← Back to Insights",
+    "categories": {
+      "all": "All",
+      "webdev": "Web Development",
+      "marketing": "Marketing",
+      "ai": "AI & Automation",
+      "strategy": "Strategy"
+    }
+  },
+  "careers": {
+    "pageLabel": "Careers",
+    "pageTitle": "Join our team",
+    "pageSubtitle": "We're growing and looking for talented people who want to shape the future with us.",
+    "openPositions": "Open Positions",
+    "apply": "Apply now",
+    "spontaneous": "Spontaneous application",
+    "spontaneousText": "No matching position? Just send us an unsolicited application.",
+    "processTitle": "Application process"
+  },
+  "contact": {
+    "pageLabel": "Contact",
+    "pageTitle": "Get in touch",
+    "pageSubtitle": "We'll get back to you within 24 hours — promised.",
+    "form": {
+      "name": "Your Name",
+      "email": "Email Address",
+      "company": "Company (optional)",
+      "subject": "Subject",
+      "message": "Your Message",
+      "send": "Send Message",
+      "sending": "Sending...",
+      "success": "Thank you! We'll be in touch soon.",
+      "error": "Something went wrong. Please try again."
+    },
+    "infoTitle": "Contact Details",
+    "faqTitle": "Frequently Asked Questions"
+  },
+  "faq": {
+    "pageLabel": "FAQ",
+    "pageTitle": "Frequently Asked Questions",
+    "pageSubtitle": "Answers to the most important questions about our services."
+  },
+  "chat": {
+    "title": "AI Assistant",
+    "placeholder": "Ask us anything...",
+    "send": "Send",
+    "greeting": "Hi! How can I help you? You can ask me anything about our services and projects.",
+    "close": "Close chat"
+  },
+  "common": {
+    "allServices": "All Services",
+    "viewProject": "View Project",
+    "getInTouch": "Get in touch",
+    "learnMore": "Learn more",
+    "readMore": "Read more",
+    "backHome": "Back to Home",
+    "loading": "Loading...",
+    "notFound": "Page not found",
+    "notFoundText": "Sorry, the page you're looking for doesn't exist.",
+    "by": "by"
+  },
+  "meta": {
+    "home": {
+      "title": "DH Agentur — Digital Solutions for Your Business",
+      "description": "DH Agentur: Web development, process optimization, digital marketing and AI projects for growing businesses."
+    },
+    "work": {
+      "title": "Projects & References — DH Agentur",
+      "description": "See our case studies: web development, web apps, marketing campaigns and more."
+    },
+    "services": {
+      "title": "Services — DH Agentur",
+      "description": "Our digital services: web development, process optimization, digital marketing, AI projects and more."
+    },
+    "about": {
+      "title": "About — DH Agentur",
+      "description": "Meet the team behind DH Agentur — developers, strategists and creatives."
+    },
+    "insights": {
+      "title": "Insights & Blog — DH Agentur",
+      "description": "Knowledge, trends and perspectives from the digital world by DH Agentur."
+    },
+    "careers": {
+      "title": "Careers — DH Agentur",
+      "description": "Open positions and career opportunities at DH Agentur."
+    },
+    "contact": {
+      "title": "Contact — DH Agentur",
+      "description": "Get in touch — we'll get back to you within 24 hours."
+    }
+  }
+}
