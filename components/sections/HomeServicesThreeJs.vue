@@ -15,6 +15,7 @@
       @touchmove.passive="onDrag"
       @mouseup="stopDrag"
       @touchend="stopDrag"
+      @mouseleave="onMouseLeave"
     >
       <!-- CSS3DRenderer will render here -->
     </div>
@@ -166,43 +167,146 @@ let animationId: number;
 let serviceObjects: any[] = [];
 
 // Drag control state variables
-let dragging = false;
-let dragStartX = 0;
-let dragStartRot = 0;
-let velocity = 0;
-let lastX = 0;
-let lastT = 0;
+let dragging      = false;
+let dragStartX    = 0;
+let dragStartRot  = 0;
+let velocity      = 0;
+let lastX         = 0;
+let lastT         = 0;
+let snapping      = false;
+let dragMoved     = false;   // true once pointer moved > 8 px (committed drag)
+let wasCoasting   = false;   // true if carousel was already moving at mousedown
 
 // Helper function to get coordinates from events
 function cx(e: MouseEvent | TouchEvent) {
   return 'touches' in e ? e.touches[0].clientX : e.clientX;
 }
 
+// Mouse left the container while dragging → release cleanly
+function onMouseLeave() {
+  if (dragging && dragMoved) stopDrag();
+}
+
+// Global mouseup safety net: catches releases outside the container
+function onWindowMouseUp() {
+  if (dragging) stopDrag();
+}
+
 // ─── Drag ────────────────────────────────────────────────────────────────────
 
 function startDrag(e: MouseEvent | TouchEvent) {
-  dragging = true;
-  dragStartX = cx(e);
+  // Record whether the ring was already moving (coast or snap) so we can
+  // ignore accidental taps on a spinning carousel.
+  wasCoasting  = Math.abs(velocity) > 0.1 || snapping;
+  dragging     = true;
+  dragMoved    = false;
+  dragStartX   = cx(e);
   dragStartRot = scene.rotation.y;
-  lastX = dragStartX;
-  lastT = Date.now();
-  velocity = 0;
+  lastX        = dragStartX;
+  lastT        = Date.now();
+  // Do NOT kill tweens or zero velocity here — a plain click / hold must
+  // never interrupt an ongoing spin or snap.  We only take control once
+  // the user commits to an intentional drag (> 8 px movement).
 }
 
 function onDrag(e: MouseEvent | TouchEvent) {
   if (!dragging) return;
-  const x = cx(e);
-  // Negate: drag right → ring appears to move right → left card comes to front
-  scene.rotation.y = dragStartRot - (x - dragStartX) * 0.004;
+  const x  = cx(e);
+  const dx = x - dragStartX;
+
+  if (!dragMoved) {
+    if (Math.abs(dx) < 8) return; // deadzone — spin continues undisturbed
+    // Drag committed: NOW we seize control from any running coast / snap.
+    gsap.killTweensOf(scene.rotation);
+    snapping     = false;
+    dragMoved    = true;
+    dragStartX   = x;
+    dragStartRot = scene.rotation.y;  // anchor to live GSAP/coast position
+    velocity     = 0;
+    return;
+  }
+
+  // Live drag — half the old sensitivity for comfortable, precise control
+  scene.rotation.y = dragStartRot - (x - dragStartX) * 0.002;
   const now = Date.now();
-  velocity = (x - lastX) / Math.max(1, now - lastT) * 16;
+  velocity  = (x - lastX) / Math.max(1, now - lastT) * 8;
   lastX = x;
   lastT = now;
 }
 
 function stopDrag() {
   dragging = false;
-  snapToIndex(getTargetIndex());
+  if (!dragMoved) {
+    // No committed drag (< 8 px movement).
+    if (wasCoasting) {
+      // Carousel was already moving → let the coast continue untouched.
+      return;
+    } else {
+      // Carousel was stationary → snap to nearest card (pure tap).
+      velocity = 0;
+      snapToIndex(getTargetIndex());
+      return;
+    }
+  }
+
+  const N       = services.value.length;
+  const TWO_PI  = 2 * Math.PI;
+  const step    = TWO_PI / N;
+
+  // Ignore stale velocity if user held still before releasing
+  const elapsed = Date.now() - lastT;
+  const v = elapsed > 150 ? 0 : velocity;
+
+  if (Math.abs(v) < 0.005) {
+    // Nearly stationary — snap to nearest card
+    velocity = 0;
+    snapToIndex(getTargetIndex());
+    return;
+  }
+
+  // ── Where does the carousel naturally stop? ──────────────────────────────
+  // Each frame: rotation -= v * 0.012, v *= 0.96
+  // Total change: v * 0.012 / (1 - 0.96) = v * 0.3
+  const naturalStop = scene.rotation.y - v * 0.3;
+
+  // Nearest snap to natural stop, in direction of travel
+  const nr     = ((-naturalStop % TWO_PI) + TWO_PI) % TWO_PI;
+  const raw    = nr / step;
+  const eps    = 1e-6;
+  const velDir = Math.sign(v);
+  const targetIdx = ((velDir > 0
+    ? Math.ceil(raw  - eps)
+    : Math.floor(raw + eps)) + N) % N;
+
+  const targetAngle = -(targetIdx * TWO_PI / N);
+  let delta = targetAngle - scene.rotation.y;
+  while (delta >  Math.PI) delta -= TWO_PI;
+  while (delta < -Math.PI) delta += TWO_PI;
+
+  // Velocity needed to coast exactly to targetAngle:
+  //   naturalStop = current - neededV * 0.3  →  neededV = (current - targetAngle) / 0.3
+  const neededV = -delta / 0.3;
+
+  if (Math.abs(neededV) <= Math.abs(v) * 1.05) {
+    // ── BRAKE path: adjust velocity, continue natural coast ─────────────────
+    // The animate loop carries the carousel to targetAngle with the same feel.
+    velocity = neededV;
+  } else {
+    // ── GSAP path: need more distance than natural coast can cover ───────────
+    // Duration is set so GSAP power3.out starts at exactly the current speed:
+    //   initial GSAP velocity = 3 * |delta| / T  →  T = 3 * |delta| / v_rads
+    velocity = 0;
+    const vRads = Math.abs(v) * 0.012 * 60;          // convert to rad/s
+    const T     = Math.min(2.5, Math.max(0.35, 3 * Math.abs(delta) / vRads));
+    snapping = true;
+    gsap.to(scene.rotation, {
+      y: scene.rotation.y + delta,
+      duration: T,
+      ease: 'power3.out',
+      onUpdate:  updateCardStates,
+      onComplete: () => { snapping = false; },
+    });
+  }
 }
 
 // ─── Index helpers ────────────────────────────────────────────────────────────
@@ -211,33 +315,46 @@ function stopDrag() {
 // Cards: x = R·sin(θ_i),  z = –R·cos(θ_i)
 // Drag is negated → rotation.y DECREASES when dragging right.
 // Front position (z = –R) is reached when scene.rotation.y = –(i · 2π/N)  ← NEGATIVE
+
+// Nearest snap point — used by dot buttons (no direction preference).
 function getTargetIndex() {
   const N = services.value.length;
-  const normalizedRotation = ((-scene.rotation.y % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
-  const index = Math.round(normalizedRotation / (2 * Math.PI / N)) % N;
-  return (index + N) % N;
+  const nr = ((-scene.rotation.y % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
+  return Math.round(nr / (2 * Math.PI / N)) % N;
 }
 
 function isCenterIndex(index: number) {
   return index === getTargetIndex();
 }
 
-function snapToIndex(index: number) {
-  const N = services.value.length;
-  // Front = scene.rotation.y = –(i · 2π/N)  (matches negated drag)
-  const targetAngle = -(index * 2 * Math.PI) / N;
+// velocityRads: current speed in rad/s at the moment of snap.
+// When provided, duration is calculated to match that speed (smooth handoff).
+// When 0 (dot-button clicks), a fixed 0.9 s duration is used.
+function snapToIndex(index: number, velocityRads = 0) {
+  gsap.killTweensOf(scene.rotation);
 
-  // Shortest-path wrap: never spin more than π
-  let current = scene.rotation.y;
-  let delta = targetAngle - current;
+  const N          = services.value.length;
+  const targetAngle = -(index * 2 * Math.PI / N);
+  let   current    = scene.rotation.y;
+  let   delta      = targetAngle - current;
   while (delta >  Math.PI) delta -= 2 * Math.PI;
   while (delta < -Math.PI) delta += 2 * Math.PI;
 
+  if (Math.abs(delta) < 0.0005) { updateCardStates(); return; }
+
+  // power3.out initial velocity = 3 × |delta| / T
+  // → set T so that matches current speed
+  const T = velocityRads > 0.05
+    ? Math.min(2.5, Math.max(0.3, 3 * Math.abs(delta) / velocityRads))
+    : Math.max(0.3, Math.abs(delta) * 1.5);   // proportional short correction
+
+  snapping = true;
   gsap.to(scene.rotation, {
     y: current + delta,
-    duration: 0.7,
-    ease: 'power2.out',
-    onUpdate: updateCardStates,
+    duration: T,
+    ease: 'power3.out',
+    onUpdate:   updateCardStates,
+    onComplete: () => { snapping = false; },
   });
 }
 
@@ -313,9 +430,18 @@ const initThreeJs = () => {
 
   const animate = () => {
     animationId = requestAnimationFrame(animate);
-    if (!dragging && Math.abs(velocity) > 0.001) {
-      scene.rotation.y -= velocity * 0.008;  // matches negated drag direction
-      velocity *= 0.93;
+    // Coast runs when: not dragging, OR dragging but not yet committed (windup phase)
+    if ((!dragging || !dragMoved) && !snapping && Math.abs(velocity) > 0.0005) {
+      scene.rotation.y -= velocity * 0.012;
+      velocity *= 0.96;
+      updateCardStates();
+      // Safety snap: when velocity is essentially zero, do a tiny correction
+      // to land exactly on the snap point (handles floating-point remainder)
+      if (Math.abs(velocity) < 0.004) {
+        const corrVRads = Math.abs(velocity) * 0.012 * 60;
+        velocity = 0;
+        snapToIndex(getTargetIndex(), corrVRads);
+      }
     }
     css3dRenderer.render(scene, camera);
   };
@@ -391,7 +517,13 @@ const createServiceCards = () => {
           margin: 0;
         ">${service.desc}</p>
       </div>`;
-    el.addEventListener('click', () => handleServiceClick(index));
+    // Fire click only when:
+    // • pointer didn't move (no committed drag), AND
+    // • carousel was NOT already coasting at mousedown
+    // This prevents a tap during a coast from snapping to the wrong card.
+    el.addEventListener('click', () => {
+      if (!dragMoved && !wasCoasting) handleServiceClick(index);
+    });
 
     const obj = new CSS3DObject(el);
     obj.position.set(x, y, z);
@@ -428,7 +560,8 @@ onMounted(async () => {
   // nextTick ensures the container has its final layout dimensions before we read them
   await nextTick();
   initThreeJs();
-  window.addEventListener('resize', handleResize);
+  window.addEventListener('resize',  handleResize);
+  window.addEventListener('mouseup', onWindowMouseUp);
 });
 
 onUnmounted(() => {
@@ -438,7 +571,8 @@ onUnmounted(() => {
   if (css3dRenderer && threeContainer.value) {
     threeContainer.value.removeChild(css3dRenderer.domElement);
   }
-  window.removeEventListener('resize', handleResize);
+  window.removeEventListener('resize',  handleResize);
+  window.removeEventListener('mouseup', onWindowMouseUp);
 });
 </script>
 
