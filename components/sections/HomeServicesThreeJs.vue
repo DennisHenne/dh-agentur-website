@@ -44,6 +44,20 @@ const router = useRouter()
 
 const navigateTo = (path: string) => router.push(path)
 
+// WebGL detection function
+function isWebGLAvailable() {
+  try {
+    const canvas = document.createElement('canvas');
+    return !!window.WebGLRenderingContext &&
+           (canvas.getContext('webgl') || canvas.getContext('experimental-webgl'));
+  } catch (e) {
+    return false;
+  }
+}
+
+// Fallback flag
+const webglSupported = ref(true);
+
 const services = computed(() => {
   return [
   {
