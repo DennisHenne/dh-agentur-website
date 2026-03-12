@@ -73,12 +73,13 @@ onMounted(() => {
   const itemCount = items.value.length
   const angle = 360 / itemCount
   const radius = props.radius
+  const entryAngle = 90
 
   items.value.forEach((item, index) => {
     const itemAngle = index * angle
     gsap.set(item, {
       transformOrigin: `50% 50% 0`,
-      transform: `rotateY(${itemAngle}deg) translateZ(${radius}px) rotateY(180deg)`
+      transform: `rotateY(${itemAngle}deg) translateZ(${radius}px) rotateY(${entryAngle}deg)`
     })
   })
 
