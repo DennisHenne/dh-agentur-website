@@ -121,6 +121,34 @@ const services = computed(() => {
     title: locale.value === 'de' ? 'Marketing Boost' : 'Digital Marketing Boost',
     desc:  locale.value === 'de' ? 'Schnelle Wachstumsimpulse durch gezielte Maßnahmen.' : 'Rapid growth through targeted measures.',
   },
+  {
+    slug: 'e-commerce',
+    gradient: 'linear-gradient(135deg, #0d2535 0%, #1a3f45 50%, #0b2a30 100%)',
+    icon: '<svg class="h-9 w-9" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>',
+    title: locale.value === 'de' ? 'E-Commerce' : 'E-Commerce',
+    desc:  locale.value === 'de' ? 'Professionelle Online-Shops mit maximaler Conversion-Rate.' : 'Professional online shops with maximum conversion rate.',
+  },
+  {
+    slug: 'consulting',
+    gradient: 'linear-gradient(135deg, #112030 0%, #1e3d2a 50%, #0e2820 100%)',
+    icon: '<svg class="h-9 w-9" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>',
+    title: locale.value === 'de' ? 'Beratung & Strategie' : 'Consulting & Strategy',
+    desc:  locale.value === 'de' ? 'Digitale Strategie und Transformation für Ihr Unternehmen.' : 'Digital strategy and transformation for your business.',
+  },
+  {
+    slug: 'branding',
+    gradient: 'linear-gradient(135deg, #0a1e2a 0%, #163530 50%, #0b2420 100%)',
+    icon: '<svg class="h-9 w-9" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/></svg>',
+    title: locale.value === 'de' ? 'Branding & Design' : 'Branding & Design',
+    desc:  locale.value === 'de' ? 'Einzigartiges Markendesign, das im Gedächtnis bleibt.' : 'Unique brand design that stays in memory.',
+  },
+  {
+    slug: 'support',
+    gradient: 'linear-gradient(135deg, #0c2030 0%, #1a3d28 50%, #0d2a1e 100%)',
+    icon: '<svg class="h-9 w-9" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/></svg>',
+    title: locale.value === 'de' ? 'Support & Wartung' : 'Support & Maintenance',
+    desc:  locale.value === 'de' ? 'Zuverlässiger technischer Support und laufende Pflege.' : 'Reliable technical support and ongoing maintenance.',
+  },
 ]
 })
 
@@ -269,7 +297,7 @@ const initThreeJs = () => {
   // large-negative scale → hidden by backface-visibility. No infinite values.
   // With camera inside + lookAt(0,0,0) the CSS3D Y-flip cancels out and cards
   // show their READABLE face (verified by 2×2 CSS-matrix determinant = +1).
-  camera = new THREE.PerspectiveCamera(80, W / H, 1, 10000);
+  camera = new THREE.PerspectiveCamera(35, W / H, 1, 10000);
   camera.position.set(0, 0, -1);
   // Default Three.js camera orientation already looks along –Z — no lookAt needed.
 
@@ -334,7 +362,7 @@ const createServiceCards = () => {
         background: ${service.gradient};
         width: 100%;
         height: 100%;
-        border-radius: 12px;
+        border-radius: 50px;
         padding: 20px;
         display: flex;
         flex-direction: column;
