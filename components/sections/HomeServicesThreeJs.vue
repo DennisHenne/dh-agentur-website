@@ -273,7 +273,9 @@ const initThreeJs = () => {
 // Create service cards with circular arrangement
 const createServiceCards = () => {
   const N = services.value.length;
-  const RADIUS = 600; // Distance from center
+  // Responsive radius based on screen width
+  const radius = window.innerWidth < 768 ? 400 : window.innerWidth < 480 ? 300 : 600;
+  const RADIUS = radius; // Distance from center
   const TILT_ANGLE = Math.PI / 18; // 10 degrees tilt for depth perception
 
   services.value.forEach((service, index) => {
@@ -324,6 +326,12 @@ const handleResize = () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     css3dRenderer.setSize(window.innerWidth, window.innerHeight);
+
+    // Recreate service cards with new responsive radius
+    scene.clear();
+    serviceObjects = [];
+    createServiceCards();
+    updateCardStates();
   }
 };
 
@@ -366,6 +374,21 @@ onUnmounted(() => {
   cursor: pointer;
 }
 
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+  .service-card {
+    width: 200px;
+    height: 150px;
+  }
+}
+
+@media (max-width: 480px) {
+  .service-card {
+    width: 180px;
+    height: 130px;
+  }
+}
+
 .service-card-content {
   width: 100%;
   height: 100%;
@@ -401,5 +424,26 @@ onUnmounted(() => {
   font-size: 0.875rem;
   opacity: 0.85;
   line-height: 1.4;
+}
+
+/* Responsive font sizes */
+@media (max-width: 768px) {
+  .service-title {
+    font-size: 1rem;
+  }
+
+  .service-desc {
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .service-title {
+    font-size: 0.875rem;
+  }
+
+  .service-desc {
+    font-size: 0.6875rem;
+  }
 }
 </style>
