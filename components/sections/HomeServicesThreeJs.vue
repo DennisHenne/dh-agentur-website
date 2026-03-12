@@ -164,8 +164,8 @@ function startDrag(e: MouseEvent | TouchEvent) {
 function onDrag(e: MouseEvent | TouchEvent) {
   if (!dragging) return;
   const x = cx(e);
-  // Positive drag → scene rotates → next card (right side) comes to front
-  scene.rotation.y = dragStartRot + (x - dragStartX) * 0.004;
+  // Negate: drag right → ring appears to move right → left card comes to front
+  scene.rotation.y = dragStartRot - (x - dragStartX) * 0.004;
   const now = Date.now();
   velocity = (x - lastX) / Math.max(1, now - lastT) * 16;
   lastX = x;
@@ -181,11 +181,11 @@ function stopDrag() {
 
 // Camera is at z≈0 (center of ring), looking along –Z.
 // Cards: x = R·sin(θ_i),  z = –R·cos(θ_i)
-// Front position (z = –R, directly ahead) is reached when
-//   scene.rotation.y = +(i · 2π/N)   ← POSITIVE
+// Drag is negated → rotation.y DECREASES when dragging right.
+// Front position (z = –R) is reached when scene.rotation.y = –(i · 2π/N)  ← NEGATIVE
 function getTargetIndex() {
   const N = services.value.length;
-  const normalizedRotation = ((scene.rotation.y % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
+  const normalizedRotation = ((-scene.rotation.y % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
   const index = Math.round(normalizedRotation / (2 * Math.PI / N)) % N;
   return (index + N) % N;
 }
@@ -196,8 +196,8 @@ function isCenterIndex(index: number) {
 
 function snapToIndex(index: number) {
   const N = services.value.length;
-  // Front = scene.rotation.y = +(i · 2π/N)
-  const targetAngle = (index * 2 * Math.PI) / N;
+  // Front = scene.rotation.y = –(i · 2π/N)  (matches negated drag)
+  const targetAngle = -(index * 2 * Math.PI) / N;
 
   // Shortest-path wrap: never spin more than π
   let current = scene.rotation.y;
@@ -219,10 +219,27 @@ function updateCardStates() {
   activeServiceIndex.value = cur;
   serviceObjects.forEach((obj, i) => {
     const diff = ((i - cur + N) % N);
-    let state = 'side';
-    if (diff === 0)                   state = 'center';
-    else if (diff === 1 || diff === N - 1) state = 'adjacent';
-    obj.element.className = `service-card ${state}`;
+    const isCenter   = diff === 0;
+    const isAdjacent = diff === 1 || diff === N - 1;
+    obj.element.className = `service-card ${isCenter ? 'center' : isAdjacent ? 'adjacent' : 'side'}`;
+
+    // Apply emphasis via inline style on the inner content div
+    // (scoped CSS can't reach dynamically created elements)
+    const content = obj.element.querySelector('.service-card-content') as HTMLElement | null;
+    if (!content) return;
+    if (isCenter) {
+      content.style.transform     = 'scale(1.15)';
+      content.style.opacity       = '1';
+      content.style.boxShadow     = '0 16px 64px rgba(0,200,150,0.35)';
+    } else if (isAdjacent) {
+      content.style.transform     = 'scale(1)';
+      content.style.opacity       = '0.75';
+      content.style.boxShadow     = '0 8px 32px rgba(0,0,0,0.3)';
+    } else {
+      content.style.transform     = 'scale(1)';
+      content.style.opacity       = '0.45';
+      content.style.boxShadow     = '0 8px 32px rgba(0,0,0,0.3)';
+    }
   });
 }
 
@@ -269,7 +286,7 @@ const initThreeJs = () => {
   const animate = () => {
     animationId = requestAnimationFrame(animate);
     if (!dragging && Math.abs(velocity) > 0.001) {
-      scene.rotation.y += velocity * 0.008;
+      scene.rotation.y -= velocity * 0.008;  // matches negated drag direction
       velocity *= 0.93;
     }
     css3dRenderer.render(scene, camera);
@@ -281,10 +298,14 @@ const initThreeJs = () => {
 
 const createServiceCards = () => {
   const N = services.value.length;
-  // Ring radius.  With camera at z=–1 (center), front card is at z=–R.
-  // CSS scale of front card ≈ fov_css / R.
-  // R=500 keeps 8 cards (340px wide) just fitting the circumference (arc ≈ 393px).
-  const RADIUS = 500;
+  // Card size — square.  Vue scoped CSS does NOT apply to dynamically created
+  // elements (no data-v-* attribute), so ALL dimensions must be set inline here.
+  const CARD_W = window.innerWidth < 480 ? 360 : window.innerWidth < 768 ? 468 : 612;
+  const CARD_H = CARD_W;   // square
+
+  // Radius so that arc between adjacent cards = CARD_W + 120px gap.
+  // arc = R · (2π / N)  →  R = (CARD_W + 120) · N / (2π)
+  const RADIUS = Math.ceil((CARD_W + 120) * N / (2 * Math.PI));
 
   services.value.forEach((service, index) => {
     const angle = (index * 2 * Math.PI) / N;
@@ -298,13 +319,49 @@ const createServiceCards = () => {
 
     const el = document.createElement('div');
     el.className = 'service-card';
+    // Dimensions must be set inline — scoped CSS won't reach dynamic elements
+    el.style.cssText = `
+      width: ${CARD_W}px;
+      height: ${CARD_H}px;
+      pointer-events: auto;
+      cursor: pointer;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    `;
+
     el.innerHTML = `
-      <div class="service-card-content" style="background:${service.gradient};">
-        <div class="service-icon">
-          <img src="/test-pitcture-carussel.jpg" class="h-9 w-9" alt="" />
-        </div>
-        <h3 class="service-title">${service.title}</h3>
-        <p class="service-desc">${service.desc}</p>
+      <div class="service-card-content" style="
+        background: ${service.gradient};
+        width: 100%;
+        height: 100%;
+        border-radius: 12px;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        color: white;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+        transition: transform 0.35s ease, box-shadow 0.35s ease, opacity 0.35s ease;
+        opacity: 0.55;
+        box-sizing: border-box;
+      ">
+        <div style="margin-bottom:14px; opacity:0.9;">${service.icon}</div>
+        <h3 style="
+          font-size: ${CARD_W >= 612 ? '1.5rem' : CARD_W >= 468 ? '1.25rem' : '1rem'};
+          font-weight: 600;
+          margin: 0 0 8px;
+          line-height: 1.3;
+        ">${service.title}</h3>
+        <p style="
+          font-size: ${CARD_W >= 612 ? '1rem' : CARD_W >= 468 ? '0.875rem' : '0.8rem'};
+          opacity: 0.85;
+          line-height: 1.4;
+          margin: 0;
+        ">${service.desc}</p>
       </div>`;
     el.addEventListener('click', () => handleServiceClick(index));
 
@@ -371,96 +428,7 @@ onUnmounted(() => {
   cursor: grabbing;
 }
 
-/* Service card styles */
-.service-card {
-  width: 340px;
-  height: 220px;
-  pointer-events: auto;
-  cursor: pointer;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-}
-
-@media (max-width: 768px) {
-  .service-card {
-    width: 260px;
-    height: 170px;
-  }
-}
-
-@media (max-width: 480px) {
-  .service-card {
-    width: 200px;
-    height: 140px;
-  }
-}
-
-.service-card-content {
-  width: 100%;
-  height: 100%;
-  border-radius: 12px;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  color: white;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  transition: transform 0.35s ease, box-shadow 0.35s ease, opacity 0.35s ease;
-  opacity: 0.55;
-}
-
-/* Selected (center) card: scale up and full opacity */
-.service-card.center .service-card-content {
-  transform: scale(1.25);
-  opacity: 1;
-  box-shadow: 0 16px 64px rgba(0, 200, 150, 0.35);
-}
-
-/* Cards one step away: medium emphasis */
-.service-card.adjacent .service-card-content {
-  opacity: 0.80;
-}
-
-.service-icon {
-  margin-bottom: 15px;
-  opacity: 0.9;
-}
-
-.service-title {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-bottom: 10px;
-  line-height: 1.3;
-}
-
-.service-desc {
-  font-size: 0.875rem;
-  opacity: 0.85;
-  line-height: 1.4;
-}
-
-/* Responsive font sizes */
-@media (max-width: 768px) {
-  .service-title {
-    font-size: 1rem;
-  }
-
-  .service-desc {
-    font-size: 0.75rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .service-title {
-    font-size: 0.875rem;
-  }
-
-  .service-desc {
-    font-size: 0.6875rem;
-  }
-}
+/* Dimensions + emphasis are applied via inline styles in JS (createServiceCards /
+   updateCardStates) because Vue scoped CSS cannot reach dynamically created elements.
+   Only structural rules that apply to the template itself live here. */
 </style>
