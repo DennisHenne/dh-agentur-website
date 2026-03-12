@@ -1,10 +1,10 @@
 <template>
-  <div class="carousel-container relative h-[500px] w-full overflow-hidden" ref="container">
+  <div class="carousel-container relative h-[500px] w-full overflow-hidden" :style="`--perspective: ${props.perspective}px`" ref="container">
     <div class="carousel-scene relative flex h-full w-full items-center justify-center" ref="scene">
       <div
         v-for="(project, index) in projects"
         :key="project.slug"
-        class="carousel-item absolute h-[300px] w-[250px] cursor-pointer rounded-3xl border border-white/10 bg-dark-100 p-6 transition-all duration-300"
+        :class="`carousel-item absolute h-[${props.cardHeight}px] w-[${props.cardWidth}px] cursor-pointer rounded-3xl border border-white/10 bg-dark-100 p-6 transition-all duration-300`"
         @mouseenter="pauseRotation"
         @mouseleave="resumeRotation"
       >
@@ -42,9 +42,18 @@ import { Draggable } from 'gsap/Draggable'
 
 gsap.registerPlugin(Draggable)
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   projects: any[]
-}>()
+  radius?: number
+  perspective?: number
+  cardWidth?: number
+  cardHeight?: number
+}>(), {
+  radius: 400,
+  perspective: 1000,
+  cardWidth: 250,
+  cardHeight: 300
+})
 
 const container = ref<HTMLElement | null>(null)
 const scene = ref<HTMLElement | null>(null)
@@ -63,7 +72,7 @@ onMounted(() => {
   items.value = gsap.utils.toArray('.carousel-item')
   const itemCount = items.value.length
   const angle = 360 / itemCount
-  const radius = 400
+  const radius = props.radius
 
   items.value.forEach((item, index) => {
     const itemAngle = index * angle
@@ -111,7 +120,7 @@ onMounted(() => {
 
 <style scoped>
 .carousel-container {
-  perspective: 1000px;
+  perspective: var(--perspective);
 }
 .carousel-scene {
   transform-style: preserve-3d;
