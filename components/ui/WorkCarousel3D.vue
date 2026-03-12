@@ -121,6 +121,7 @@ onMounted(() => {
 <style scoped>
 .carousel-container {
   perspective: var(--perspective);
+  perspective-origin: 50% 50%;
 }
 .carousel-scene {
   transform-style: preserve-3d;
