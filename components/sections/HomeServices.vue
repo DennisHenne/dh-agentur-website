@@ -13,7 +13,7 @@
       @mousedown="startDrag"
       @touchstart.passive="startDrag"
     >
-      <div class="carousel-container" :style="{ transform: `rotateX(${tilt}deg) rotateY(${rotation}deg)` }">
+      <div class="carousel-container" :style="{ transform: `translateZ(-${RADIUS}px) rotateX(${tilt}deg) rotateY(${rotation}deg)` }">
         <div
           v-for="(svc, i) in services"
           :key="svc.slug"
@@ -74,7 +74,10 @@
 const { t, locale } = useI18n()
 const router = useRouter()
 
-const services = computed(() => [
+const navigateTo = (path: string) => router.push(path)
+
+const services = computed(() => {
+  return [
   {
     slug: 'web-development',
     gradient: 'linear-gradient(135deg, #0c2a35 0%, #1a4a3a 50%, #0d3328 100%)',
@@ -131,14 +134,14 @@ const services = computed(() => [
     title: locale.value === 'de' ? 'Marketing Boost' : 'Digital Marketing Boost',
     desc:  locale.value === 'de' ? 'Schnelle Wachstumsimpulse durch gezielte Maßnahmen.' : 'Rapid growth through targeted measures.',
   },
-])
+]
+})
 
 // ── Carousel Geometry ─────────────────────────────────────────────────────────────
-// Show 2 cards at a time on desktop - card angle = 180 / (visibleCards - 1)
+// Show all cards in a circle
 const N = computed(() => services.value.length)
-const visibleCards = 2  // Exactly 2 cards visible at once
-const STEP = computed(() => 180 / (visibleCards - 1))  // 180 degrees for 2 cards
-const RADIUS = 320  // Closer radius for more immersion
+const STEP = computed(() => 360 / N.value)
+const RADIUS = 600  // Larger radius for more immersion
 
 const rotation = ref(0)
 const target = ref(0)
@@ -180,28 +183,14 @@ function cardStyle(i: number) {
   const angle = STEP.value * i
   const diff = getCardDistance(i)
   
-  // Only show 2 cards at a time - center and next
-  if (Math.abs(diff) > 1) {
-    return { 
-      opacity: '0', 
-      pointerEvents: 'none',
-      transform: `rotateY(${angle}deg) translateZ(0px)`
-    }
-  }
-  
   // Calculate depth and scale based on position
-  const depth = Math.abs(diff) * 80
-  const scale = diff === 0 ? 1 : 0.85
-  const translateZ = RADIUS - depth
-  const opacity = diff === 0 ? 1 : 0.7
-  
-  // Subtle Y offset for depth
-  const translateY = diff * 30
+  const scale = Math.max(0.5, 1 - Math.abs(diff) * 0.1)
+  const opacity = Math.max(0.2, 1 - Math.abs(diff) * 0.2)
 
   return {
-    transform: `rotateY(${angle}deg) translateZ(${translateZ}px) translateY(${translateY}px) scale(${scale})`,
+    transform: `translate(-50%, -50%) rotateY(${angle}deg) translateZ(${RADIUS}px) scale(${scale})`,
     opacity,
-    cursor: isCenter(i) ? 'pointer' : 'pointer',
+    cursor: 'pointer',
   }
 }
 
@@ -213,7 +202,7 @@ function snapTo(i: number) {
 }
 
 function handleClick(svc: { slug: string }, i: number) {
-  if (isCenter(i)) router.push(`/services/${svc.slug}`)
+  if (isCenter(i)) navigateTo(`/services/${svc.slug}`)
   else snapTo(i)
 }
 
@@ -319,9 +308,6 @@ onUnmounted(() => cancelAnimationFrame(raf))
   position: relative;
   width: 100%;
   height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   transition: transform 0.1s ease-out;
 }
 
@@ -335,16 +321,20 @@ onUnmounted(() => cancelAnimationFrame(raf))
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  height: 100%;
+  width: 340px;
+  height: 340px;
+  aspect-ratio: 1/1;
 }
 
 /* ── Card Panel ─────────────────────────────────────────────────────────────── */
 .card-panel {
-  width: 340px;
-  height: 420px;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 1/1;
+  box-sizing: border-box;
   border-radius: 28px;
   border: 1px solid rgba(179, 239, 178, 0.15);
+  backface-visibility: hidden;
   box-shadow: 
     0 40px 80px rgba(0, 0, 0, 0.5),
     0 0 60px rgba(179, 239, 178, 0.05),
@@ -387,6 +377,7 @@ onUnmounted(() => cancelAnimationFrame(raf))
   z-index: 1;
   padding: 40px 36px;
   height: 100%;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -514,90 +505,8 @@ onUnmounted(() => cancelAnimationFrame(raf))
     opacity: 1;
   }
   100% {
-    transform: translateY(-100vh) scale(1);
+    transform: translateY(-10vh) scale(0);
     opacity: 0;
-  }
-}
-
-/* ── Responsive ───────────────────────────────────────────────────────────── */
-@media (max-width: 1024px) {
-  .immersive-stage {
-    height: 480px;
-  }
-  
-  .card-panel {
-    width: 300px;
-    height: 380px;
-  }
-  
-  .card-title {
-    font-size: 22px;
-  }
-  
-  .card-content {
-    padding: 32px 28px;
-  }
-}
-
-@media (max-width: 768px) {
-  .immersive-stage {
-    height: 440px;
-    perspective: 800px;
-  }
-  
-  .card-panel {
-    width: 280px;
-    height: 360px;
-    border-radius: 24px;
-  }
-  
-  .card-title {
-    font-size: 20px;
-  }
-  
-  .card-desc {
-    font-size: 13px;
-  }
-  
-  .card-content {
-    padding: 28px 24px;
-  }
-  
-  .card-icon {
-    width: 56px;
-    height: 56px;
-    margin-bottom: 20px;
-  }
-}
-
-@media (max-width: 480px) {
-  .immersive-stage {
-    height: 400px;
-  }
-  
-  .card-panel {
-    width: 260px;
-    height: 340px;
-  }
-  
-  .card-content {
-    padding: 24px 20px;
-  }
-  
-  .card-title {
-    font-size: 18px;
-    margin-bottom: 12px;
-  }
-  
-  .card-desc {
-    font-size: 12px;
-    line-height: 1.6;
-  }
-  
-  .card-cta {
-    font-size: 12px;
-    padding: 10px 20px;
-    margin-top: 16px;
   }
 }
 </style>

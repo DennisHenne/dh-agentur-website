@@ -6,7 +6,7 @@ WORKDIR /app
 # Copy dependency manifests first for better layer caching
 COPY package.json package-lock.json* ./
 
-RUN npm ci
+RUN npm ci --legacy-peer-deps
 
 # Copy the rest of the source
 COPY . .

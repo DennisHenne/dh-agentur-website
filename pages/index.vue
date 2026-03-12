@@ -2,7 +2,9 @@
   <div>
     <SectionsHomeHero />
     <SectionsHomeWork />
-    <SectionsHomeServicesThreeJs />
+    <client-only>
+      <SectionsHomeServicesThreeJs />
+    </client-only>
     <SectionsHomeReferences />
     <SectionsHomeAbout />
     <SectionsHomeCta />

@@ -35,8 +35,11 @@
 
 <script setup lang="ts">
 import * as THREE from 'three';
-import { CSS3DRenderer, CSS3DObject } from 'three/examples/jsm/renderers/CSS3DRenderer.js';
 import { gsap } from 'gsap';
+
+// Dynamically loaded in onMounted to avoid SSR issues
+let CSS3DRenderer: any;
+let CSS3DObject: any;
 // Import service data and other dependencies
 
 const { locale } = useI18n()
@@ -128,11 +131,11 @@ const activeServiceIndex = ref(0);
 // Three.js variables
 let scene: THREE.Scene;
 let camera: THREE.PerspectiveCamera;
-let css3dRenderer: CSS3DRenderer;
+let css3dRenderer: any;
 let animationId: number;
 
 // Array to track CSS3DObjects for state updates
-let serviceObjects: THREE.CSS3DObject[] = [];
+let serviceObjects: any[] = [];
 
 // Drag control state variables
 let dragging = false;
@@ -147,7 +150,8 @@ function cx(e: MouseEvent | TouchEvent) {
   return 'touches' in e ? e.touches[0].clientX : e.clientX;
 }
 
-// Drag functions
+// ─── Drag ────────────────────────────────────────────────────────────────────
+
 function startDrag(e: MouseEvent | TouchEvent) {
   dragging = true;
   dragStartX = cx(e);
@@ -160,199 +164,186 @@ function startDrag(e: MouseEvent | TouchEvent) {
 function onDrag(e: MouseEvent | TouchEvent) {
   if (!dragging) return;
   const x = cx(e);
-  scene.rotation.y = dragStartRot + (x - dragStartX) * 0.005; // Sensitivity adjustment
+  // Positive drag → scene rotates → next card (right side) comes to front
+  scene.rotation.y = dragStartRot + (x - dragStartX) * 0.004;
   const now = Date.now();
   velocity = (x - lastX) / Math.max(1, now - lastT) * 16;
   lastX = x;
   lastT = now;
 }
 
-// Calculate target index based on current rotation
+function stopDrag() {
+  dragging = false;
+  snapToIndex(getTargetIndex());
+}
+
+// ─── Index helpers ────────────────────────────────────────────────────────────
+
+// Camera is at z≈0 (center of ring), looking along –Z.
+// Cards: x = R·sin(θ_i),  z = –R·cos(θ_i)
+// Front position (z = –R, directly ahead) is reached when
+//   scene.rotation.y = +(i · 2π/N)   ← POSITIVE
 function getTargetIndex() {
   const N = services.value.length;
   const normalizedRotation = ((scene.rotation.y % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
   const index = Math.round(normalizedRotation / (2 * Math.PI / N)) % N;
-  return (index + N) % N; // Ensure positive
+  return (index + N) % N;
 }
 
-// Check if an index is the center card
 function isCenterIndex(index: number) {
   return index === getTargetIndex();
 }
 
-// Handle service card click
-function handleServiceClick(index: number) {
-  if (isCenterIndex(index)) {
-    // Navigate to service page
-    router.push(`/services/${services.value[index].slug}`);
-  } else {
-    // Snap to the clicked card
-    snapToIndex(index);
-  }
-}
-
-// Snap to specific index
 function snapToIndex(index: number) {
   const N = services.value.length;
+  // Front = scene.rotation.y = +(i · 2π/N)
   const targetAngle = (index * 2 * Math.PI) / N;
+
+  // Shortest-path wrap: never spin more than π
+  let current = scene.rotation.y;
+  let delta = targetAngle - current;
+  while (delta >  Math.PI) delta -= 2 * Math.PI;
+  while (delta < -Math.PI) delta += 2 * Math.PI;
+
   gsap.to(scene.rotation, {
-    y: targetAngle,
-    duration: 0.8,
-    ease: "power2.out",
-    onUpdate: updateCardStates
+    y: current + delta,
+    duration: 0.7,
+    ease: 'power2.out',
+    onUpdate: updateCardStates,
   });
 }
 
-// Update active/next/prev states based on closest cards
 function updateCardStates() {
-  const N = services.value.length;
-  const centerIndex = getTargetIndex();
-  activeServiceIndex.value = centerIndex;
+  const N   = services.value.length;
+  const cur = getTargetIndex();
+  activeServiceIndex.value = cur;
   serviceObjects.forEach((obj, i) => {
-    const diff = ((i - centerIndex + N) % N);
+    const diff = ((i - cur + N) % N);
     let state = 'side';
-    if (diff === 0) state = 'center';
+    if (diff === 0)                   state = 'center';
     else if (diff === 1 || diff === N - 1) state = 'adjacent';
-
-    // Apply CSS classes based on state
     obj.element.className = `service-card ${state}`;
   });
 }
 
-function stopDrag() {
-  dragging = false;
-  // Snap to nearest card when dragging stops
-  snapToIndex(getTargetIndex());
+function handleServiceClick(index: number) {
+  if (isCenterIndex(index)) {
+    router.push(`/services/${services.value[index].slug}`);
+  } else {
+    snapToIndex(index);
+  }
 }
 
-// Initialize Three.js scene
+// ─── Three.js setup ───────────────────────────────────────────────────────────
+
 const initThreeJs = () => {
-  console.log('Initializing Three.js');
-  console.log('threeContainer.value:', threeContainer.value);
-  // Create scene
+  if (!threeContainer.value) return;
   scene = new THREE.Scene();
 
-  // Create camera
-  camera = new THREE.PerspectiveCamera(
-    75,
-    window.innerWidth / window.innerHeight,
-    0.1,
-    2000
-  );
-  camera.position.z = 700;
-  camera.lookAt(new THREE.Vector3(0, 0, 0));
+  // Size renderer to the CONTAINER, not the window.
+  // This ensures the CSS3D perspective center == the container center.
+  // (Using window dimensions shifts the 3D origin below the visible area.)
+  const W = threeContainer.value.clientWidth;
+  const H = threeContainer.value.clientHeight;
 
-  // Create CSS3DRenderer
+  // Camera sits at the CENTER of the ring, looking along –Z.
+  // Placed at z=–1 (not exact z=0) to avoid the CSS3D perspective singularity:
+  // side cards at z=0 would have infinite CSS scale at z=0; at z=–1 they get a
+  // large-negative scale → hidden by backface-visibility. No infinite values.
+  // With camera inside + lookAt(0,0,0) the CSS3D Y-flip cancels out and cards
+  // show their READABLE face (verified by 2×2 CSS-matrix determinant = +1).
+  camera = new THREE.PerspectiveCamera(80, W / H, 1, 10000);
+  camera.position.set(0, 0, -1);
+  // Default Three.js camera orientation already looks along –Z — no lookAt needed.
+
   css3dRenderer = new CSS3DRenderer();
-  css3dRenderer.setSize(window.innerWidth, window.innerHeight);
+  css3dRenderer.setSize(W, H);
   css3dRenderer.domElement.style.position = 'absolute';
-  css3dRenderer.domElement.style.top = '0';
-  css3dRenderer.domElement.style.left = '0';
+  css3dRenderer.domElement.style.top      = '0';
+  css3dRenderer.domElement.style.left     = '0';
+  threeContainer.value.appendChild(css3dRenderer.domElement);
 
-  // Attach renderer to container
-  if (threeContainer.value) {
-    threeContainer.value.appendChild(css3dRenderer.domElement);
-    console.log('Renderer appended to container');
-  } else {
-    console.log('threeContainer.value is null, cannot append renderer');
-  }
-
-  // Create service cards in circular arrangement
   createServiceCards();
-
-  // Initialize card states
   updateCardStates();
 
-  // Animation loop
   const animate = () => {
     animationId = requestAnimationFrame(animate);
-
-    // Apply inertia
     if (!dragging && Math.abs(velocity) > 0.001) {
-      scene.rotation.y += velocity * 0.01; // Apply velocity to rotation
-      velocity *= 0.95; // Friction to slow down
+      scene.rotation.y += velocity * 0.008;
+      velocity *= 0.93;
     }
-
     css3dRenderer.render(scene, camera);
   };
   animate();
 };
 
-// Create service cards with circular arrangement
+// ─── Card factory ─────────────────────────────────────────────────────────────
+
 const createServiceCards = () => {
-  console.log('Creating service cards');
   const N = services.value.length;
-  console.log('Number of services:', N);
-  // Responsive radius based on screen width
-  const radius = window.innerWidth < 768 ? 400 : window.innerWidth < 480 ? 300 : 600;
-  const RADIUS = radius; // Distance from center
-  const TILT_ANGLE = Math.PI / 18; // 10 degrees tilt for depth perception
+  // Ring radius.  With camera at z=–1 (center), front card is at z=–R.
+  // CSS scale of front card ≈ fov_css / R.
+  // R=500 keeps 8 cards (340px wide) just fitting the circumference (arc ≈ 393px).
+  const RADIUS = 500;
 
   services.value.forEach((service, index) => {
-    // Calculate angle per service: θ = 2π / N
     const angle = (index * 2 * Math.PI) / N;
 
-    // Compute positions using the formulas
-    const x = RADIUS * Math.cos(angle);
-    const y = RADIUS * Math.sin(angle) * Math.cos(TILT_ANGLE); // Tilt on Y-axis
-    const z = RADIUS * Math.sin(angle) * Math.sin(TILT_ANGLE);  // Elevation on Z-axis
+    // Horizontal ring in the XZ plane.
+    // Camera at z≈0 looks along –Z.  Front card (angle=0) → z = –R (ahead).
+    //   z = –R·cos(angle)  ← NEGATIVE cos
+    const x =  RADIUS * Math.sin(angle);
+    const y =  0;
+    const z = -RADIUS * Math.cos(angle);   // front at z=–R when angle=0
 
-    // Create HTML element for service card
-    const serviceCardElement = document.createElement('div');
-    serviceCardElement.className = 'service-card';
-    serviceCardElement.innerHTML = `
-      <div class="service-card-content" style="background: ${service.gradient};">
+    const el = document.createElement('div');
+    el.className = 'service-card';
+    el.innerHTML = `
+      <div class="service-card-content" style="background:${service.gradient};">
         <div class="service-icon">
-          <img src="/test-pitcture-carussel.jpg" class="h-9 w-9" alt="Service Icon" />
+          <img src="/test-pitcture-carussel.jpg" class="h-9 w-9" alt="" />
         </div>
         <h3 class="service-title">${service.title}</h3>
         <p class="service-desc">${service.desc}</p>
-      </div>
-    `;
+      </div>`;
+    el.addEventListener('click', () => handleServiceClick(index));
 
-    // Add click event listener
-    serviceCardElement.addEventListener('click', () => handleServiceClick(index));
+    const obj = new CSS3DObject(el);
+    obj.position.set(x, y, z);
 
-    // Create CSS3DObject
-    const cssObject = new CSS3DObject(serviceCardElement);
+    // lookAt(0,0,0): card's +Z points INWARD toward the camera at origin.
+    // Camera-inside + inward-facing = CSS3D 2×2 determinant is +1 → READABLE text.
+    obj.lookAt(new THREE.Vector3(0, 0, 0));
 
-    // Position the object
-    cssObject.position.set(x, y, z);
-
-    // Make card face the center
-    cssObject.lookAt(new THREE.Vector3(0, 0, 0));
-
-    // Add to scene
-    scene.add(cssObject);
-
-    // Add to serviceObjects array for state tracking
-    serviceObjects.push(cssObject);
+    scene.add(obj);
+    serviceObjects.push(obj);
   });
-  console.log('Service cards created, serviceObjects length:', serviceObjects.length);
-  console.log('onMounted completed');
 };
 
-// Handle window resize
-const handleResize = () => {
-  if (camera && css3dRenderer) {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    css3dRenderer.setSize(window.innerWidth, window.innerHeight);
+// ─── Resize ───────────────────────────────────────────────────────────────────
 
-    // Recreate service cards with new responsive radius
-    scene.clear();
-    serviceObjects = [];
-    createServiceCards();
-    updateCardStates();
-  }
+const handleResize = () => {
+  if (!camera || !css3dRenderer || !threeContainer.value) return;
+  const W = threeContainer.value.clientWidth;
+  const H = threeContainer.value.clientHeight;
+  camera.aspect = W / H;
+  camera.updateProjectionMatrix();
+  css3dRenderer.setSize(W, H);
+  scene.clear();
+  serviceObjects = [];
+  createServiceCards();
+  updateCardStates();
 };
 
 // Lifecycle hooks
-onMounted(() => {
-  console.log('HomeServicesThreeJs mounted');
+onMounted(async () => {
+  const css3d = await import('three/examples/jsm/renderers/CSS3DRenderer.js');
+  CSS3DRenderer = css3d.CSS3DRenderer;
+  CSS3DObject = css3d.CSS3DObject;
+  // nextTick ensures the container has its final layout dimensions before we read them
+  await nextTick();
   initThreeJs();
   window.addEventListener('resize', handleResize);
-  console.log('onMounted completed');
 });
 
 onUnmounted(() => {
@@ -382,24 +373,25 @@ onUnmounted(() => {
 
 /* Service card styles */
 .service-card {
-  width: 300px;
-  height: 200px;
+  width: 340px;
+  height: 220px;
   pointer-events: auto;
   cursor: pointer;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
-/* Responsive adjustments for smaller screens */
 @media (max-width: 768px) {
   .service-card {
-    width: 200px;
-    height: 150px;
+    width: 260px;
+    height: 170px;
   }
 }
 
 @media (max-width: 480px) {
   .service-card {
-    width: 180px;
-    height: 130px;
+    width: 200px;
+    height: 140px;
   }
 }
 
@@ -415,11 +407,22 @@ onUnmounted(() => {
   text-align: center;
   color: white;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  transition: transform 0.3s ease;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transition: transform 0.35s ease, box-shadow 0.35s ease, opacity 0.35s ease;
+  opacity: 0.55;
 }
 
-.service-card-content:hover {
-  transform: scale(1.05);
+/* Selected (center) card: scale up and full opacity */
+.service-card.center .service-card-content {
+  transform: scale(1.25);
+  opacity: 1;
+  box-shadow: 0 16px 64px rgba(0, 200, 150, 0.35);
+}
+
+/* Cards one step away: medium emphasis */
+.service-card.adjacent .service-card-content {
+  opacity: 0.80;
 }
 
 .service-icon {

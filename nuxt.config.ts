@@ -3,6 +3,16 @@ export default defineNuxtConfig({
 
   devtools: { enabled: true },
 
+  // Enable polling for Docker on Windows (inotify events don't propagate from NTFS)
+  vite: {
+    server: {
+      watch: {
+        usePolling: true,
+        interval: 500,
+      },
+    },
+  },
+
   modules: [
     '@nuxtjs/tailwindcss',
     '@nuxtjs/i18n',
