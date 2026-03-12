@@ -11,13 +11,22 @@
       class="immersive-stage"
       @mousedown="startDrag"
       @touchstart.passive="startDrag"
+      @mousemove="onDrag"
+      @touchmove.passive="onDrag"
+      @mouseup="stopDrag"
+      @touchend="stopDrag"
     >
       <!-- CSS3DRenderer will render here -->
     </div>
 
-    <!-- Navigation dots and CTA unchanged -->
+    <!-- Navigation dots -->
     <div class="mt-8 flex justify-center gap-2">
-      <!-- Existing navigation dots -->
+      <button
+        v-for="(service, index) in services"
+        :key="index"
+        @click="snapToIndex(index)"
+        :class="['w-3 h-3 rounded-full transition-all duration-300', activeServiceIndex === index ? 'bg-white scale-125' : 'bg-white/50 hover:bg-white/70']"
+      ></button>
     </div>
 
     <!-- Existing CTA link -->
@@ -27,11 +36,13 @@
 <script setup lang="ts">
 import * as THREE from 'three';
 import { CSS3DRenderer } from 'three/examples/jsm/renderers/CSS3DRenderer.js';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { gsap } from 'gsap';
 // Import service data and other dependencies
 
 const { locale } = useI18n()
+const router = useRouter()
+
+const navigateTo = (path: string) => router.push(path)
 
 const services = computed(() => {
   return [
@@ -96,13 +107,107 @@ const services = computed(() => {
 
 // Refs
 const threeContainer = ref<HTMLDivElement>();
+const activeServiceIndex = ref(0);
 
 // Three.js variables
 let scene: THREE.Scene;
 let camera: THREE.PerspectiveCamera;
 let css3dRenderer: CSS3DRenderer;
-let controls: OrbitControls;
 let animationId: number;
+
+// Array to track CSS3DObjects for state updates
+let serviceObjects: THREE.CSS3DObject[] = [];
+
+// Drag control state variables
+let dragging = false;
+let dragStartX = 0;
+let dragStartRot = 0;
+let velocity = 0;
+let lastX = 0;
+let lastT = 0;
+
+// Helper function to get coordinates from events
+function cx(e: MouseEvent | TouchEvent) {
+  return 'touches' in e ? e.touches[0].clientX : e.clientX;
+}
+
+// Drag functions
+function startDrag(e: MouseEvent | TouchEvent) {
+  dragging = true;
+  dragStartX = cx(e);
+  dragStartRot = scene.rotation.y;
+  lastX = dragStartX;
+  lastT = Date.now();
+  velocity = 0;
+}
+
+function onDrag(e: MouseEvent | TouchEvent) {
+  if (!dragging) return;
+  const x = cx(e);
+  scene.rotation.y = dragStartRot + (x - dragStartX) * 0.005; // Sensitivity adjustment
+  const now = Date.now();
+  velocity = (x - lastX) / Math.max(1, now - lastT) * 16;
+  lastX = x;
+  lastT = now;
+}
+
+// Calculate target index based on current rotation
+function getTargetIndex() {
+  const N = services.value.length;
+  const normalizedRotation = ((scene.rotation.y % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
+  const index = Math.round(normalizedRotation / (2 * Math.PI / N)) % N;
+  return (index + N) % N; // Ensure positive
+}
+
+// Check if an index is the center card
+function isCenterIndex(index: number) {
+  return index === getTargetIndex();
+}
+
+// Handle service card click
+function handleServiceClick(index: number) {
+  if (isCenterIndex(index)) {
+    // Navigate to service page
+    router.push(`/services/${services.value[index].slug}`);
+  } else {
+    // Snap to the clicked card
+    snapToIndex(index);
+  }
+}
+
+// Snap to specific index
+function snapToIndex(index: number) {
+  const N = services.value.length;
+  const targetAngle = (index * 2 * Math.PI) / N;
+  gsap.to(scene.rotation, {
+    y: targetAngle,
+    duration: 0.8,
+    ease: "power2.out",
+    onUpdate: updateCardStates
+  });
+}
+
+// Update active/next/prev states based on closest cards
+function updateCardStates() {
+  const N = services.value.length;
+  const centerIndex = getTargetIndex();
+  activeServiceIndex.value = centerIndex;
+  serviceObjects.forEach((obj, i) => {
+    const diff = ((i - centerIndex + N) % N);
+    let state = 'side';
+    if (diff === 0) state = 'center';
+    else if (diff === 1 || diff === N - 1) state = 'adjacent';
+
+    // Apply CSS classes based on state
+    obj.element.className = `service-card ${state}`;
+  });
+}
+
+function stopDrag() {
+  dragging = false;
+  // Snap to nearest card when dragging stops
+  snapToIndex(getTargetIndex());
+}
 
 // Initialize Three.js scene
 const initThreeJs = () => {
@@ -130,18 +235,22 @@ const initThreeJs = () => {
     threeContainer.value.appendChild(css3dRenderer.domElement);
   }
 
-  // Create OrbitControls
-  controls = new OrbitControls(camera, css3dRenderer.domElement);
-  controls.enableDamping = true;
-  controls.dampingFactor = 0.05;
-
   // Create service cards in circular arrangement
   createServiceCards();
+
+  // Initialize card states
+  updateCardStates();
 
   // Animation loop
   const animate = () => {
     animationId = requestAnimationFrame(animate);
-    controls.update();
+
+    // Apply inertia
+    if (!dragging && Math.abs(velocity) > 0.001) {
+      scene.rotation.y += velocity * 0.01; // Apply velocity to rotation
+      velocity *= 0.95; // Friction to slow down
+    }
+
     css3dRenderer.render(scene, camera);
   };
   animate();
@@ -175,6 +284,9 @@ const createServiceCards = () => {
       </div>
     `;
 
+    // Add click event listener
+    serviceCardElement.addEventListener('click', () => handleServiceClick(index));
+
     // Create CSS3DObject
     const cssObject = new THREE.CSS3DObject(serviceCardElement);
 
@@ -186,6 +298,9 @@ const createServiceCards = () => {
 
     // Add to scene
     scene.add(cssObject);
+
+    // Add to serviceObjects array for state tracking
+    serviceObjects.push(cssObject);
   });
 };
 
@@ -222,13 +337,19 @@ onUnmounted(() => {
   width: 100%;
   height: 80vh;
   overflow: hidden;
+  cursor: grab;
+}
+
+.immersive-stage:active {
+  cursor: grabbing;
 }
 
 /* Service card styles */
 .service-card {
   width: 300px;
   height: 200px;
-  pointer-events: none;
+  pointer-events: auto;
+  cursor: pointer;
 }
 
 .service-card-content {
