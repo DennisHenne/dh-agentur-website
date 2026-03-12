@@ -35,7 +35,7 @@
 
 <script setup lang="ts">
 import * as THREE from 'three';
-import { CSS3DRenderer } from 'three/examples/jsm/renderers/CSS3DRenderer.js';
+import { CSS3DRenderer, CSS3DObject } from 'three/examples/jsm/renderers/CSS3DRenderer.js';
 import { gsap } from 'gsap';
 // Import service data and other dependencies
 
@@ -56,7 +56,9 @@ function isWebGLAvailable() {
 }
 
 // Fallback flag
-const webglSupported = ref(true);
+const webglSupported = ref(isWebGLAvailable());
+console.log('WebGL supported:', webglSupported.value);
+console.log('Component setup executed');
 
 const services = computed(() => {
   return [
@@ -225,6 +227,8 @@ function stopDrag() {
 
 // Initialize Three.js scene
 const initThreeJs = () => {
+  console.log('Initializing Three.js');
+  console.log('threeContainer.value:', threeContainer.value);
   // Create scene
   scene = new THREE.Scene();
 
@@ -233,9 +237,10 @@ const initThreeJs = () => {
     75,
     window.innerWidth / window.innerHeight,
     0.1,
-    1000
+    2000
   );
-  camera.position.z = 5;
+  camera.position.z = 700;
+  camera.lookAt(new THREE.Vector3(0, 0, 0));
 
   // Create CSS3DRenderer
   css3dRenderer = new CSS3DRenderer();
@@ -247,6 +252,9 @@ const initThreeJs = () => {
   // Attach renderer to container
   if (threeContainer.value) {
     threeContainer.value.appendChild(css3dRenderer.domElement);
+    console.log('Renderer appended to container');
+  } else {
+    console.log('threeContainer.value is null, cannot append renderer');
   }
 
   // Create service cards in circular arrangement
@@ -272,7 +280,9 @@ const initThreeJs = () => {
 
 // Create service cards with circular arrangement
 const createServiceCards = () => {
+  console.log('Creating service cards');
   const N = services.value.length;
+  console.log('Number of services:', N);
   // Responsive radius based on screen width
   const radius = window.innerWidth < 768 ? 400 : window.innerWidth < 480 ? 300 : 600;
   const RADIUS = radius; // Distance from center
@@ -293,7 +303,7 @@ const createServiceCards = () => {
     serviceCardElement.innerHTML = `
       <div class="service-card-content" style="background: ${service.gradient};">
         <div class="service-icon">
-          ${service.icon}
+          <img src="/test-pitcture-carussel.jpg" class="h-9 w-9" alt="Service Icon" />
         </div>
         <h3 class="service-title">${service.title}</h3>
         <p class="service-desc">${service.desc}</p>
@@ -304,7 +314,7 @@ const createServiceCards = () => {
     serviceCardElement.addEventListener('click', () => handleServiceClick(index));
 
     // Create CSS3DObject
-    const cssObject = new THREE.CSS3DObject(serviceCardElement);
+    const cssObject = new CSS3DObject(serviceCardElement);
 
     // Position the object
     cssObject.position.set(x, y, z);
@@ -318,6 +328,8 @@ const createServiceCards = () => {
     // Add to serviceObjects array for state tracking
     serviceObjects.push(cssObject);
   });
+  console.log('Service cards created, serviceObjects length:', serviceObjects.length);
+  console.log('onMounted completed');
 };
 
 // Handle window resize
@@ -337,8 +349,10 @@ const handleResize = () => {
 
 // Lifecycle hooks
 onMounted(() => {
+  console.log('HomeServicesThreeJs mounted');
   initThreeJs();
   window.addEventListener('resize', handleResize);
+  console.log('onMounted completed');
 });
 
 onUnmounted(() => {
