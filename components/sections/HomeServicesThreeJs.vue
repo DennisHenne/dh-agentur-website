@@ -6,28 +6,19 @@
     </div>
 
     <!-- Three.js Container -->
-    <div
-      ref="threeContainer"
-      class="immersive-stage"
-      @mousedown="startDrag"
-      @touchstart.passive="startDrag"
-      @mousemove="onDrag"
-      @touchmove.passive="onDrag"
-      @mouseup="stopDrag"
-      @touchend="stopDrag"
-      @mouseleave="onMouseLeave"
-    >
-      <!-- CSS3DRenderer will render here -->
-    </div>
-
-    <!-- Navigation dots -->
-    <div class="mt-8 flex justify-center gap-2">
-      <button
-        v-for="(service, index) in services"
-        :key="index"
-        @click="snapToIndex(index)"
-        :class="['w-3 h-3 rounded-full transition-all duration-300', activeServiceIndex === index ? 'bg-white scale-125' : 'bg-white/50 hover:bg-white/70']"
-      ></button>
+    <div ref="threeContainer" class="immersive-stage">
+      <!-- CSS3DRenderer renders here -->
+      <!-- Transparentes Klick-Overlay: fängt alle Klicks (auch Zwischenräume) ab -->
+      <div
+        class="click-overlay"
+        @mousedown="startDrag"
+        @touchstart.passive="startDrag"
+        @mousemove="onDrag"
+        @touchmove.passive="onDrag"
+        @mouseup="stopDrag"
+        @touchend="stopDrag"
+        @mouseleave="onMouseLeave"
+      />
     </div>
 
     <!-- Existing CTA link -->
@@ -155,7 +146,6 @@ const services = computed(() => {
 
 // Refs
 const threeContainer = ref<HTMLDivElement>();
-const activeServiceIndex = ref(0);
 
 // Three.js variables
 let scene: THREE.Scene;
@@ -176,6 +166,16 @@ let lastT         = 0;
 let snapping      = false;
 let dragMoved     = false;   // true once pointer moved > 8 px (committed drag)
 let wasCoasting   = false;   // true if carousel was already moving at mousedown
+let targetRotation = 0;
+
+// ─── Physics (simplified) ────────────────────────────────────────────────────
+const DRAG_SENSITIVITY = 0.0024;
+const TARGET_SMOOTH   = 0.22;     // Delay: left/right cancel each other during smoothing
+const FOLLOW_LERP     = 0.18;     // How quickly wheel follows target (not braking)
+const FRICTION        = 0.99;     // Coast decay – higher = longer spin
+const VELOCITY_MULT   = 10;       // Faster pull = longer coast
+const COAST_FACTOR    = 0.012;
+const COAST_DECAY     = COAST_FACTOR / (1 - FRICTION);
 
 // Helper function to get coordinates from events
 function cx(e: MouseEvent | TouchEvent) {
@@ -188,25 +188,44 @@ function onMouseLeave() {
 }
 
 // Global mouseup safety net: catches releases outside the container
-function onWindowMouseUp() {
-  if (dragging) stopDrag();
+function onWindowMouseUp(e: MouseEvent | TouchEvent) {
+  if (dragging) stopDrag(e);
+}
+
+// ─── Click zones: Klickposition → nächste Karte (Grenzen mittig zwischen Karten) ─
+function getCardIndexAtScreenX(clientX: number): number {
+  if (!threeContainer.value || !scene || !camera || serviceObjects.length === 0) return getTargetIndex();
+  const rect = threeContainer.value.getBoundingClientRect();
+  const clickX = Math.max(0, Math.min(rect.width, clientX - rect.left));
+  const vec = new THREE.Vector3();
+  let bestIdx = 0;
+  let bestDist = Infinity;
+  const W = rect.width;
+  for (let i = 0; i < serviceObjects.length; i++) {
+    serviceObjects[i].getWorldPosition(vec);
+    vec.project(camera);
+    const screenX = (vec.x * 0.5 + 0.5) * W;
+    let d = Math.abs(screenX - clickX);
+    if (d > W / 2) d = W - d;
+    if (d < bestDist) { bestDist = d; bestIdx = i; }
+  }
+  return bestIdx;
 }
 
 // ─── Drag ────────────────────────────────────────────────────────────────────
 
 function startDrag(e: MouseEvent | TouchEvent) {
-  // Record whether the ring was already moving (coast or snap) so we can
-  // ignore accidental taps on a spinning carousel.
-  wasCoasting  = Math.abs(velocity) > 0.1 || snapping;
+  wasCoasting  = Math.abs(velocity) > 0.02 || snapping;
   dragging     = true;
   dragMoved    = false;
   dragStartX   = cx(e);
   dragStartRot = scene.rotation.y;
+  targetRotation = scene.rotation.y;
   lastX        = dragStartX;
   lastT        = Date.now();
-  // Do NOT kill tweens or zero velocity here — a plain click / hold must
-  // never interrupt an ongoing spin or snap.  We only take control once
-  // the user commits to an intentional drag (> 8 px movement).
+  gsap.killTweensOf(scene.rotation);
+  velocity = 0;
+  snapping = false;
 }
 
 function onDrag(e: MouseEvent | TouchEvent) {
@@ -215,95 +234,73 @@ function onDrag(e: MouseEvent | TouchEvent) {
   const dx = x - dragStartX;
 
   if (!dragMoved) {
-    if (Math.abs(dx) < 8) return; // deadzone — spin continues undisturbed
-    // Drag committed: NOW we seize control from any running coast / snap.
+    if (Math.abs(dx) < 8) return;
     gsap.killTweensOf(scene.rotation);
     snapping     = false;
     dragMoved    = true;
     dragStartX   = x;
-    dragStartRot = scene.rotation.y;  // anchor to live GSAP/coast position
+    dragStartRot = scene.rotation.y;
+    targetRotation = scene.rotation.y;
     velocity     = 0;
     return;
   }
 
-  // Live drag — half the old sensitivity for comfortable, precise control
-  scene.rotation.y = dragStartRot - (x - dragStartX) * 0.002;
+  // Raw target from mouse; smoothing makes left/right cancel during rapid direction changes
+  const rawTarget = dragStartRot - (x - dragStartX) * DRAG_SENSITIVITY;
+  targetRotation += (rawTarget - targetRotation) * TARGET_SMOOTH;
   const now = Date.now();
-  velocity  = (x - lastX) / Math.max(1, now - lastT) * 8;
+  velocity = (x - lastX) / Math.max(1, now - lastT) * VELOCITY_MULT;
   lastX = x;
   lastT = now;
 }
 
-function stopDrag() {
+function stopDrag(e?: MouseEvent | TouchEvent) {
   dragging = false;
   if (!dragMoved) {
-    // No committed drag (< 8 px movement).
-    if (wasCoasting) {
-      // Carousel was already moving → let the coast continue untouched.
-      return;
-    } else {
-      // Carousel was stationary → snap to nearest card (pure tap).
-      velocity = 0;
-      snapToIndex(getTargetIndex());
-      return;
-    }
+    // Pictures only clickable when carousel stands still or is very slow
+    if (wasCoasting) return;
+    velocity = 0;
+    const clientX = e ? ('changedTouches' in e && e.changedTouches[0] ? e.changedTouches[0].clientX : (e as MouseEvent).clientX) : lastX;
+    const idx = e ? getCardIndexAtScreenX(clientX) : getTargetIndex();
+    // Every picture links to its service page
+    navigateTo(`/services/${services.value[idx].slug}`);
+    return;
   }
 
-  const N       = services.value.length;
-  const TWO_PI  = 2 * Math.PI;
-  const step    = TWO_PI / N;
+  const N = services.value.length;
+  const step = (2 * Math.PI) / N;
+  const v = (Date.now() - lastT > 150) ? 0 : velocity;
 
-  // Ignore stale velocity if user held still before releasing
-  const elapsed = Date.now() - lastT;
-  const v = elapsed > 150 ? 0 : velocity;
-
-  if (Math.abs(v) < 0.005) {
-    // Nearly stationary — snap to nearest card
+  if (Math.abs(v) < 0.003) {
     velocity = 0;
     snapToIndex(getTargetIndex());
     return;
   }
 
-  // ── Where does the carousel naturally stop? ──────────────────────────────
-  // Each frame: rotation -= v * 0.012, v *= 0.96
-  // Total change: v * 0.012 / (1 - 0.96) = v * 0.3
-  const naturalStop = scene.rotation.y - v * 0.3;
-
-  // Nearest snap to natural stop, in direction of travel
-  const nr     = ((-naturalStop % TWO_PI) + TWO_PI) % TWO_PI;
-  const raw    = nr / step;
-  const eps    = 1e-6;
+  const naturalStop = scene.rotation.y - v * COAST_DECAY;
+  const nr = ((naturalStop % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
+  const raw = nr / step;
   const velDir = Math.sign(v);
-  const targetIdx = ((velDir > 0
-    ? Math.ceil(raw  - eps)
-    : Math.floor(raw + eps)) + N) % N;
-
-  const targetAngle = -(targetIdx * TWO_PI / N);
+  const targetIdx = ((velDir > 0 ? Math.ceil(raw - 1e-6) : Math.floor(raw + 1e-6)) + N) % N;
+  const targetAngle = -(targetIdx * step);
   let delta = targetAngle - scene.rotation.y;
-  while (delta >  Math.PI) delta -= TWO_PI;
-  while (delta < -Math.PI) delta += TWO_PI;
+  while (delta > Math.PI) delta -= 2 * Math.PI;
+  while (delta < -Math.PI) delta += 2 * Math.PI;
 
-  // Velocity needed to coast exactly to targetAngle:
-  //   naturalStop = current - neededV * 0.3  →  neededV = (current - targetAngle) / 0.3
-  const neededV = -delta / 0.3;
-
-  if (Math.abs(neededV) <= Math.abs(v) * 1.05) {
-    // ── BRAKE path: adjust velocity, continue natural coast ─────────────────
-    // The animate loop carries the carousel to targetAngle with the same feel.
+  const neededV = -delta / COAST_DECAY;
+  const sameDir = Math.sign(neededV) === Math.sign(v);
+  if (sameDir && Math.abs(neededV) <= Math.abs(v) * 1.05) {
     velocity = neededV;
   } else {
-    // ── GSAP path: need more distance than natural coast can cover ───────────
-    // Duration is set so GSAP power3.out starts at exactly the current speed:
-    //   initial GSAP velocity = 3 * |delta| / T  →  T = 3 * |delta| / v_rads
     velocity = 0;
-    const vRads = Math.abs(v) * 0.012 * 60;          // convert to rad/s
-    const T     = Math.min(2.5, Math.max(0.35, 3 * Math.abs(delta) / vRads));
+    const vRads = Math.abs(v) * COAST_FACTOR * 60;
+    const T = Math.min(2.8, Math.max(0.4, 2 * Math.abs(delta) / vRads));
     snapping = true;
     gsap.to(scene.rotation, {
       y: scene.rotation.y + delta,
       duration: T,
-      ease: 'power3.out',
-      onUpdate:  updateCardStates,
+      ease: 'power2.out',
+      onUpdate: updateCardStates,
       onComplete: () => { snapping = false; },
     });
   }
@@ -323,10 +320,6 @@ function getTargetIndex() {
   return Math.round(nr / (2 * Math.PI / N)) % N;
 }
 
-function isCenterIndex(index: number) {
-  return index === getTargetIndex();
-}
-
 // velocityRads: current speed in rad/s at the moment of snap.
 // When provided, duration is calculated to match that speed (smooth handoff).
 // When 0 (dot-button clicks), a fixed 0.9 s duration is used.
@@ -342,58 +335,35 @@ function snapToIndex(index: number, velocityRads = 0) {
 
   if (Math.abs(delta) < 0.0005) { updateCardStates(); return; }
 
-  // power3.out initial velocity = 3 × |delta| / T
-  // → set T so that matches current speed
+  // power2.out: initial velocity ≈ 2×|delta|/T → T für sanften Übergang
   const T = velocityRads > 0.05
-    ? Math.min(2.5, Math.max(0.3, 3 * Math.abs(delta) / velocityRads))
-    : Math.max(0.3, Math.abs(delta) * 1.5);   // proportional short correction
+    ? Math.min(2.8, Math.max(0.4, 2 * Math.abs(delta) / velocityRads))
+    : Math.max(0.4, Math.abs(delta) * 1.8);
 
   snapping = true;
   gsap.to(scene.rotation, {
     y: current + delta,
     duration: T,
-    ease: 'power3.out',
+    ease: 'power2.out',
     onUpdate:   updateCardStates,
     onComplete: () => { snapping = false; },
   });
 }
 
 function updateCardStates() {
-  const N   = services.value.length;
-  const cur = getTargetIndex();
-  activeServiceIndex.value = cur;
-  serviceObjects.forEach((obj, i) => {
-    const diff = ((i - cur + N) % N);
-    const isCenter   = diff === 0;
-    const isAdjacent = diff === 1 || diff === N - 1;
-    obj.element.className = `service-card ${isCenter ? 'center' : isAdjacent ? 'adjacent' : 'side'}`;
-
-    // Apply emphasis via inline style on the inner content div
-    // (scoped CSS can't reach dynamically created elements)
+  // Alle Karten gleich – keine Auswahl-Logik
+  serviceObjects.forEach((obj) => {
+    obj.element.className = 'service-card';
     const content = obj.element.querySelector('.service-card-content') as HTMLElement | null;
     if (!content) return;
-    if (isCenter) {
-      content.style.transform     = 'scale(1.15)';
-      content.style.opacity       = '1';
-      content.style.boxShadow     = '0 16px 64px rgba(0,200,150,0.35)';
-    } else if (isAdjacent) {
-      content.style.transform     = 'scale(1)';
-      content.style.opacity       = '0.75';
-      content.style.boxShadow     = '0 8px 32px rgba(0,0,0,0.3)';
-    } else {
-      content.style.transform     = 'scale(1)';
-      content.style.opacity       = '0.45';
-      content.style.boxShadow     = '0 8px 32px rgba(0,0,0,0.3)';
-    }
+    content.style.transform   = 'scale(1)';
+    content.style.opacity     = '1';
+    content.style.boxShadow   = '0 8px 32px rgba(0,0,0,0.3)';
   });
 }
 
 function handleServiceClick(index: number) {
-  if (isCenterIndex(index)) {
-    router.push(`/services/${services.value[index].slug}`);
-  } else {
-    snapToIndex(index);
-  }
+  router.push(`/services/${services.value[index].slug}`);
 }
 
 // ─── Three.js setup ───────────────────────────────────────────────────────────
@@ -428,24 +398,29 @@ const initThreeJs = () => {
   createServiceCards();
   updateCardStates();
 
-  const animate = () => {
+  let lastFrameTime = 0;
+  const animate = (now: number) => {
     animationId = requestAnimationFrame(animate);
-    // Coast runs when: not dragging, OR dragging but not yet committed (windup phase)
-    if ((!dragging || !dragMoved) && !snapping && Math.abs(velocity) > 0.0005) {
-      scene.rotation.y -= velocity * 0.012;
-      velocity *= 0.96;
+    const dt = lastFrameTime ? Math.min((now - lastFrameTime) / 1000, 0.1) : 0.016;
+    lastFrameTime = now;
+
+    if (dragging && dragMoved) {
+      const diff = targetRotation - scene.rotation.y;
+      scene.rotation.y += diff * (1 - Math.pow(1 - FOLLOW_LERP, 60 * dt));
       updateCardStates();
-      // Safety snap: when velocity is essentially zero, do a tiny correction
-      // to land exactly on the snap point (handles floating-point remainder)
-      if (Math.abs(velocity) < 0.004) {
-        const corrVRads = Math.abs(velocity) * 0.012 * 60;
+    } else if (!snapping && Math.abs(velocity) > 0.0003) {
+      scene.rotation.y -= velocity * COAST_FACTOR * (60 * dt);
+      velocity *= Math.pow(FRICTION, 60 * dt);
+      updateCardStates();
+      if (Math.abs(velocity) < 0.003) {
+        const corrVRads = Math.abs(velocity) * COAST_FACTOR * 60;
         velocity = 0;
         snapToIndex(getTargetIndex(), corrVRads);
       }
     }
     css3dRenderer.render(scene, camera);
   };
-  animate();
+  animate(performance.now());
 };
 
 // ─── Card factory ─────────────────────────────────────────────────────────────
@@ -485,7 +460,9 @@ const createServiceCards = () => {
 
     el.innerHTML = `
       <div class="service-card-content" style="
-        background: ${service.gradient};
+        background-image: url('/test-pitcture-carussel.jpg');
+        background-size: cover;
+        background-position: center;
         width: 100%;
         height: 100%;
         border-radius: 50px;
@@ -500,9 +477,10 @@ const createServiceCards = () => {
         backface-visibility: hidden;
         -webkit-backface-visibility: hidden;
         transition: transform 0.35s ease, box-shadow 0.35s ease, opacity 0.35s ease;
-        opacity: 0.55;
+        opacity: 1;
         box-sizing: border-box;
       ">
+        <!-- Schrift vorerst auskommentiert
         <div style="margin-bottom:14px; opacity:0.9;">${service.icon}</div>
         <h3 style="
           font-size: ${CARD_W >= 612 ? '1.5rem' : CARD_W >= 468 ? '1.25rem' : '1rem'};
@@ -516,6 +494,7 @@ const createServiceCards = () => {
           line-height: 1.4;
           margin: 0;
         ">${service.desc}</p>
+        -->
       </div>`;
     // Fire click only when:
     // • pointer didn't move (no committed drag), AND
@@ -562,6 +541,7 @@ onMounted(async () => {
   initThreeJs();
   window.addEventListener('resize',  handleResize);
   window.addEventListener('mouseup', onWindowMouseUp);
+  window.addEventListener('touchend', onWindowMouseUp, { passive: true });
 });
 
 onUnmounted(() => {
@@ -573,21 +553,27 @@ onUnmounted(() => {
   }
   window.removeEventListener('resize',  handleResize);
   window.removeEventListener('mouseup', onWindowMouseUp);
+  window.removeEventListener('touchend', onWindowMouseUp);
 });
 </script>
 
 <style scoped>
-/* Three.js container */
+/* Three.js container – Zeiger bleibt sichtbar (kein Grab-Cursor) */
 .immersive-stage {
   position: relative;
   width: 100%;
   height: 80vh;
   overflow: hidden;
-  cursor: grab;
+  cursor: default;
 }
 
-.immersive-stage:active {
-  cursor: grabbing;
+/* Transparentes Overlay: Klick = Karte wählen, Klick+Halten+Ziehen = drehen */
+.click-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  pointer-events: auto;
+  cursor: default;
 }
 
 /* Dimensions + emphasis are applied via inline styles in JS (createServiceCards /
