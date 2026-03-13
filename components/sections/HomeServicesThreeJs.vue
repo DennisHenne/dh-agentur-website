@@ -386,7 +386,7 @@ const initThreeJs = () => {
   // large-negative scale → hidden by backface-visibility. No infinite values.
   // With camera inside + lookAt(0,0,0) the CSS3D Y-flip cancels out and cards
   // show their READABLE face (verified by 2×2 CSS-matrix determinant = +1).
-  camera = new THREE.PerspectiveCamera(35, W / H, 1, 10000);
+  camera = new THREE.PerspectiveCamera(45, W / H, 1, 10000);
   camera.position.set(0, 0, -1);
   // Default Three.js camera orientation already looks along –Z — no lookAt needed.
 
@@ -560,11 +560,11 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-/* Three.js container – Zeiger bleibt sichtbar (kein Grab-Cursor) */
+/* Three.js container – höher für 10° Neigung, damit Karten nicht abgeschnitten werden */
 .immersive-stage {
   position: relative;
   width: 100%;
-  height: 80vh;
+  height: 120vh;
   overflow: hidden;
   cursor: default;
 }

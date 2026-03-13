@@ -1,11 +1,10 @@
 <template>
   <div>
     <SectionsHomeHero />
-    <SectionsHomeWork />
     <client-only>
       <SectionsHomeServicesThreeJs />
+      <SectionsHomeReferencesThreeJs />
     </client-only>
-    <SectionsHomeReferences />
     <SectionsHomeAbout />
     <SectionsHomeCta />
   </div>
