@@ -51,6 +51,10 @@ const references = computed(() => [
   { slug: 'reference-6', title: locale.value === 'de' ? 'Referenzprojekt 6' : 'Reference Project 6', desc: locale.value === 'de' ? 'Placeholder Beschreibung für Projekt 6.' : 'Placeholder description for project 6.' },
   { slug: 'reference-7', title: locale.value === 'de' ? 'Referenzprojekt 7' : 'Reference Project 7', desc: locale.value === 'de' ? 'Placeholder Beschreibung für Projekt 7.' : 'Placeholder description for project 7.' },
   { slug: 'reference-8', title: locale.value === 'de' ? 'Referenzprojekt 8' : 'Reference Project 8', desc: locale.value === 'de' ? 'Placeholder Beschreibung für Projekt 8.' : 'Placeholder description for project 8.' },
+  { slug: 'reference-9', title: locale.value === 'de' ? 'Referenzprojekt 9' : 'Reference Project 9', desc: locale.value === 'de' ? 'Placeholder Beschreibung für Projekt 9.' : 'Placeholder description for project 9.' },
+  { slug: 'reference-10', title: locale.value === 'de' ? 'Referenzprojekt 10' : 'Reference Project 10', desc: locale.value === 'de' ? 'Placeholder Beschreibung für Projekt 10.' : 'Placeholder description for project 10.' },
+  { slug: 'reference-11', title: locale.value === 'de' ? 'Referenzprojekt 11' : 'Reference Project 11', desc: locale.value === 'de' ? 'Placeholder Beschreibung für Projekt 11.' : 'Placeholder description for project 11.' },
+  { slug: 'reference-12', title: locale.value === 'de' ? 'Referenzprojekt 12' : 'Reference Project 12', desc: locale.value === 'de' ? 'Placeholder Beschreibung für Projekt 12.' : 'Placeholder description for project 12.' },
 ])
 
 const threeContainer = ref<HTMLDivElement>();
@@ -390,7 +394,7 @@ onUnmounted(() => {
 .immersive-stage {
   position: relative;
   width: 100%;
-  height: 100vh;
+  height: 120vh;
   overflow: hidden;
   cursor: default;
 }
