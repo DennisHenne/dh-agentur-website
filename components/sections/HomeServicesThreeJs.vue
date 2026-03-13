@@ -371,6 +371,8 @@ function handleServiceClick(index: number) {
 const initThreeJs = () => {
   if (!threeContainer.value) return;
   scene = new THREE.Scene();
+  scene.rotation.order = 'ZYX';  // Erst Neigung (Z), dann Drehung (Y) auf geneigter Achse
+  scene.rotation.z = (-10 * Math.PI) / 180;  // Tilt 10° (rechts unten, links oben)
 
   // Size renderer to the CONTAINER, not the window.
   // This ensures the CSS3D perspective center == the container center.
