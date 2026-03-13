@@ -65,6 +65,12 @@ let css3dRenderer: any;
 let animationId: number;
 
 let referenceObjects: any[] = [];
+let carouselGroup!: THREE.Group;  // Assigned in initThreeJs before any interaction
+
+const SCROLL_FACTOR = 0.00035;
+const SCROLL_SMOOTH = 0.06;  // Lerp factor: dampens wobble, lower = smoother
+let scrollOffset = 0;
+let targetScrollOffset = 0;
 
 let dragging = false;
 let dragStartX = 0;
@@ -117,15 +123,16 @@ function getCardIndexAtScreenX(clientX: number): number {
 }
 
 function startDrag(e: MouseEvent | TouchEvent) {
+  if (!carouselGroup) return;
   wasCoasting = Math.abs(velocity) > 0.02 || snapping;
   dragging = true;
   dragMoved = false;
   dragStartX = cx(e);
-  dragStartRot = scene.rotation.y;
-  targetRotation = scene.rotation.y;
+  dragStartRot = carouselGroup.rotation.y;
+  targetRotation = carouselGroup.rotation.y;
   lastX = dragStartX;
   lastT = Date.now();
-  gsap.killTweensOf(scene.rotation);
+  gsap.killTweensOf(carouselGroup.rotation);
   velocity = 0;
   snapping = false;
 }
@@ -137,12 +144,12 @@ function onDrag(e: MouseEvent | TouchEvent) {
 
   if (!dragMoved) {
     if (Math.abs(dx) < 8) return;
-    gsap.killTweensOf(scene.rotation);
+    gsap.killTweensOf(carouselGroup.rotation);
     snapping = false;
     dragMoved = true;
     dragStartX = x;
-    dragStartRot = scene.rotation.y;
-    targetRotation = scene.rotation.y;
+    dragStartRot = carouselGroup.rotation.y;
+    targetRotation = carouselGroup.rotation.y;
     velocity = 0;
     return;
   }
@@ -176,13 +183,14 @@ function stopDrag(e?: MouseEvent | TouchEvent) {
     return;
   }
 
-  const naturalStop = scene.rotation.y - v * COAST_DECAY;
-  const nr = ((naturalStop % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
+  const naturalStop = carouselGroup.rotation.y - v * COAST_DECAY;
+  const totalAtStop = naturalStop + scrollOffset;
+  const nr = ((totalAtStop % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
   const raw = nr / step;
   const velDir = Math.sign(v);
   const targetIdx = ((velDir > 0 ? Math.ceil(raw - 1e-6) : Math.floor(raw + 1e-6)) + N) % N;
-  const targetAngle = -(targetIdx * step);
-  let delta = targetAngle - scene.rotation.y;
+  const targetAngle = -(targetIdx * step) - scrollOffset;
+  let delta = targetAngle - carouselGroup.rotation.y;
   while (delta > Math.PI) delta -= 2 * Math.PI;
   while (delta < -Math.PI) delta += 2 * Math.PI;
 
@@ -195,8 +203,8 @@ function stopDrag(e?: MouseEvent | TouchEvent) {
     const vRads = Math.abs(v) * COAST_FACTOR * 60;
     const T = Math.min(2.8, Math.max(0.4, 2 * Math.abs(delta) / vRads));
     snapping = true;
-    gsap.to(scene.rotation, {
-      y: scene.rotation.y + delta,
+    gsap.to(carouselGroup.rotation, {
+      y: carouselGroup.rotation.y + delta,
       duration: T,
       ease: 'power2.out',
       onUpdate: updateCardStates,
@@ -207,16 +215,19 @@ function stopDrag(e?: MouseEvent | TouchEvent) {
 
 function getTargetIndex() {
   const N = references.value.length;
-  const nr = ((-scene.rotation.y % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
+  if (!carouselGroup) return 0;
+  const total = scrollOffset + carouselGroup.rotation.y;
+  const nr = ((-total % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
   return Math.round(nr / (2 * Math.PI / N)) % N;
 }
 
 function snapToIndex(index: number, velocityRads = 0) {
-  gsap.killTweensOf(scene.rotation);
+  if (!carouselGroup) return;
+  gsap.killTweensOf(carouselGroup.rotation);
 
   const N = references.value.length;
-  const targetAngle = -(index * 2 * Math.PI / N);
-  let current = scene.rotation.y;
+  const targetAngle = -(index * 2 * Math.PI / N) - scrollOffset;
+  let current = carouselGroup.rotation.y;
   let delta = targetAngle - current;
   while (delta > Math.PI) delta -= 2 * Math.PI;
   while (delta < -Math.PI) delta += 2 * Math.PI;
@@ -228,7 +239,7 @@ function snapToIndex(index: number, velocityRads = 0) {
     : Math.max(0.4, Math.abs(delta) * 1.8);
 
   snapping = true;
-  gsap.to(scene.rotation, {
+  gsap.to(carouselGroup.rotation, {
     y: current + delta,
     duration: T,
     ease: 'power2.out',
@@ -252,7 +263,10 @@ const initThreeJs = () => {
   if (!threeContainer.value) return;
   scene = new THREE.Scene();
   scene.rotation.order = 'ZYX';
-  scene.rotation.z = (10 * Math.PI) / 180;  // Tilt 10° (rechts unten, links oben)
+  scene.rotation.z = (8 * Math.PI) / 180;  // Tilt 5° (reduced for less wobble)
+
+  carouselGroup = new THREE.Group();
+  scene.add(carouselGroup);
 
   const W = threeContainer.value.clientWidth;
   const H = threeContainer.value.clientHeight;
@@ -276,12 +290,15 @@ const initThreeJs = () => {
     const dt = lastFrameTime ? Math.min((now - lastFrameTime) / 1000, 0.1) : 0.016;
     lastFrameTime = now;
 
+    scrollOffset += (targetScrollOffset - scrollOffset) * (1 - Math.pow(1 - SCROLL_SMOOTH, 60 * dt));
+    scene.rotation.y = scrollOffset;
+
     if (dragging && dragMoved) {
-      const diff = targetRotation - scene.rotation.y;
-      scene.rotation.y += diff * (1 - Math.pow(1 - FOLLOW_LERP, 60 * dt));
+      const diff = targetRotation - carouselGroup.rotation.y;
+      carouselGroup.rotation.y += diff * (1 - Math.pow(1 - FOLLOW_LERP, 60 * dt));
       updateCardStates();
     } else if (!snapping && Math.abs(velocity) > 0.0003) {
-      scene.rotation.y -= velocity * COAST_FACTOR * (60 * dt);
+      carouselGroup.rotation.y -= velocity * COAST_FACTOR * (60 * dt);
       velocity *= Math.pow(FRICTION, 60 * dt);
       updateCardStates();
       if (Math.abs(velocity) < 0.003) {
@@ -350,19 +367,23 @@ const createReferenceCards = () => {
     obj.position.set(x, y, z);
     obj.lookAt(new THREE.Vector3(0, 0, 0));
 
-    scene.add(obj);
+    carouselGroup.add(obj);
     referenceObjects.push(obj);
   });
 };
 
+function handleScroll() {
+  targetScrollOffset = window.scrollY * SCROLL_FACTOR;
+}
+
 const handleResize = () => {
-  if (!camera || !css3dRenderer || !threeContainer.value) return;
+  if (!camera || !css3dRenderer || !threeContainer.value || !carouselGroup) return;
   const W = threeContainer.value.clientWidth;
   const H = threeContainer.value.clientHeight;
   camera.aspect = W / H;
   camera.updateProjectionMatrix();
   css3dRenderer.setSize(W, H);
-  scene.clear();
+  carouselGroup.clear();
   referenceObjects = [];
   createReferenceCards();
   updateCardStates();
@@ -374,6 +395,8 @@ onMounted(async () => {
   CSS3DObject = css3d.CSS3DObject;
   await nextTick();
   initThreeJs();
+  handleScroll();
+  window.addEventListener('scroll', handleScroll, { passive: true });
   window.addEventListener('resize', handleResize);
   window.addEventListener('mouseup', onWindowMouseUp);
   window.addEventListener('touchend', onWindowMouseUp, { passive: true });
@@ -384,6 +407,7 @@ onUnmounted(() => {
   if (css3dRenderer && threeContainer.value) {
     threeContainer.value.removeChild(css3dRenderer.domElement);
   }
+  window.removeEventListener('scroll', handleScroll);
   window.removeEventListener('resize', handleResize);
   window.removeEventListener('mouseup', onWindowMouseUp);
   window.removeEventListener('touchend', onWindowMouseUp);
