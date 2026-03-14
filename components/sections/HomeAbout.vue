@@ -8,7 +8,7 @@
         class="h-48 w-48 rounded-2xl object-cover shadow-xl sm:h-56 sm:w-56 md:h-64 md:w-64"
         style="border: 2px solid rgba(122,158,126,0.25);"
       />
-      <p class="mt-6 font-display text-2xl font-bold text-white sm:text-3xl">
+      <p class="mt-6 font-display text-2xl font-bold text-dark sm:text-3xl">
         Dennis Henne
       </p>
     </div>

@@ -24,12 +24,9 @@
     <div class="container relative pb-16 pt-24 sm:pb-20 sm:pt-28 md:pb-24 md:pt-40" style="z-index:10;">
       <div class="mx-auto max-w-4xl text-center">
 
-        <div class="animate-fade-up">
-          <UiBadge class="mb-6">{{ t('home.heroLabel') }}</UiBadge>
-        </div>
 
         <h1
-          class="animate-fade-up mb-8 font-display font-black leading-[1.1] tracking-tight text-white text-5xl sm:text-6xl md:text-7xl"
+          class="animate-fade-up mb-8 font-display font-black leading-[1.1] tracking-tight text-dark text-5xl sm:text-6xl md:text-7xl"
           style="animation-delay:100ms"
         >
           {{ heroTitleFirst }}

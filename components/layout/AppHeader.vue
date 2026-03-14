@@ -10,8 +10,7 @@
       >
         <IconsLogoDH
           :size="logoSize"
-          :class="menuOpen ? 'text-dark' : 'text-light'"
-          class="transition-colors duration-300 flex-shrink-0"
+          class="text-dark transition-colors duration-300 flex-shrink-0"
         />
 
         <!-- "Agentur" slides into logo on scroll. Hidden when overlay is open. -->
@@ -22,7 +21,7 @@
             : 'max-width: 220px; opacity: 1; margin-left: 7px'"
         >
           <span
-            class="block whitespace-nowrap font-display text-3xl font-bold text-light transition-transform duration-500 ease-in-out"
+            class="block whitespace-nowrap font-display text-3xl font-bold text-dark transition-transform duration-500 ease-in-out"
             :style="(scrolled || menuOpen) ? 'transform: translateX(-10px)' : 'transform: translateX(0)'"
           >
             Agentur
@@ -33,7 +32,7 @@
       <!-- Right: language switch + Kontaktieren + hamburger/close -->
       <div class="flex items-center gap-4">
         <div v-if="!menuOpen" class="hidden items-center gap-4 lg:flex">
-          <LayoutLanguageSwitch :dark="false" />
+          <LayoutLanguageSwitch :dark="true" />
         </div>
         <NuxtLink
           v-if="!menuOpen"
@@ -48,7 +47,7 @@
           class="flex h-12 w-12 min-w-[48px] min-h-[48px] sm:h-14 sm:w-14 md:h-16 md:w-16 items-center justify-center rounded-full border transition-all duration-300"
           :class="menuOpen
             ? 'border-forest/30 text-forest'
-            : 'border-white/25 text-white hover:border-white/50'"
+            : 'border-forest/30 text-forest hover:border-forest/50'"
           :aria-label="menuOpen ? t('nav.close') : t('nav.menu')"
           @click="toggleMenu"
         >
@@ -87,7 +86,7 @@
             An der Stadtgärtnerei 47<br />46485 Wesel
           </address>
           <div class="flex flex-wrap gap-3">
-            <a href="tel:+4915901078280" class="inline-flex items-center gap-2 rounded-full border px-4 py-2.5 text-sm font-medium transition-colors hover:bg-forest/10" style="border-color: rgba(49,73,60,0.3); color: #31493C;">
+            <a href="tel:+4915901078280" class="inline-flex items-center gap-2 rounded-full border px-4 py-2.5 text-sm font-medium transition-colors hover:shadow-lg" style="border-color: rgba(49,73,60,0.4); color: #001A23; background-color: #B3EFB2;">
               <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
               {{ t('nav.call') }}
             </a>
@@ -141,7 +140,7 @@
             <LayoutLanguageSwitch :dark="true" />
           </div>
           <div class="flex flex-wrap gap-2">
-            <a href="tel:+4915901078280" class="inline-flex items-center gap-2 rounded-full border px-4 py-2.5 text-sm font-medium transition-colors" style="border-color: rgba(49,73,60,0.3); color: #31493C;">
+            <a href="tel:+4915901078280" class="inline-flex items-center gap-2 rounded-full border px-4 py-2.5 text-sm font-medium transition-colors hover:shadow-lg" style="border-color: rgba(49,73,60,0.4); color: #001A23; background-color: #B3EFB2;">
               <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
               {{ t('nav.call') }}
             </a>

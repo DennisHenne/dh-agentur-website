@@ -625,7 +625,7 @@ onUnmounted(() => {
 }
 
 .services-text .subtitle-row .btn-inline {
-  margin-right: auto;
+  margin-left: auto;
 }
 
 .services-text .btn-inline {

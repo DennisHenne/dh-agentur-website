@@ -4,10 +4,10 @@
     <section class="relative pb-16 pt-32 md:pt-40">
       <div class="container text-center max-w-3xl mx-auto">
         <UiBadge class="mb-4">{{ t('faq.pageLabel') }}</UiBadge>
-        <h1 class="mb-6 text-5xl font-display font-black text-white md:text-6xl">
+        <h1 class="mb-6 text-5xl font-display font-black text-dark md:text-6xl">
           {{ t('faq.pageTitle') }}
         </h1>
-        <p class="text-lg text-white/60">{{ t('faq.pageSubtitle') }}</p>
+        <p class="text-lg text-dark/60">{{ t('faq.pageSubtitle') }}</p>
       </div>
     </section>
 
@@ -19,7 +19,7 @@
           :key="section.title"
           class="mb-12"
         >
-          <h2 class="mb-6 text-xl font-display font-bold text-white flex items-center gap-3">
+          <h2 class="mb-6 text-xl font-display font-bold text-dark flex items-center gap-3">
             <span class="text-2xl">{{ section.emoji }}</span>
             {{ section.title }}
           </h2>
@@ -31,10 +31,10 @@
     <!-- Still questions -->
     <section class="section">
       <div class="container text-center">
-        <h2 class="mb-4 text-2xl font-display font-bold text-white">
+        <h2 class="mb-4 text-2xl font-display font-bold text-dark">
           {{ locale === 'de' ? 'Noch Fragen?' : 'Still have questions?' }}
         </h2>
-        <p class="mb-8 text-white/60">
+        <p class="mb-8 text-dark/60">
           {{ locale === 'de' ? 'Schreiben Sie uns — wir antworten innerhalb von 24 Stunden.' : 'Write to us — we respond within 24 hours.' }}
         </p>
         <NuxtLink to="/contact" class="btn-primary">

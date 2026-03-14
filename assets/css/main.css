@@ -10,9 +10,9 @@
 
   body {
     overflow-x: hidden;
-    /* #001A23 — deepest dark as page background */
-    background-color: #001A23;
-    @apply text-light antialiased;
+    /* #E8F1F2 — gleiche Farbe wie Menü */
+    background-color: #E8F1F2;
+    @apply text-dark antialiased;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -23,42 +23,54 @@
 @layer components {
   /* ── Buttons ──────────────────────────────────────────────────────────── */
 
-  /* Forest green bg, light text — primary CTA */
+  /* Neon (mint) fill, dark border & text — primary CTA */
   .btn-primary {
-    @apply inline-flex items-center gap-2 rounded-full bg-brand-600 px-6 py-3 text-sm font-semibold text-light
+    @apply inline-flex items-center gap-2 rounded-full border border-forest/40 px-6 py-3 text-sm font-semibold text-dark
            transition-all duration-200
-           hover:bg-forest hover:shadow-lg active:scale-95;
+           hover:shadow-lg active:scale-95;
+    background-color: #B3EFB2;
     box-shadow: 0 0 0 0 transparent;
   }
   .btn-primary:hover {
-    box-shadow: 0 8px 24px rgba(49, 73, 60, 0.45);
+    background-color: #9ee89d;
+    box-shadow: 0 8px 24px rgba(179, 239, 178, 0.4);
   }
 
-  /* Subtle ghost button */
+  /* Neon fill, dark border & text — secondary */
   .btn-secondary {
-    @apply inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-6 py-3
-           text-sm font-semibold text-light backdrop-blur-sm
-           transition-all duration-200 hover:border-brand-200/40 hover:bg-white/10 active:scale-95;
+    @apply inline-flex items-center gap-2 rounded-full border border-forest/40 px-6 py-3
+           text-sm font-semibold text-dark
+           transition-all duration-200 hover:shadow-lg active:scale-95;
+    background-color: #B3EFB2;
+  }
+  .btn-secondary:hover {
+    background-color: #9ee89d;
+    box-shadow: 0 8px 24px rgba(179, 239, 178, 0.35);
   }
 
-  /* Outline with mint accent */
+  /* Neon fill, dark border & text — outline (now filled) */
   .btn-outline {
-    @apply inline-flex items-center gap-2 rounded-full border border-brand-200/50 px-6 py-3
-           text-sm font-semibold text-brand-200
-           transition-all duration-200 hover:bg-brand-600 hover:border-brand-600 hover:text-light active:scale-95;
+    @apply inline-flex items-center gap-2 rounded-full border border-forest/40 px-6 py-3
+           text-sm font-semibold text-dark
+           transition-all duration-200 hover:shadow-lg active:scale-95;
+    background-color: #B3EFB2;
+  }
+  .btn-outline:hover {
+    background-color: #9ee89d;
+    box-shadow: 0 8px 24px rgba(179, 239, 178, 0.35);
   }
 
   /* ── Cards ────────────────────────────────────────────────────────────── */
 
-  /* Surface: #31493C tinted, border sage */
+  /* Surface: light with sage border */
   .card {
     @apply rounded-2xl border p-6 transition-all duration-300;
-    background-color: rgba(12, 42, 53, 0.6); /* dark-100 */
-    border-color: rgba(122, 158, 126, 0.18); /* sage/18 */
+    background-color: rgba(255, 255, 255, 0.7);
+    border-color: rgba(122, 158, 126, 0.25);
   }
   .card:hover {
-    background-color: rgba(19, 47, 58, 0.8); /* dark-200 */
-    border-color: rgba(122, 158, 126, 0.32);
+    background-color: rgba(255, 255, 255, 0.9);
+    border-color: rgba(122, 158, 126, 0.4);
   }
 
   /* ── Layout helpers ───────────────────────────────────────────────────── */
@@ -77,18 +89,18 @@
   .section-label {
     @apply inline-block rounded-full border px-4 py-1.5
            text-xs font-semibold uppercase tracking-widest;
-    border-color: rgba(179, 239, 178, 0.35); /* mint/35 */
-    background-color: rgba(179, 239, 178, 0.08);
-    color: #B3EFB2; /* mint */
+    border-color: rgba(122, 158, 126, 0.4); /* sage */
+    background-color: rgba(122, 158, 126, 0.12);
+    color: #31493C; /* forest */
   }
 
   .section-title {
-    @apply text-3xl font-display font-bold leading-tight text-light md:text-4xl lg:text-5xl;
+    @apply text-3xl font-display font-bold leading-tight text-dark md:text-4xl lg:text-5xl;
   }
 
   .section-subtitle {
     @apply text-lg leading-relaxed;
-    color: rgba(232, 241, 242, 0.60); /* light/60 */
+    color: rgba(0, 26, 35, 0.65); /* dark/65 */
   }
 
   /* Mint → sage gradient text */
@@ -131,7 +143,7 @@ img, video {
 }
 
 ::-webkit-scrollbar { width: 5px; }
-::-webkit-scrollbar-track  { background: #001A23; }
-::-webkit-scrollbar-thumb  { border-radius: 99px; background: rgba(122,158,126,0.35); }
-::-webkit-scrollbar-thumb:hover { background: rgba(179,239,178,0.55); }
-::-webkit-scrollbar-corner { background: #001A23; }
+::-webkit-scrollbar-track  { background: #E8F1F2; }
+::-webkit-scrollbar-thumb  { border-radius: 99px; background: rgba(49,73,60,0.25); }
+::-webkit-scrollbar-thumb:hover { background: rgba(122,158,126,0.5); }
+::-webkit-scrollbar-corner { background: #E8F1F2; }

@@ -445,12 +445,13 @@ onUnmounted(() => {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: flex-start;
   gap: 0.75rem;
   margin-top: 0.75rem;
 }
 
 .references-text .subtitle-row .btn-inline {
-  margin-left: auto;
+  margin-right: auto;
 }
 
 .references-text .btn-inline {

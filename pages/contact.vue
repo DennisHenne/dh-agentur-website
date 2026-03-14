@@ -4,10 +4,10 @@
     <section class="relative pb-16 pt-32 md:pt-40">
       <div class="container text-center max-w-3xl mx-auto">
         <UiBadge class="mb-4">{{ t('contact.pageLabel') }}</UiBadge>
-        <h1 class="mb-6 text-4xl font-display font-black text-white sm:text-5xl md:text-6xl">
+        <h1 class="mb-6 text-4xl font-display font-black text-dark sm:text-5xl md:text-6xl">
           {{ t('contact.pageTitle') }}
         </h1>
-        <p class="text-lg text-white/60">{{ t('contact.pageSubtitle') }}</p>
+        <p class="text-lg text-dark/60">{{ t('contact.pageSubtitle') }}</p>
       </div>
     </section>
 
@@ -18,7 +18,7 @@
         <div class="lg:col-span-2">
           <!-- Anrufen & WhatsApp über dem Formular -->
           <div class="flex flex-wrap gap-3 mb-6">
-            <a href="tel:+4915901078280" class="inline-flex items-center gap-2 rounded-xl border border-white/20 bg-white/5 px-4 py-3 text-sm font-medium text-white transition-colors hover:bg-brand-500/20 hover:border-brand-500/50">
+            <a href="tel:+4915901078280" class="inline-flex items-center gap-2 rounded-xl border border-forest/40 px-4 py-3 text-sm font-medium text-dark transition-all hover:shadow-lg hover:brightness-105" style="background-color:#B3EFB2;">
               <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
               {{ t('contact.call') }}
             </a>
@@ -30,22 +30,22 @@
           <form @submit.prevent="submitForm" class="space-y-5">
             <div class="grid gap-5 sm:grid-cols-2">
               <div>
-                <label class="mb-2 block text-sm font-medium text-white/70">{{ t('contact.form.name') }} *</label>
+                <label class="mb-2 block text-sm font-medium text-dark/70">{{ t('contact.form.name') }} *</label>
                 <input
                   v-model="form.name"
                   type="text"
                   required
-                  class="w-full rounded-xl border border-white/20 bg-white/5 px-4 py-3 text-sm text-white placeholder-white/30 backdrop-blur-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20"
+                  class="w-full rounded-xl border border-forest/20 bg-white/10 px-4 py-3 text-sm text-dark placeholder-dark/40 backdrop-blur-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20"
                   :placeholder="t('contact.form.name')"
                 />
               </div>
               <div>
-                <label class="mb-2 block text-sm font-medium text-white/70">{{ t('contact.form.email') }} *</label>
+                <label class="mb-2 block text-sm font-medium text-dark/70">{{ t('contact.form.email') }} *</label>
                 <input
                   v-model="form.email"
                   type="email"
                   required
-                  class="w-full rounded-xl border border-white/20 bg-white/5 px-4 py-3 text-sm text-white placeholder-white/30 backdrop-blur-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20"
+                  class="w-full rounded-xl border border-forest/20 bg-white/10 px-4 py-3 text-sm text-dark placeholder-dark/40 backdrop-blur-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20"
                   :placeholder="t('contact.form.email')"
                 />
               </div>
@@ -53,33 +53,33 @@
 
             <div class="grid gap-5 sm:grid-cols-2">
               <div>
-                <label class="mb-2 block text-sm font-medium text-white/70">{{ t('contact.form.company') }}</label>
+                <label class="mb-2 block text-sm font-medium text-dark/70">{{ t('contact.form.company') }}</label>
                 <input
                   v-model="form.company"
                   type="text"
-                  class="w-full rounded-xl border border-white/20 bg-white/5 px-4 py-3 text-sm text-white placeholder-white/30 backdrop-blur-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20"
+                  class="w-full rounded-xl border border-forest/20 bg-white/10 px-4 py-3 text-sm text-dark placeholder-dark/40 backdrop-blur-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20"
                   :placeholder="t('contact.form.company')"
                 />
               </div>
               <div>
-                <label class="mb-2 block text-sm font-medium text-white/70">{{ t('contact.form.subject') }} *</label>
+                <label class="mb-2 block text-sm font-medium text-dark/70">{{ t('contact.form.subject') }} *</label>
                 <input
                   v-model="form.subject"
                   type="text"
                   required
-                  class="w-full rounded-xl border border-white/20 bg-white/5 px-4 py-3 text-sm text-white placeholder-white/30 backdrop-blur-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20"
+                  class="w-full rounded-xl border border-forest/20 bg-white/10 px-4 py-3 text-sm text-dark placeholder-dark/40 backdrop-blur-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20"
                   :placeholder="t('contact.form.subject')"
                 />
               </div>
             </div>
 
             <div>
-              <label class="mb-2 block text-sm font-medium text-white/70">{{ t('contact.form.message') }} *</label>
+              <label class="mb-2 block text-sm font-medium text-dark/70">{{ t('contact.form.message') }} *</label>
               <textarea
                 v-model="form.message"
                 required
                 rows="6"
-                class="w-full rounded-xl border border-white/20 bg-white/5 px-4 py-3 text-sm text-white placeholder-white/30 backdrop-blur-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 resize-none"
+                class="w-full rounded-xl border border-forest/20 bg-white/10 px-4 py-3 text-sm text-dark placeholder-dark/40 backdrop-blur-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 resize-none"
                 :placeholder="t('contact.form.message')"
               />
             </div>
@@ -110,15 +110,15 @@
 
         <!-- Contact Info -->
         <div class="space-y-6">
-          <h3 class="text-lg font-display font-bold text-white">{{ t('contact.infoTitle') }}</h3>
+          <h3 class="text-lg font-display font-bold text-dark">{{ t('contact.infoTitle') }}</h3>
 
           <div v-for="info in contactInfo" :key="info.label" class="flex items-start gap-4">
             <div class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-brand-500/10 text-brand-400">
               <span v-html="info.icon" />
             </div>
             <div>
-              <div class="text-xs text-white/40 mb-0.5">{{ info.label }}</div>
-              <div class="text-sm text-white">{{ info.value }}</div>
+              <div class="text-xs text-dark/40 mb-0.5">{{ info.label }}</div>
+              <div class="text-sm text-dark">{{ info.value }}</div>
             </div>
           </div>
 
@@ -128,7 +128,7 @@
               <span class="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
               <span class="text-xs font-semibold text-green-400">{{ locale === 'de' ? 'Schnelle Antwort' : 'Fast Response' }}</span>
             </div>
-            <p class="text-xs text-white/50">
+            <p class="text-xs text-dark/50">
               {{ locale === 'de' ? 'Wir antworten in der Regel innerhalb von 24 Stunden, oft sogar schneller.' : 'We typically respond within 24 hours, often faster.' }}
             </p>
           </div>
@@ -139,7 +139,7 @@
     <!-- FAQ Section -->
     <section class="section">
       <div class="container max-w-3xl">
-        <h2 class="mb-10 text-2xl font-display font-bold text-white text-center">{{ t('contact.faqTitle') }}</h2>
+        <h2 class="mb-10 text-2xl font-display font-bold text-dark text-center">{{ t('contact.faqTitle') }}</h2>
         <UiFaqAccordion :items="contactFaq" />
         <div class="mt-8 text-center">
           <NuxtLink to="/faq" class="text-sm text-brand-400 hover:text-brand-300 transition-colors">

@@ -4,23 +4,23 @@
     <section class="relative pb-16 pt-32 md:pt-40">
       <div class="container text-center max-w-3xl mx-auto">
         <UiBadge class="mb-4">{{ t('work.pageLabel') }}</UiBadge>
-        <h1 class="mb-6 text-4xl font-display font-black text-white sm:text-5xl md:text-6xl">
+        <h1 class="mb-6 text-4xl font-display font-black text-dark sm:text-5xl md:text-6xl">
           {{ t('work.pageTitle') }}
         </h1>
-        <p class="text-lg text-white/60">{{ t('work.pageSubtitle') }}</p>
+        <p class="text-lg text-dark/60">{{ t('work.pageSubtitle') }}</p>
       </div>
     </section>
 
     <!-- Projects – 12 Referenzen wie im Karussell, mit Bild und Beschreibung -->
     <section class="section">
       <div class="container">
-        <h2 class="mb-10 text-2xl font-display font-bold text-white">{{ t('work.projectsTitle') }}</h2>
+        <h2 class="mb-10 text-2xl font-display font-bold text-dark">{{ t('work.projectsTitle') }}</h2>
         <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           <NuxtLink
             v-for="ref in references"
             :key="ref.slug"
             :to="`/work/${ref.slug}`"
-            class="group overflow-hidden rounded-3xl border border-white/10 bg-dark-100 transition-all duration-300 hover:border-white/20"
+            class="group overflow-hidden rounded-3xl border border-forest/15 bg-white/50 transition-all duration-300 hover:border-forest/25"
           >
             <div class="aspect-square overflow-hidden rounded-t-3xl">
               <img
@@ -30,8 +30,8 @@
               />
             </div>
             <div class="p-5">
-              <h3 class="mb-2 font-display font-bold text-white">{{ ref.title }}</h3>
-              <p class="text-sm text-white/50 leading-relaxed">{{ ref.desc }}</p>
+              <h3 class="mb-2 font-display font-bold text-dark">{{ ref.title }}</h3>
+              <p class="text-sm text-dark/60 leading-relaxed">{{ ref.desc }}</p>
             </div>
           </NuxtLink>
         </div>
@@ -41,7 +41,7 @@
     <!-- Referenzen / Testimonials -->
     <section class="section">
       <div class="container">
-        <h2 class="mb-10 text-2xl font-display font-bold text-white">{{ t('work.refsTitle') }}</h2>
+        <h2 class="mb-10 text-2xl font-display font-bold text-dark">{{ t('work.refsTitle') }}</h2>
 
         <!-- Testimonials -->
         <div class="grid gap-6 md:grid-cols-3">
@@ -51,14 +51,14 @@
                 <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
               </svg>
             </div>
-            <p class="mb-5 text-sm text-white/60 italic leading-relaxed">"{{ t2.quote }}"</p>
+            <p class="mb-5 text-sm text-dark/60 italic leading-relaxed">"{{ t2.quote }}"</p>
             <div class="flex items-center gap-3">
               <div class="flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold" style="background:linear-gradient(135deg,#B3EFB2,#7A9E7E); color:#001A23;">
                 {{ t2.name[0] }}
               </div>
               <div>
-                <div class="text-sm font-semibold text-white">{{ t2.name }}</div>
-                <div class="text-xs text-white/40">{{ t2.role }}</div>
+                <div class="text-sm font-semibold text-dark">{{ t2.name }}</div>
+                <div class="text-xs text-dark/50">{{ t2.role }}</div>
               </div>
             </div>
           </div>
@@ -69,8 +69,8 @@
     <!-- CTA -->
     <section class="section">
       <div class="container text-center">
-        <h2 class="mb-4 text-3xl font-display font-bold text-white">{{ locale === 'de' ? 'Ihr Projekt als nächstes?' : 'Your project next?' }}</h2>
-        <p class="mb-8 text-white/60">{{ locale === 'de' ? 'Lassen Sie uns gemeinsam etwas Großartiges bauen.' : "Let's build something great together." }}</p>
+        <h2 class="mb-4 text-3xl font-display font-bold text-dark">{{ locale === 'de' ? 'Ihr Projekt als nächstes?' : 'Your project next?' }}</h2>
+        <p class="mb-8 text-dark/60">{{ locale === 'de' ? 'Lassen Sie uns gemeinsam etwas Großartiges bauen.' : "Let's build something great together." }}</p>
         <NuxtLink to="/contact" class="btn-primary">
           {{ t('work.cta') }}
         </NuxtLink>

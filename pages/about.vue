@@ -21,8 +21,8 @@
             <h1 class="section-title mb-6 max-w-3xl">{{ t('about.title') }}</h1>
             <p class="section-subtitle max-w-2xl mb-6">{{ t('about.subtitle') }}</p>
             <div class="flex flex-col items-center md:items-start gap-1">
-              <span class="font-display font-bold text-light text-lg">Dennis Henne</span>
-              <span class="text-white/60 text-sm">{{ t('about.founder') }}</span>
+              <span class="font-display font-bold text-dark text-lg">Dennis Henne</span>
+              <span class="text-dark/60 text-sm">{{ t('about.founder') }}</span>
             </div>
           </div>
         </div>
@@ -50,8 +50,8 @@
               {{ i + 1 }}
             </div>
             <div class="card">
-              <h3 class="mb-2 font-display font-bold text-light">{{ step.title }}</h3>
-              <p class="text-sm text-white/60">{{ step.desc }}</p>
+              <h3 class="mb-2 font-display font-bold text-dark">{{ step.title }}</h3>
+              <p class="text-sm text-dark/60">{{ step.desc }}</p>
             </div>
           </div>
         </div>
@@ -71,10 +71,10 @@
               v-for="stat in stats"
               :key="stat.label"
               class="flex flex-col items-center justify-center py-10 px-6 text-center"
-              style="background:#001A23;"
+              style="background:rgba(255,255,255,0.8);"
             >
-              <span class="mb-2 font-display text-5xl font-black" style="color:#B3EFB2;">{{ stat.value }}</span>
-              <span class="text-sm font-medium text-white/55">{{ stat.label }}</span>
+              <span class="mb-2 font-display text-5xl font-black" style="color:#31493C;">{{ stat.value }}</span>
+              <span class="text-sm font-medium text-dark/70">{{ stat.label }}</span>
             </div>
           </div>
         </div>
@@ -83,7 +83,7 @@
     <!-- Referenzen / Testimonials -->
     <section class="section pt-4 sm:pt-6 md:pt-8 lg:pt-10">
       <div class="container">
-        <h2 class="mb-10 text-2xl font-display font-bold text-white">{{ t('work.refsTitle') }}</h2>
+        <h2 class="mb-10 text-2xl font-display font-bold text-dark">{{ t('work.refsTitle') }}</h2>
 
         <!-- Testimonials -->
         <div class="grid gap-6 md:grid-cols-3">
@@ -93,14 +93,14 @@
                 <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
               </svg>
             </div>
-            <p class="mb-5 text-sm text-white/60 italic leading-relaxed">"{{ t2.quote }}"</p>
+            <p class="mb-5 text-sm text-dark/60 italic leading-relaxed">"{{ t2.quote }}"</p>
             <div class="flex items-center gap-3">
               <div class="flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold" style="background:linear-gradient(135deg,#B3EFB2,#7A9E7E); color:#001A23;">
                 {{ t2.name[0] }}
               </div>
               <div>
-                <div class="text-sm font-semibold text-white">{{ t2.name }}</div>
-                <div class="text-xs text-white/40">{{ t2.role }}</div>
+                <div class="text-sm font-semibold text-dark">{{ t2.name }}</div>
+                <div class="text-xs text-dark/50">{{ t2.role }}</div>
               </div>
             </div>
           </div>

@@ -2,7 +2,8 @@
   <div>
     <!-- Chat Bubble Button -->
     <button
-      class="fixed right-6 bottom-6 z-50 flex h-14 w-14 min-w-[56px] min-h-[56px] items-center justify-center rounded-full bg-brand-600 shadow-lg shadow-brand-600/30 transition-all duration-300 hover:bg-brand-500 hover:scale-110 active:scale-95 right-safe bottom-safe"
+      class="fixed right-6 bottom-6 z-50 flex h-14 w-14 min-w-[56px] min-h-[56px] items-center justify-center rounded-full border border-forest/40 shadow-lg transition-all duration-300 hover:scale-110 active:scale-95 right-safe bottom-safe"
+      style="background-color: #B3EFB2;"
       :aria-label="open ? t('chat.close') : t('chat.title')"
       @click="open = !open"
     >
@@ -12,7 +13,7 @@
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
         </svg>
         <!-- Close icon -->
-        <svg v-else key="close" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <svg v-else key="close" class="h-6 w-6 text-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
         </svg>
       </Transition>
@@ -29,8 +30,8 @@
         <!-- Header -->
         <div class="flex items-center justify-between border-b border-white/10 bg-dark-50 px-4 py-3">
           <div class="flex items-center gap-3">
-            <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-600">
-              <svg class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div class="flex h-9 w-9 items-center justify-center rounded-xl border border-forest/40" style="background-color: #B3EFB2;">
+              <svg class="h-5 w-5 text-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17H3a2 2 0 01-2-2V5a2 2 0 012-2h14a2 2 0 012 2v10a2 2 0 01-2 2h-2" />
               </svg>
             </div>
@@ -60,8 +61,9 @@
             <div
               class="max-w-[80%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed"
               :class="msg.role === 'user'
-                ? 'rounded-br-sm bg-brand-600 text-white'
+                ? 'rounded-br-sm text-dark'
                 : 'rounded-bl-sm bg-white/10 text-white/80'"
+            :style="msg.role === 'user' ? 'background-color: #B3EFB2; border: 1px solid rgba(49,73,60,0.3);' : undefined"
             >
               {{ msg.content }}
             </div>
@@ -84,7 +86,8 @@
           <button
             v-for="q in quickReplies"
             :key="q"
-            class="rounded-full border border-white/20 px-3 py-1.5 text-xs text-white/60 hover:border-brand-500 hover:text-brand-400 transition-all"
+            class="rounded-full border px-3 py-1.5 text-xs text-dark transition-all"
+            style="border-color: rgba(49,73,60,0.4); background-color: #B3EFB2;"
             @click="sendMessage(q)"
           >
             {{ q }}
@@ -102,7 +105,8 @@
             />
             <button
               type="submit"
-              class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-brand-600 text-white transition hover:bg-brand-500 disabled:opacity-40"
+              class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl text-dark transition disabled:opacity-40"
+              style="background-color: #B3EFB2; border: 1px solid rgba(49,73,60,0.4);"
               :disabled="!inputText.trim() || typing"
             >
               <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

@@ -4,24 +4,24 @@
     <section class="relative pb-16 pt-32 md:pt-40">
       <div class="container text-center max-w-3xl mx-auto">
         <UiBadge class="mb-4">{{ t('careers.pageLabel') }}</UiBadge>
-        <h1 class="mb-6 text-4xl font-display font-black text-white sm:text-5xl md:text-6xl">
+        <h1 class="mb-6 text-4xl font-display font-black text-dark sm:text-5xl md:text-6xl">
           {{ t('careers.pageTitle') }}
         </h1>
-        <p class="text-lg text-white/60 leading-relaxed">{{ t('careers.pageSubtitle') }}</p>
+        <p class="text-lg text-dark/60 leading-relaxed">{{ t('careers.pageSubtitle') }}</p>
       </div>
     </section>
 
     <!-- Why DH Agentur -->
     <section class="section">
       <div class="container">
-        <h2 class="mb-10 text-2xl font-display font-bold text-white text-center">
+        <h2 class="mb-10 text-2xl font-display font-bold text-dark text-center">
           {{ locale === 'de' ? 'Warum DH Agentur?' : 'Why DH Agentur?' }}
         </h2>
         <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           <div v-for="perk in perks" :key="perk.title" class="card">
             <div class="mb-3 text-2xl">{{ perk.emoji }}</div>
-            <h3 class="mb-2 font-semibold text-white">{{ perk.title }}</h3>
-            <p class="text-sm text-white/50">{{ perk.desc }}</p>
+            <h3 class="mb-2 font-semibold text-dark">{{ perk.title }}</h3>
+            <p class="text-sm text-dark/60">{{ perk.desc }}</p>
           </div>
         </div>
       </div>
@@ -30,12 +30,12 @@
     <!-- Open Positions -->
     <section class="section">
       <div class="container">
-        <h2 class="mb-10 text-2xl font-display font-bold text-white">{{ t('careers.openPositions') }}</h2>
+        <h2 class="mb-10 text-2xl font-display font-bold text-dark">{{ t('careers.openPositions') }}</h2>
         <div class="space-y-4">
           <div
             v-for="job in jobs"
             :key="job.title"
-            class="group rounded-2xl border border-white/10 bg-dark-100 p-6 transition-all hover:border-white/20 hover:bg-dark-200"
+            class="group rounded-2xl border border-forest/15 bg-white/60 p-6 transition-all hover:border-forest/25 hover:bg-white/80"
           >
             <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
               <div>
@@ -43,10 +43,10 @@
                   <span class="rounded-full border border-brand-500/30 bg-brand-500/10 px-3 py-1 text-xs font-semibold text-brand-400">
                     {{ job.type }}
                   </span>
-                  <span class="text-xs text-white/40">{{ job.location }}</span>
+                  <span class="text-xs text-dark/50">{{ job.location }}</span>
                 </div>
-                <h3 class="mb-1 text-lg font-display font-bold text-white">{{ job.title }}</h3>
-                <p class="text-sm text-white/50">{{ job.desc }}</p>
+                <h3 class="mb-1 text-lg font-display font-bold text-dark">{{ job.title }}</h3>
+                <p class="text-sm text-dark/60">{{ job.desc }}</p>
               </div>
               <NuxtLink to="/contact" class="btn-outline flex-shrink-0">
                 {{ t('careers.apply') }}
@@ -63,15 +63,15 @@
     <!-- Application Process -->
     <section class="section">
       <div class="container max-w-3xl">
-        <h2 class="mb-10 text-2xl font-display font-bold text-white text-center">{{ t('careers.processTitle') }}</h2>
+        <h2 class="mb-10 text-2xl font-display font-bold text-dark text-center">{{ t('careers.processTitle') }}</h2>
         <div class="space-y-6">
           <div v-for="(step, i) in applicationProcess" :key="step.title" class="flex items-start gap-6">
             <div class="flex-shrink-0 flex h-10 w-10 items-center justify-center rounded-full border border-brand-500/50 bg-brand-500/10 text-sm font-bold text-brand-400">
               {{ i + 1 }}
             </div>
             <div>
-              <h3 class="mb-1 font-semibold text-white">{{ step.title }}</h3>
-              <p class="text-sm text-white/50">{{ step.desc }}</p>
+              <h3 class="mb-1 font-semibold text-dark">{{ step.title }}</h3>
+              <p class="text-sm text-dark/60">{{ step.desc }}</p>
             </div>
           </div>
         </div>

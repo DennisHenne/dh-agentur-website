@@ -4,17 +4,17 @@
     <section class="relative pb-16 pt-32 md:pt-40">
       <div class="container text-center max-w-3xl mx-auto">
         <UiBadge class="mb-4">{{ t('insights.pageLabel') }}</UiBadge>
-        <h1 class="mb-6 text-4xl font-display font-black text-white sm:text-5xl md:text-6xl">
+        <h1 class="mb-6 text-4xl font-display font-black text-dark sm:text-5xl md:text-6xl">
           {{ t('insights.pageTitle') }}
         </h1>
-        <p class="text-lg text-white/60">{{ t('insights.pageSubtitle') }}</p>
+        <p class="text-lg text-dark/60">{{ t('insights.pageSubtitle') }}</p>
       </div>
     </section>
 
     <!-- Category Filter + Articles – gleiche Breite, eng beieinander -->
     <div class="container">
       <section class="sticky top-0 z-30 -mb-2 pt-4">
-        <div class="rounded-2xl border border-white/10 py-6 backdrop-blur-xl" style="border-color:rgba(122,158,126,0.18); background:rgba(0,26,35,0.85)">
+        <div class="rounded-2xl border py-6 backdrop-blur-xl" style="border-color:rgba(122,158,126,0.25); background:rgba(232,241,242,0.9)">
           <div class="insights-nav-scroll flex gap-2 overflow-x-auto overflow-y-hidden px-6 pb-0">
             <button
               v-for="cat in categories"
@@ -22,7 +22,7 @@
               class="flex-shrink-0 rounded-full border px-4 py-2 text-sm font-medium transition-all"
               :class="activeCategory === cat.key
                 ? 'border-brand-500 bg-brand-500/20 text-brand-400'
-                : 'border-white/20 text-white/60 hover:border-white/40 hover:text-white'"
+                : 'border-forest/25 text-dark/70 hover:border-forest/40 hover:text-dark'"
               @click="activeCategory = cat.key"
             >
               {{ cat.label }}
@@ -44,13 +44,13 @@
               <span class="rounded-full border border-brand-500/30 bg-brand-500/10 px-3 py-1 text-xs font-semibold text-brand-400">
                 {{ getCategoryLabel(article.category) }}
               </span>
-              <span class="text-xs text-white/30">{{ formatDate(article.date) }}</span>
+              <span class="text-xs text-dark/50">{{ formatDate(article.date) }}</span>
             </div>
             <div class="flex-1">
-              <h3 class="mb-2 font-display font-bold text-white leading-snug group-hover:text-brand-400 transition-colors">
+              <h3 class="mb-2 font-display font-bold text-dark leading-snug group-hover:text-brand-600 transition-colors">
                 {{ locale === 'en' && article.titleEn ? article.titleEn : article.title }}
               </h3>
-              <p class="text-sm text-white/50 leading-relaxed">
+              <p class="text-sm text-dark/60 leading-relaxed">
                 {{ locale === 'en' && article.descriptionEn ? article.descriptionEn : article.description }}
               </p>
             </div>
@@ -59,13 +59,13 @@
                 <div class="flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold" style="background:linear-gradient(135deg,#B3EFB2,#7A9E7E); color:#001A23;">
                   {{ article.author?.[0] }}
                 </div>
-                <span class="text-xs text-white/40">{{ article.author }}</span>
+                <span class="text-xs text-dark/60">{{ article.author }}</span>
               </div>
-              <span class="text-xs text-white/30">{{ article.readingTime }} min</span>
+              <span class="text-xs text-dark/50">{{ article.readingTime }} min</span>
             </div>
           </NuxtLink>
         </div>
-        <p v-else class="text-center text-white/50 py-12">
+        <p v-else class="text-center text-dark/60 py-12">
           {{ locale === 'de' ? 'Keine Artikel in dieser Kategorie gefunden.' : 'No articles found in this category.' }}
         </p>
       </section>

@@ -4,10 +4,10 @@
     <section class="relative pb-16 pt-32 md:pt-40">
       <div class="container text-center max-w-3xl mx-auto">
         <UiBadge class="mb-4">{{ t('services.pageLabel') }}</UiBadge>
-        <h1 class="mb-6 text-4xl font-display font-black text-white sm:text-5xl md:text-6xl">
+        <h1 class="mb-6 text-4xl font-display font-black text-dark sm:text-5xl md:text-6xl">
           {{ t('services.pageTitle') }}
         </h1>
-        <p class="text-lg text-white/60">{{ t('services.pageSubtitle') }}</p>
+        <p class="text-lg text-dark/60">{{ t('services.pageSubtitle') }}</p>
       </div>
     </section>
 
@@ -25,8 +25,8 @@
               <span v-html="service.icon" />
             </div>
             <div class="flex-1">
-              <h3 class="mb-2 text-lg font-display font-bold text-white">{{ service.title }}</h3>
-              <p class="text-sm text-white/50 leading-relaxed">{{ service.desc }}</p>
+              <h3 class="mb-2 text-lg font-display font-bold text-dark">{{ service.title }}</h3>
+              <p class="text-sm text-dark/60 leading-relaxed">{{ service.desc }}</p>
             </div>
             <div class="flex items-center gap-1 text-xs font-semibold text-brand-400 group-hover:gap-2 transition-all">
               {{ t('services.learnMore') }}
@@ -42,7 +42,7 @@
     <!-- FAQ -->
     <section class="section">
       <div class="container max-w-3xl">
-        <h2 class="mb-10 text-2xl font-display font-bold text-white text-center">{{ t('services.faqTitle') }}</h2>
+        <h2 class="mb-10 text-2xl font-display font-bold text-dark text-center">{{ t('services.faqTitle') }}</h2>
         <UiFaqAccordion :items="generalFaq" />
       </div>
     </section>
@@ -50,8 +50,8 @@
     <!-- CTA -->
     <section class="section">
       <div class="container text-center">
-        <h2 class="mb-4 text-3xl font-display font-bold text-white">{{ locale === 'de' ? 'Welche Leistung brauchen Sie?' : 'Which service do you need?' }}</h2>
-        <p class="mb-8 text-white/60">{{ locale === 'de' ? 'Sprechen Sie uns an — wir finden gemeinsam die richtige Lösung.' : 'Get in touch — we\'ll find the right solution together.' }}</p>
+        <h2 class="mb-4 text-3xl font-display font-bold text-dark">{{ locale === 'de' ? 'Welche Leistung brauchen Sie?' : 'Which service do you need?' }}</h2>
+        <p class="mb-8 text-dark/60">{{ locale === 'de' ? 'Sprechen Sie uns an — wir finden gemeinsam die richtige Lösung.' : 'Get in touch — we\'ll find the right solution together.' }}</p>
         <NuxtLink to="/contact" class="btn-primary">
           {{ t('services.cta') }}
         </NuxtLink>
