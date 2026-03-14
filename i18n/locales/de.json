@@ -6,6 +6,7 @@
     "insights": "Insights",
     "careers": "Karriere",
     "contact": "Kontakt",
+    "contactButton": "Kontaktieren",
     "stats": {
       "projects": "Projekte abgeschlossen",
       "satisfaction": "Kundenzufriedenheit",
@@ -44,6 +45,7 @@
     "aboutLabel": "Über uns",
     "aboutTitle": "Ein Team, das liefert",
     "aboutSubtitle": "Wir sind eine spezialisierte Digitalagentur mit Leidenschaft für sauberen Code und messbare Ergebnisse.",
+    "aboutProfileStatement": "Mein Ziel war und ist es, unsere Lösungen so praxisnah wie möglich zu gestalten — damit sie im Alltag wirklich funktionieren.",
     "aboutMore": "Mehr über uns",
     "ctaTitle": "Starten Sie mit uns zusammen in ein neues digitales Kapitel",
     "ctaSubtitle": "Lassen Sie uns gemeinsam herausfinden, wie wir Ihr Unternehmen digital voranbringen können.",

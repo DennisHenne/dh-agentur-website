@@ -11,36 +11,27 @@
       </div>
     </section>
 
-    <!-- Projects -->
+    <!-- Projects – 12 Referenzen wie im Karussell, mit Bild und Beschreibung -->
     <section class="section">
       <div class="container">
         <h2 class="mb-10 text-2xl font-display font-bold text-white">{{ t('work.projectsTitle') }}</h2>
-        <div class="grid gap-6 md:grid-cols-2">
+        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           <NuxtLink
-            v-for="project in projects"
-            :key="project.slug"
-            :to="`/work/${project.slug}`"
-            class="group relative overflow-hidden rounded-3xl border border-white/10 bg-dark-100 transition-all duration-300 hover:border-white/20"
+            v-for="ref in references"
+            :key="ref.slug"
+            :to="`/work/${ref.slug}`"
+            class="group overflow-hidden rounded-3xl border border-white/10 bg-dark-100 transition-all duration-300 hover:border-white/20"
           >
-            <div class="absolute inset-0 opacity-0 transition-opacity group-hover:opacity-100"
-              :style="`background: radial-gradient(ellipse at top left, ${project.color}15, transparent 60%)`" />
-
-            <div class="relative p-8">
-              <div class="mb-6 flex items-center justify-between">
-                <span class="rounded-full border border-white/20 px-3 py-1 text-xs font-medium text-white/60">
-                  {{ project.type }}
-                </span>
-                <svg class="h-5 w-5 text-white/30 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                </svg>
-              </div>
-              <h3 class="mb-3 text-2xl font-display font-bold text-white">{{ project.title }}</h3>
-              <p class="mb-6 text-sm text-white/50 leading-relaxed">{{ project.desc }}</p>
-              <div class="flex flex-wrap gap-2">
-                <span v-for="tag in project.tags" :key="tag" class="rounded-full bg-white/5 px-3 py-1 text-xs text-white/50">
-                  {{ tag }}
-                </span>
-              </div>
+            <div class="aspect-square overflow-hidden rounded-t-3xl">
+              <img
+                src="/test-pitcture-carussel.jpg"
+                :alt="ref.title"
+                class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+              />
+            </div>
+            <div class="p-5">
+              <h3 class="mb-2 font-display font-bold text-white">{{ ref.title }}</h3>
+              <p class="text-sm text-white/50 leading-relaxed">{{ ref.desc }}</p>
             </div>
           </NuxtLink>
         </div>
@@ -51,13 +42,6 @@
     <section class="section">
       <div class="container">
         <h2 class="mb-10 text-2xl font-display font-bold text-white">{{ t('work.refsTitle') }}</h2>
-
-        <!-- Logos -->
-        <div class="mb-12 flex flex-wrap items-center gap-6 opacity-50">
-          <div v-for="logo in logos" :key="logo" class="rounded-xl border border-white/10 bg-white/5 px-5 py-2.5 text-sm font-bold text-white/60">
-            {{ logo }}
-          </div>
-        </div>
 
         <!-- Testimonials -->
         <div class="grid gap-6 md:grid-cols-3">
@@ -103,29 +87,19 @@ useSeoMeta({
   description: t('meta.work.description'),
 })
 
-const logos = ['Acme GmbH', 'TechStart', 'Vienna Co-Work', 'Digital Labs', 'CloudScale', 'MarketBoost']
-
-const projects = computed(() => [
-  {
-    slug: 'testwebsites',
-    type: 'Web Development',
-    title: locale.value === 'de' ? 'Testwebsites Plattform' : 'Test Websites Platform',
-    desc: locale.value === 'de'
-      ? 'Entwicklung einer modernen Plattform für schnelles Prototyping und Testing von Webseiten-Konzepten für Agenturen und Freelancer.'
-      : 'Development of a modern platform for rapid prototyping and testing of website concepts for agencies and freelancers.',
-    tags: ['Nuxt 3', 'Vue 3', 'Tailwind CSS', 'Supabase', 'TypeScript'],
-    color: '#4a5eff',
-  },
-  {
-    slug: 'co-working-space',
-    type: 'Custom Web App',
-    title: locale.value === 'de' ? 'Co-Working Space Plattform' : 'Co-Working Space Platform',
-    desc: locale.value === 'de'
-      ? 'Vollständiges Buchungs- und Verwaltungssystem für einen modernen Co-Working-Anbieter mit Member-Portal, Buchungskalender und Stripe-Integration.'
-      : 'Complete booking and management system for a modern co-working provider with member portal, booking calendar and Stripe integration.',
-    tags: ['Nuxt 3', 'Node.js', 'PostgreSQL', 'Stripe', 'Docker'],
-    color: '#a855f7',
-  },
+const references = computed(() => [
+  { slug: 'reference-1', title: locale.value === 'de' ? 'Referenzprojekt 1' : 'Reference Project 1', desc: locale.value === 'de' ? 'Placeholder Beschreibung für Projekt 1.' : 'Placeholder description for project 1.' },
+  { slug: 'reference-2', title: locale.value === 'de' ? 'Referenzprojekt 2' : 'Reference Project 2', desc: locale.value === 'de' ? 'Placeholder Beschreibung für Projekt 2.' : 'Placeholder description for project 2.' },
+  { slug: 'reference-3', title: locale.value === 'de' ? 'Referenzprojekt 3' : 'Reference Project 3', desc: locale.value === 'de' ? 'Placeholder Beschreibung für Projekt 3.' : 'Placeholder description for project 3.' },
+  { slug: 'reference-4', title: locale.value === 'de' ? 'Referenzprojekt 4' : 'Reference Project 4', desc: locale.value === 'de' ? 'Placeholder Beschreibung für Projekt 4.' : 'Placeholder description for project 4.' },
+  { slug: 'reference-5', title: locale.value === 'de' ? 'Referenzprojekt 5' : 'Reference Project 5', desc: locale.value === 'de' ? 'Placeholder Beschreibung für Projekt 5.' : 'Placeholder description for project 5.' },
+  { slug: 'reference-6', title: locale.value === 'de' ? 'Referenzprojekt 6' : 'Reference Project 6', desc: locale.value === 'de' ? 'Placeholder Beschreibung für Projekt 6.' : 'Placeholder description for project 6.' },
+  { slug: 'reference-7', title: locale.value === 'de' ? 'Referenzprojekt 7' : 'Reference Project 7', desc: locale.value === 'de' ? 'Placeholder Beschreibung für Projekt 7.' : 'Placeholder description for project 7.' },
+  { slug: 'reference-8', title: locale.value === 'de' ? 'Referenzprojekt 8' : 'Reference Project 8', desc: locale.value === 'de' ? 'Placeholder Beschreibung für Projekt 8.' : 'Placeholder description for project 8.' },
+  { slug: 'reference-9', title: locale.value === 'de' ? 'Referenzprojekt 9' : 'Reference Project 9', desc: locale.value === 'de' ? 'Placeholder Beschreibung für Projekt 9.' : 'Placeholder description for project 9.' },
+  { slug: 'reference-10', title: locale.value === 'de' ? 'Referenzprojekt 10' : 'Reference Project 10', desc: locale.value === 'de' ? 'Placeholder Beschreibung für Projekt 10.' : 'Placeholder description for project 10.' },
+  { slug: 'reference-11', title: locale.value === 'de' ? 'Referenzprojekt 11' : 'Reference Project 11', desc: locale.value === 'de' ? 'Placeholder Beschreibung für Projekt 11.' : 'Placeholder description for project 11.' },
+  { slug: 'reference-12', title: locale.value === 'de' ? 'Referenzprojekt 12' : 'Reference Project 12', desc: locale.value === 'de' ? 'Placeholder Beschreibung für Projekt 12.' : 'Placeholder description for project 12.' },
 ])
 
 const testimonials = computed(() => [

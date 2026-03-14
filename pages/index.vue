@@ -5,7 +5,6 @@
       <SectionsHomeServicesThreeJs />
       <SectionsHomeReferencesThreeJs />
     </client-only>
-    <SectionsHomeAbout />
     <SectionsHomeCta />
   </div>
 </template>

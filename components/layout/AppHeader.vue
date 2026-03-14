@@ -30,11 +30,18 @@
         </div>
       </NuxtLink>
 
-      <!-- Right: language switch + hamburger/close -->
+      <!-- Right: language switch + Kontaktieren + hamburger/close -->
       <div class="flex items-center gap-4">
         <div v-if="!menuOpen" class="hidden items-center gap-4 lg:flex">
           <LayoutLanguageSwitch :dark="false" />
         </div>
+        <NuxtLink
+          v-if="!menuOpen"
+          to="/contact"
+          class="btn-primary hidden sm:inline-flex h-12 min-h-[48px] sm:h-14 sm:min-h-[56px] md:h-16 md:min-h-[64px] items-center justify-center"
+        >
+          {{ t('nav.contactButton') }}
+        </NuxtLink>
 
         <!-- Hamburger that morphs into × (min 44px touch target) -->
         <button

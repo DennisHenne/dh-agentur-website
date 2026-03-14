@@ -117,6 +117,30 @@ const services = computed(() => [
     title: locale.value === 'de' ? 'Marketing Boost' : 'Digital Marketing Boost',
     desc: locale.value === 'de' ? 'Schnelle Wachstumsimpulse durch gezielte Maßnahmen.' : 'Rapid growth through targeted marketing measures.',
   },
+  {
+    slug: 'e-commerce',
+    icon: '<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg>',
+    title: 'E-Commerce',
+    desc: locale.value === 'de' ? 'Online-Shops und Verkaufsplattformen, die verkaufen.' : 'Online shops and sales platforms that convert.',
+  },
+  {
+    slug: 'social-media-marketing',
+    icon: '<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" /></svg>',
+    title: locale.value === 'de' ? 'Social Media Marketing' : 'Social Media Marketing',
+    desc: locale.value === 'de' ? 'Strategische Präsenz auf Instagram, LinkedIn, TikTok und mehr.' : 'Strategic presence on Instagram, LinkedIn, TikTok and more.',
+  },
+  {
+    slug: 'content-strategy',
+    icon: '<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" /></svg>',
+    title: locale.value === 'de' ? 'Content Strategie' : 'Content Strategy',
+    desc: locale.value === 'de' ? 'Redaktionelle Konzepte und Content-Planung für Ihre Kanäle.' : 'Editorial concepts and content planning for your channels.',
+  },
+  {
+    slug: 'ux-ui-design',
+    icon: '<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" /></svg>',
+    title: locale.value === 'de' ? 'UX/UI Design' : 'UX/UI Design',
+    desc: locale.value === 'de' ? 'Benutzerfreundliche Interfaces und durchdachte Nutzererlebnisse.' : 'User-friendly interfaces and well-thought-out user experiences.',
+  },
 ])
 
 const generalFaq = computed(() => locale.value === 'de' ? [
