@@ -125,6 +125,9 @@ img, video {
 @supports (padding: env(safe-area-inset-bottom)) {
   .pb-safe { padding-bottom: env(safe-area-inset-bottom); }
   .pr-safe { padding-right: env(safe-area-inset-right); }
+  .pt-safe { padding-top: env(safe-area-inset-top); }
+  .bottom-safe { bottom: calc(1.5rem + env(safe-area-inset-bottom)); }
+  .right-safe { right: calc(1.5rem + env(safe-area-inset-right)); }
 }
 
 ::-webkit-scrollbar { width: 5px; }

@@ -19,7 +19,7 @@
       <!-- CSS3DRenderer renders here -->
       <!-- Transparentes Klick-Overlay: fängt alle Klicks (auch Zwischenräume) ab -->
       <div
-        class="click-overlay"
+        class="click-overlay touch-pan-y"
         @mousedown="startDrag"
         @touchstart.passive="startDrag"
         @mousemove="onDrag"
@@ -184,12 +184,13 @@ let wasCoasting   = false;   // true if carousel was already moving at mousedown
 let targetRotation = 0;
 
 // ─── Physics (simplified) ────────────────────────────────────────────────────
-const DRAG_SENSITIVITY = 0.0024;
+const isTouchDevice = typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0);
+const DRAG_SENSITIVITY = isTouchDevice ? 0.0012 : 0.0024;
 const TARGET_SMOOTH   = 0.22;     // Delay: left/right cancel each other during smoothing
 const FOLLOW_LERP     = 0.18;     // How quickly wheel follows target (not braking)
 const FRICTION        = 0.99;     // Coast decay – higher = longer spin
-const VELOCITY_MULT   = 10;       // Faster pull = longer coast
-const COAST_FACTOR    = 0.012;
+const VELOCITY_MULT   = isTouchDevice ? 3 : 10;   // Lower on mobile: light swipe = less spin
+const COAST_FACTOR    = isTouchDevice ? 0.005 : 0.012;
 const COAST_DECAY     = COAST_FACTOR / (1 - FRICTION);
 
 // Helper function to get coordinates from events

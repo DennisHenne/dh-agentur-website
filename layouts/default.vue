@@ -1,6 +1,10 @@
 <script setup lang="ts">
 const route = useRoute()
 const isIndex = computed(() => route.path === '/' || route.path === '')
+const isTouchDevice = ref(false)
+onMounted(() => {
+  isTouchDevice.value = 'ontouchstart' in window || navigator.maxTouchPoints > 0
+})
 </script>
 
 <template>
@@ -21,9 +25,9 @@ const isIndex = computed(() => route.path === '/' || route.path === '')
     <div class="noise-bg absolute inset-0" />
   </div>
 
-  <!-- ── Cursor trail canvas: z-index 1 ─────────────────────────────────── -->
+  <!-- ── Cursor trail canvas: z-index 1 (desktop only, no touch) ──────────── -->
   <ClientOnly>
-    <CursorTrail />
+    <CursorTrail v-if="!isTouchDevice" />
   </ClientOnly>
 
   <!-- ── Page content: z-index 2 ───────────────────────────────────────── -->

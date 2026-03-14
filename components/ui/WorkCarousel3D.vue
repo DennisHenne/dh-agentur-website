@@ -92,10 +92,11 @@ onMounted(() => {
 
   let lastRotation = 0
   let lastDragDirection = 0
+  const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0
 
   Draggable.create(scene.value, {
     type: 'rotation',
-    inertia: { resistance: 1200 },
+    inertia: { resistance: isTouchDevice ? 2500 : 1200 },  // Higher on mobile: light swipe = less spin
     onPress: function() {
       lastRotation = gsap.getProperty(scene.value, 'rotationY') as number
       lastDragDirection = 0

@@ -184,7 +184,9 @@ function onMouseLeave() {
 onMounted(() => {
   window.addEventListener('mousemove', onMouseMove, { passive: true })
   window.addEventListener('mouseleave', onMouseLeave, { passive: true })
-  nextTick(() => focusInput())
+  // Skip auto-focus on mobile – avoids keyboard popping up on load
+  const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0
+  if (!isTouch) nextTick(() => focusInput())
 })
 onUnmounted(() => {
   window.removeEventListener('mousemove', onMouseMove)

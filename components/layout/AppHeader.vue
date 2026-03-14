@@ -1,5 +1,5 @@
 <template>
-  <header class="fixed left-0 right-0 top-0 z-50">
+  <header class="fixed left-0 right-0 top-0 z-50 pt-[env(safe-area-inset-top)]">
     <div class="flex w-full items-center justify-between px-4 pt-4 pb-3 sm:px-6 sm:pt-5 md:pl-[45px] md:pr-[55px] md:pt-[30px] md:pb-4">
 
       <!-- Logo: always visible, color flips based on overlay state -->

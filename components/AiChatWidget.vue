@@ -2,7 +2,7 @@
   <div>
     <!-- Chat Bubble Button -->
     <button
-      class="fixed bottom-6 right-6 z-50 flex h-14 w-14 min-w-[56px] min-h-[56px] items-center justify-center rounded-full bg-brand-600 shadow-lg shadow-brand-600/30 transition-all duration-300 hover:bg-brand-500 hover:scale-110 active:scale-95"
+      class="fixed right-6 bottom-6 z-50 flex h-14 w-14 min-w-[56px] min-h-[56px] items-center justify-center rounded-full bg-brand-600 shadow-lg shadow-brand-600/30 transition-all duration-300 hover:bg-brand-500 hover:scale-110 active:scale-95 right-safe bottom-safe"
       :aria-label="open ? t('chat.close') : t('chat.title')"
       @click="open = !open"
     >
@@ -24,7 +24,7 @@
     <Transition name="chat">
       <div
         v-if="open"
-        class="fixed bottom-24 right-4 left-4 sm:left-auto sm:right-6 z-50 flex h-[min(480px,85vh)] w-[min(360px,calc(100vw-2rem))] max-w-[calc(100vw-2rem)] flex-col overflow-hidden rounded-2xl border border-white/20 bg-dark-100 shadow-2xl shadow-black/50"
+        class="fixed bottom-24 right-4 left-4 sm:left-auto sm:right-6 z-50 flex h-[min(480px,85vh)] w-[min(360px,calc(100vw-2rem))] max-w-[calc(100vw-2rem)] flex-col overflow-hidden rounded-2xl border border-white/20 bg-dark-100 shadow-2xl shadow-black/50 pb-safe"
       >
         <!-- Header -->
         <div class="flex items-center justify-between border-b border-white/10 bg-dark-50 px-4 py-3">

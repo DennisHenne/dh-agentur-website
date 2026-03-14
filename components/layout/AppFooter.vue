@@ -1,5 +1,5 @@
 <template>
-  <footer ref="footerRef" class="footer relative pt-16 pb-8" style="background:#051d26;">
+  <footer ref="footerRef" class="footer relative pt-16 pb-8 pb-safe" style="background:#051d26;">
     <!-- Liquid wave - Übergang vom Content zum Footer -->
     <div class="liquid-wave-wrapper" :class="{ 'wave-visible': isWaveVisible }">
       <canvas ref="waveCanvas" class="liquid-wave-canvas" />

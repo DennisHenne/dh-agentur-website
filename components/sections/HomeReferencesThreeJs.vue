@@ -17,7 +17,7 @@
 
       <div ref="threeContainer" class="immersive-stage">
       <div
-        class="click-overlay"
+        class="click-overlay touch-pan-y"
         @mousedown="startDrag"
         @touchstart.passive="startDrag"
         @mousemove="onDrag"
@@ -84,12 +84,13 @@ let dragMoved = false;
 let wasCoasting = false;
 let targetRotation = 0;
 
-const DRAG_SENSITIVITY = 0.0024;
+const isTouchDevice = typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0);
+const DRAG_SENSITIVITY = isTouchDevice ? 0.0001 : 0.0024;
 const TARGET_SMOOTH = 0.22;
 const FOLLOW_LERP = 0.18;
 const FRICTION = 0.99;
-const VELOCITY_MULT = 10;
-const COAST_FACTOR = 0.012;
+const VELOCITY_MULT = isTouchDevice ? 2 : 10;   // Lower on mobile: light swipe = less spin
+const COAST_FACTOR = isTouchDevice ? 0.001 : 0.012;
 const COAST_DECAY = COAST_FACTOR / (1 - FRICTION);
 
 function cx(e: MouseEvent | TouchEvent) {

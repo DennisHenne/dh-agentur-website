@@ -321,8 +321,8 @@ onUnmounted(() => cancelAnimationFrame(raf))
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 340px;
-  height: 340px;
+  width: min(340px, calc(100vw - 2rem));
+  height: min(340px, calc(100vw - 2rem));
   aspect-ratio: 1/1;
 }
 
@@ -460,11 +460,16 @@ onUnmounted(() => cancelAnimationFrame(raf))
 .nav-dot {
   width: 8px;
   height: 8px;
+  padding: 14px;
   border-radius: 50%;
   border: none;
   background: rgba(122, 158, 126, 0.3);
   cursor: pointer;
   transition: all 0.3s ease;
+  /* 36px touch target on mobile */
+  min-width: 36px;
+  min-height: 36px;
+  box-sizing: content-box;
 }
 
 .nav-dot:hover {
