@@ -90,17 +90,34 @@ onMounted(() => {
     ease: 'none'
   })
 
+  let lastRotation = 0
+  let lastDragDirection = 0
+
   Draggable.create(scene.value, {
     type: 'rotation',
-    inertia: true,
+    inertia: { resistance: 1200 },
+    onPress: function() {
+      lastRotation = gsap.getProperty(scene.value, 'rotationY') as number
+      lastDragDirection = 0
+    },
     onDrag: function() {
+      const rot = gsap.getProperty(scene.value, 'rotationY') as number
+      const delta = rot - lastRotation
+      if (Math.abs(delta) > 0.5) lastDragDirection = Math.sign(delta)
+      lastRotation = rot
       updateParallax()
     },
     onThrowUpdate: function() {
       updateParallax()
     },
     snap: {
-      rotation: (value) => Math.round(value / angle) * angle
+      rotation: (value) => {
+        const lower = Math.floor(value / angle) * angle
+        const upper = Math.ceil(value / angle) * angle
+        if (lastDragDirection > 0) return upper
+        if (lastDragDirection < 0) return lower
+        return Math.round(value / angle) * angle
+      }
     }
   })
 

@@ -303,6 +303,9 @@ function stopDrag(e?: MouseEvent | TouchEvent) {
   while (delta > Math.PI) delta -= 2 * Math.PI;
   while (delta < -Math.PI) delta += 2 * Math.PI;
 
+  // Prefer the direction that matches the user's velocity to avoid spinning the wrong way
+  if (delta * v > 0) delta -= Math.sign(delta) * 2 * Math.PI;
+
   const neededV = -delta / COAST_DECAY;
   const sameDir = Math.sign(neededV) === Math.sign(v);
   if (sameDir && Math.abs(neededV) <= Math.abs(v) * 1.05) {
