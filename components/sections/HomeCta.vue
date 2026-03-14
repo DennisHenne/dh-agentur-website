@@ -1,14 +1,22 @@
 <template>
-  <section class="section">
+  <section class="section section-cta">
     <div class="container">
-        <div class="relative overflow-hidden rounded-3xl border p-12 text-center md:p-20" style="border-color:rgba(122,158,126,0.25); background: linear-gradient(135deg, #31493C 0%, #0c2a35 60%, #001A23 100%)">
-        <!-- Background glow -->
-        <div class="absolute top-0 left-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl" style="background:rgba(179,239,178,0.12)" />
+      <div class="relative overflow-hidden rounded-2xl text-center min-h-[280px] sm:min-h-[360px] md:min-h-[420px]" style="background: #0a1f28; border: 1px solid rgba(122,158,126,0.12);">
+        <!-- Video background -->
+        <video
+          autoplay
+          muted
+          loop
+          playsinline
+          class="absolute inset-0 h-full w-full object-cover"
+        >
+          <source src="/rocket.mp4" type="video/mp4">
+        </video>
+        <!-- Dark overlay for readability -->
+        <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70" />
 
-        <div class="relative">
-          <UiBadge class="mb-6">{{ locale === 'de' ? 'Nächster Schritt' : 'Next Step' }}</UiBadge>
-          <h2 class="section-title mb-4">{{ t('home.ctaTitle') }}</h2>
-          <p class="section-subtitle mb-10 max-w-xl mx-auto">{{ t('home.ctaSubtitle') }}</p>
+        <div class="relative flex flex-col items-center justify-center gap-6 p-12 md:p-20 min-h-[420px]">
+          <h2 class="section-title text-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl">{{ t('home.ctaTitle') }}</h2>
           <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
             <NuxtLink to="/contact" class="btn-primary text-base px-8 py-4">
               {{ t('home.ctaButton') }}
@@ -29,3 +37,17 @@
 <script setup lang="ts">
 const { t, locale } = useI18n()
 </script>
+
+<style scoped>
+/* Näher an Unser Team, mehr Abstand zum Footer */
+.section-cta {
+  padding-top: 3rem;
+  padding-bottom: 10rem;
+}
+@media (min-width: 768px) {
+  .section-cta {
+    padding-top: 4rem;
+    padding-bottom: 12rem;
+  }
+}
+</style>

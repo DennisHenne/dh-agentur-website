@@ -2,7 +2,7 @@
   <div>
     <!-- Chat Bubble Button -->
     <button
-      class="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-brand-600 shadow-lg shadow-brand-600/30 transition-all duration-300 hover:bg-brand-500 hover:scale-110 active:scale-95"
+      class="fixed bottom-6 right-6 z-50 flex h-14 w-14 min-w-[56px] min-h-[56px] items-center justify-center rounded-full bg-brand-600 shadow-lg shadow-brand-600/30 transition-all duration-300 hover:bg-brand-500 hover:scale-110 active:scale-95"
       :aria-label="open ? t('chat.close') : t('chat.title')"
       @click="open = !open"
     >
@@ -17,14 +17,14 @@
         </svg>
       </Transition>
       <!-- Notification dot -->
-      <span v-if="!open && hasNewMessage" class="absolute -right-0.5 -top-0.5 h-3 w-3 rounded-full bg-green-400 border-2 border-dark" />
+      <span v-if="!open && hasNewMessage" class="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full bg-green-400 ring-2 ring-white" />
     </button>
 
     <!-- Chat Window -->
     <Transition name="chat">
       <div
         v-if="open"
-        class="fixed bottom-24 right-6 z-50 flex h-[480px] w-[360px] max-w-[calc(100vw-3rem)] flex-col overflow-hidden rounded-2xl border border-white/20 bg-dark-100 shadow-2xl shadow-black/50"
+        class="fixed bottom-24 right-4 left-4 sm:left-auto sm:right-6 z-50 flex h-[min(480px,85vh)] w-[min(360px,calc(100vw-2rem))] max-w-[calc(100vw-2rem)] flex-col overflow-hidden rounded-2xl border border-white/20 bg-dark-100 shadow-2xl shadow-black/50"
       >
         <!-- Header -->
         <div class="flex items-center justify-between border-b border-white/10 bg-dark-50 px-4 py-3">

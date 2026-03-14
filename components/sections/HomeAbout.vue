@@ -1,5 +1,5 @@
 <template>
-  <section class="section">
+  <section class="section section-about">
     <div class="container">
       <div class="grid items-center gap-12 lg:grid-cols-2">
         <!-- Left: Text -->
@@ -83,3 +83,10 @@ const values = computed(() => [
   },
 ])
 </script>
+
+<style scoped>
+.section-about {
+  padding-top: 0;
+  margin-top: -1rem;
+}
+</style>

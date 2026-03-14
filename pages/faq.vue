@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Hero -->
-    <section class="relative pb-32 pt-40 md:pt-48">
+    <section class="relative pb-16 pt-32 md:pt-40">
       <div class="container text-center max-w-3xl mx-auto">
         <UiBadge class="mb-4">{{ t('faq.pageLabel') }}</UiBadge>
         <h1 class="mb-6 text-5xl font-display font-black text-white md:text-6xl">

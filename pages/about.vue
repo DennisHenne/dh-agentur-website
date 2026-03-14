@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Hero -->
-    <section class="relative pb-32 pt-40 md:pt-48">
+    <section class="relative pb-16 pt-32 md:pt-40">
       <div class="container">
         <UiBadge class="mb-4">{{ t('about.label') }}</UiBadge>
         <h1 class="section-title mb-6 max-w-3xl">{{ t('about.title') }}</h1>

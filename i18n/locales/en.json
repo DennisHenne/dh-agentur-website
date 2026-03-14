@@ -6,12 +6,18 @@
     "insights": "Insights",
     "careers": "Careers",
     "contact": "Contact",
+    "stats": {
+      "projects": "Projects completed",
+      "satisfaction": "Client satisfaction",
+      "years": "Years of experience",
+      "roi": "Avg. ROI of our clients"
+    },
     "aiChat": "AI Chat",
     "menu": "Menu",
     "close": "Close"
   },
   "footer": {
-    "tagline": "We build digital solutions that scale.",
+    "tagline": "We make your business digitally strong.",
     "legal": "Legal Notice",
     "privacy": "Privacy Policy",
     "faq": "FAQ",
@@ -32,14 +38,14 @@
     "workSubtitle": "Real projects, real results — see for yourself.",
     "workAll": "All Projects",
     "refsLabel": "Reference Projects",
-    "refsTitle": "Projects we are proud of",
+    "refsTitle": "Our Work",
     "refsSubtitle": "Real projects, real results — see for yourself.",
     "refsAll": "All Projects",
     "aboutLabel": "About",
     "aboutTitle": "A team that delivers",
     "aboutSubtitle": "We are a specialized digital agency with a passion for clean code and measurable results.",
     "aboutMore": "More about us",
-    "ctaTitle": "Ready for your next project?",
+    "ctaTitle": "Start a new digital chapter with us",
     "ctaSubtitle": "Let's find out together how we can drive your business forward digitally.",
     "ctaButton": "Get in touch now"
   },

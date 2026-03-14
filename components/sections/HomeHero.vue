@@ -1,5 +1,5 @@
 <template>
-  <section class="relative flex min-h-[92vh] flex-col items-center justify-center">
+  <section class="relative flex min-h-[85vh] sm:min-h-[90vh] md:min-h-[92vh] flex-col items-center justify-center">
 
 
     <!-- Layer 2: video card — centered, behind text, moved up -->
@@ -21,7 +21,7 @@
     </div>
 
     <!-- Layer 3: text + console — in front of video -->
-    <div class="container relative pb-24 pt-32 md:pt-40" style="z-index:10;">
+    <div class="container relative pb-16 pt-24 sm:pb-20 sm:pt-28 md:pb-24 md:pt-40" style="z-index:10;">
       <div class="mx-auto max-w-4xl text-center">
 
         <div class="animate-fade-up">
@@ -260,10 +260,17 @@ onUnmounted(() => {
 .console-title {
   flex: 1;
   text-align: center;
-  font-size: 11px;
+  font-size: 10px;
   color: rgba(255, 255, 255, 0.35);
   font-family: ui-monospace, 'Cascadia Code', monospace;
   margin-right: 30px;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+@media (min-width: 380px) {
+  .console-title { font-size: 11px; }
 }
 
 /* scrollable output fills remaining space */

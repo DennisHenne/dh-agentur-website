@@ -1,38 +1,38 @@
 <template>
   <div>
     <!-- Hero -->
-    <section class="relative pb-32 pt-40 md:pt-48">
+    <section class="relative pb-16 pt-32 md:pt-40">
       <div class="container text-center max-w-3xl mx-auto">
         <UiBadge class="mb-4">{{ t('insights.pageLabel') }}</UiBadge>
-        <h1 class="mb-6 text-5xl font-display font-black text-white md:text-6xl">
+        <h1 class="mb-6 text-4xl font-display font-black text-white sm:text-5xl md:text-6xl">
           {{ t('insights.pageTitle') }}
         </h1>
         <p class="text-lg text-white/60">{{ t('insights.pageSubtitle') }}</p>
       </div>
     </section>
 
-    <!-- Category Filter -->
-    <section class="border-t py-6 sticky top-0 z-30 backdrop-blur-xl" style="border-color:rgba(122,158,126,0.18); background:rgba(0,26,35,0.85)">
-      <div class="container">
-        <div class="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
-          <button
-            v-for="cat in categories"
-            :key="cat.key"
-            class="flex-shrink-0 rounded-full border px-4 py-2 text-sm font-medium transition-all"
-            :class="activeCategory === cat.key
-              ? 'border-brand-500 bg-brand-500/20 text-brand-400'
-              : 'border-white/20 text-white/60 hover:border-white/40 hover:text-white'"
-            @click="activeCategory = cat.key"
-          >
-            {{ cat.label }}
-          </button>
+    <!-- Category Filter + Articles – gleiche Breite, eng beieinander -->
+    <div class="container">
+      <section class="sticky top-0 z-30 -mb-2 pt-4">
+        <div class="rounded-2xl border border-white/10 py-6 backdrop-blur-xl" style="border-color:rgba(122,158,126,0.18); background:rgba(0,26,35,0.85)">
+          <div class="insights-nav-scroll flex gap-2 overflow-x-auto overflow-y-hidden px-6 pb-0">
+            <button
+              v-for="cat in categories"
+              :key="cat.key"
+              class="flex-shrink-0 rounded-full border px-4 py-2 text-sm font-medium transition-all"
+              :class="activeCategory === cat.key
+                ? 'border-brand-500 bg-brand-500/20 text-brand-400'
+                : 'border-white/20 text-white/60 hover:border-white/40 hover:text-white'"
+              @click="activeCategory = cat.key"
+            >
+              {{ cat.label }}
+            </button>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- Articles -->
-    <section class="section">
-      <div class="container">
+      <!-- Articles -->
+      <section class="pt-6 pb-12 sm:pb-16 md:pb-20 lg:pb-28">
         <div v-if="filteredArticles.length" class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           <NuxtLink
             v-for="article in filteredArticles"
@@ -68,8 +68,8 @@
         <p v-else class="text-center text-white/50 py-12">
           {{ locale === 'de' ? 'Keine Artikel in dieser Kategorie gefunden.' : 'No articles found in this category.' }}
         </p>
-      </div>
-    </section>
+      </section>
+    </div>
   </div>
 </template>
 
@@ -120,3 +120,12 @@ function formatDate(dateStr: string) {
 }
 </script>
 
+<style scoped>
+.insights-nav-scroll {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.insights-nav-scroll::-webkit-scrollbar {
+  display: none;
+}
+</style>

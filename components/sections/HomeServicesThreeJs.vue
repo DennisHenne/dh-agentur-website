@@ -1,12 +1,21 @@
 <template>
-  <section class="section">
-    <!-- Header content unchanged -->
-    <div class="container mb-10 text-center">
-      <!-- Existing header content -->
-    </div>
+  <section class="section section-services">
+    <div class="services-wrapper">
+      <div class="services-text">
+        <UiBadge class="mb-4">{{ t('home.servicesLabel') }}</UiBadge>
+        <h2 class="section-title">{{ t('home.servicesTitle') }}</h2>
+        <div class="subtitle-row">
+          <p class="section-subtitle">{{ t('home.servicesSubtitle') }}</p>
+          <NuxtLink to="/services" class="btn-outline btn-inline">
+            {{ t('home.servicesAll') }}
+            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+            </svg>
+          </NuxtLink>
+        </div>
+      </div>
 
-    <!-- Three.js Container -->
-    <div ref="threeContainer" class="immersive-stage">
+      <div ref="threeContainer" class="immersive-stage">
       <!-- CSS3DRenderer renders here -->
       <!-- Transparentes Klick-Overlay: fängt alle Klicks (auch Zwischenräume) ab -->
       <div
@@ -19,9 +28,8 @@
         @touchend="stopDrag"
         @mouseleave="onMouseLeave"
       />
+      </div>
     </div>
-
-    <!-- Existing CTA link -->
   </section>
 </template>
 
@@ -34,7 +42,7 @@ let CSS3DRenderer: any;
 let CSS3DObject: any;
 // Import service data and other dependencies
 
-const { locale } = useI18n()
+const { locale, t } = useI18n()
 const router = useRouter()
 
 const navigateTo = (path: string) => router.push(path)
@@ -583,11 +591,57 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-/* Three.js container – höher für 10° Neigung, damit Karten nicht abgeschnitten werden */
+.section-services {
+  padding-bottom: 0;
+}
+
+.services-wrapper {
+  position: relative;
+}
+
+.services-text {
+  position: absolute;
+  right: 0.75rem;
+  left: 0.75rem;
+  top: -2rem;
+  z-index: 20;
+  max-width: 28rem;
+  margin-left: auto;
+  text-align: right;
+  pointer-events: none;
+}
+
+.services-text .subtitle-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.services-text .subtitle-row .btn-inline {
+  margin-right: auto;
+}
+
+.services-text .btn-inline {
+  pointer-events: auto;
+  flex-shrink: 0;
+}
+
+@media (min-width: 768px) {
+  .services-text {
+    right: 2rem;
+    top: -3rem;
+    max-width: 32rem;
+  }
+}
+
+/* Three.js container – extra height for 5° tilt so bottom isn't cut off */
 .immersive-stage {
   position: relative;
   width: 100%;
-  height: 120vh;
+  height: 130vh;
   overflow: hidden;
   cursor: default;
 }

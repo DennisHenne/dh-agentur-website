@@ -5,9 +5,11 @@
 @layer base {
   html {
     @apply scroll-smooth;
+    overflow-x: hidden;
   }
 
   body {
+    overflow-x: hidden;
     /* #001A23 — deepest dark as page background */
     background-color: #001A23;
     @apply text-light antialiased;
@@ -62,7 +64,7 @@
   /* ── Layout helpers ───────────────────────────────────────────────────── */
 
   .section {
-    @apply py-20 md:py-28;
+    @apply py-12 sm:py-16 md:py-20 lg:py-28;
   }
 
   .container {
@@ -108,7 +110,25 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+/* Smooth scrolling on iOS */
+html {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Ensure images and media scale */
+img, video {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Safe area for notched devices (iPhone X+) */
+@supports (padding: env(safe-area-inset-bottom)) {
+  .pb-safe { padding-bottom: env(safe-area-inset-bottom); }
+  .pr-safe { padding-right: env(safe-area-inset-right); }
+}
+
 ::-webkit-scrollbar { width: 5px; }
 ::-webkit-scrollbar-track  { background: #001A23; }
 ::-webkit-scrollbar-thumb  { border-radius: 99px; background: rgba(122,158,126,0.35); }
 ::-webkit-scrollbar-thumb:hover { background: rgba(179,239,178,0.55); }
+::-webkit-scrollbar-corner { background: #001A23; }

@@ -1,6 +1,6 @@
 <template>
   <header class="fixed left-0 right-0 top-0 z-50">
-    <div class="flex w-full items-center justify-between pl-[45px] pr-[55px] pt-[30px] pb-4">
+    <div class="flex w-full items-center justify-between px-4 pt-4 pb-3 sm:px-6 sm:pt-5 md:pl-[45px] md:pr-[55px] md:pt-[30px] md:pb-4">
 
       <!-- Logo: always visible, color flips based on overlay state -->
       <NuxtLink
@@ -9,9 +9,9 @@
         @click="closeMenu"
       >
         <IconsLogoDH
-          :size="80"
+          :size="logoSize"
           :class="menuOpen ? 'text-dark' : 'text-light'"
-          class="transition-colors duration-300"
+          class="transition-colors duration-300 flex-shrink-0"
         />
 
         <!-- "Agentur" slides into logo on scroll. Hidden when overlay is open. -->
@@ -36,9 +36,9 @@
           <LayoutLanguageSwitch :dark="false" />
         </div>
 
-        <!-- Hamburger that morphs into × -->
+        <!-- Hamburger that morphs into × (min 44px touch target) -->
         <button
-          class="flex h-16 w-16 items-center justify-center rounded-full border transition-all duration-300"
+          class="flex h-12 w-12 min-w-[48px] min-h-[48px] sm:h-14 sm:w-14 md:h-16 md:w-16 items-center justify-center rounded-full border transition-all duration-300"
           :class="menuOpen
             ? 'border-forest/30 text-forest'
             : 'border-white/25 text-white hover:border-white/50'"
@@ -63,7 +63,7 @@
       style="background-color: #E8F1F2;"
     >
       <!-- Content — pt accounts for header height -->
-      <div class="flex h-full flex-col px-[26px] pb-10 pt-36 md:px-[42px] lg:flex-row lg:items-center lg:pt-0">
+      <div class="flex h-full flex-col px-4 pb-10 pt-28 sm:px-6 sm:pt-32 md:px-[42px] md:pt-36 lg:flex-row lg:items-center lg:pt-0">
 
         <!-- Left column: contact info (desktop only) -->
         <div class="hidden lg:flex lg:w-72 lg:flex-col lg:justify-end lg:pb-4 xl:w-80">
@@ -96,6 +96,18 @@
           >
             {{ link.label }}
           </NuxtLink>
+
+          <!-- Stats am unteren Menürand -->
+          <div class="menu-link mt-12 grid grid-cols-2 gap-4 lg:grid-cols-4" style="--delay: 400ms">
+            <div
+              v-for="stat in menuStats"
+              :key="stat.label"
+              class="flex flex-col"
+            >
+              <span class="font-display text-2xl font-black lg:text-3xl" style="color:#31493C;">{{ stat.value }}</span>
+              <span class="text-sm font-medium" style="color:#7A9E7E;">{{ stat.label }}</span>
+            </div>
+          </div>
         </nav>
 
         <!-- Mobile bottom bar -->
@@ -120,15 +132,28 @@ const { t, locale } = useI18n()
 const route = useRoute()
 
 const scrolled = ref(false)
+const isMd = ref(true)
+onMounted(() => {
+  const mq = window.matchMedia('(min-width: 768px)')
+  isMd.value = mq.matches
+  mq.addEventListener('change', (e) => { isMd.value = e.matches })
+})
+const logoSize = computed(() => isMd.value ? 80 : 56)
 const menuOpen = ref(false)
 
 const overlayNavLinks = computed(() => [
   { to: '/work',     label: t('nav.work')     },
   { to: '/services', label: t('nav.services') },
-  { to: '/about',    label: t('nav.about')    },
   { to: '/insights', label: t('nav.insights') },
   { to: '/careers',  label: t('nav.careers')  },
   { to: '/contact',  label: t('nav.contact')  },
+])
+
+const menuStats = computed(() => [
+  { value: '50+',  label: t('nav.stats.projects') },
+  { value: '98%',  label: t('nav.stats.satisfaction') },
+  { value: '5+',   label: t('nav.stats.years') },
+  { value: '3×',   label: t('nav.stats.roi') },
 ])
 
 function toggleMenu() {

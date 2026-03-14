@@ -1,12 +1,21 @@
 <template>
-  <section class="section">
-    <div class="container mb-10 text-center">
-      <UiBadge class="mb-4">{{ t('home.refsLabel') }}</UiBadge>
-      <h2 class="section-title">{{ t('home.refsTitle') }}</h2>
-      <p class="section-subtitle mt-3 mx-auto max-w-lg">{{ t('home.refsSubtitle') }}</p>
-    </div>
+  <section class="section section-references">
+    <div class="references-wrapper">
+      <div class="references-text">
+        <UiBadge class="mb-4">{{ t('home.refsLabel') }}</UiBadge>
+        <h2 class="section-title">{{ t('home.refsTitle') }}</h2>
+        <div class="subtitle-row">
+          <p class="section-subtitle">{{ t('home.refsSubtitle') }}</p>
+          <NuxtLink to="/work" class="btn-outline btn-inline">
+            {{ t('home.refsAll') }}
+            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+            </svg>
+          </NuxtLink>
+        </div>
+      </div>
 
-    <div ref="threeContainer" class="immersive-stage">
+      <div ref="threeContainer" class="immersive-stage">
       <div
         class="click-overlay"
         @mousedown="startDrag"
@@ -17,15 +26,7 @@
         @touchend="stopDrag"
         @mouseleave="onMouseLeave"
       />
-    </div>
-
-    <div class="mt-8 text-center">
-      <NuxtLink to="/work" class="btn-outline">
-        {{ t('home.refsAll') }}
-        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-        </svg>
-      </NuxtLink>
+      </div>
     </div>
   </section>
 </template>
@@ -415,10 +416,56 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
+.section-references {
+  padding-top: 0;
+  padding-bottom: 0;
+  margin-top: -1rem;
+}
+
+.references-wrapper {
+  position: relative;
+}
+
+.references-text {
+  position: absolute;
+  left: 0.75rem;
+  right: 0.75rem;
+  top: -2rem;
+  z-index: 20;
+  max-width: 28rem;
+  margin-right: auto;
+  pointer-events: none;
+}
+
+.references-text .subtitle-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.references-text .subtitle-row .btn-inline {
+  margin-left: auto;
+}
+
+.references-text .btn-inline {
+  pointer-events: auto;
+  flex-shrink: 0;
+}
+
+@media (min-width: 768px) {
+  .references-text {
+    left: 2rem;
+    top: -3rem;
+    max-width: 32rem;
+  }
+}
+
 .immersive-stage {
   position: relative;
   width: 100%;
-  height: 120vh;
+  height: 130vh;
   overflow: hidden;
   cursor: default;
 }
