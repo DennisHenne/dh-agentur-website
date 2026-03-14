@@ -1,7 +1,7 @@
 <template>
   <section class="section section-cta">
     <div class="container">
-      <div class="relative overflow-hidden rounded-2xl text-center min-h-[280px] sm:min-h-[360px] md:min-h-[420px]" style="background: #0a1f28; border: 1px solid rgba(122,158,126,0.12);">
+      <div class="relative overflow-hidden rounded-[50px] text-center min-h-[280px] sm:min-h-[360px] md:min-h-[420px]" style="background: #0a1f28; border: 1px solid rgba(122,158,126,0.12);">
         <!-- Video background -->
         <video
           autoplay

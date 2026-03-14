@@ -7,6 +7,8 @@
     "careers": "Careers",
     "contact": "Contact",
     "contactButton": "Contact",
+    "call": "Call",
+    "whatsapp": "WhatsApp",
     "stats": {
       "projects": "Projects completed",
       "satisfaction": "Client satisfaction",
@@ -80,15 +82,43 @@
     "backToServices": "← Back to Services"
   },
   "about": {
+    "label": "About",
+    "title": "This is us",
+    "subtitle": "A team of developers, strategists and creatives — united by the ambition to do truly great digital work.",
+    "founder": "Founder",
     "pageLabel": "About",
     "pageTitle": "This is us",
     "pageSubtitle": "A team of developers, strategists and creatives — united by the ambition to do truly great digital work.",
     "teamTitle": "Our Team",
     "valuesTitle": "Our Values",
+    "processLabel": "Process",
     "processTitle": "How we work",
+    "processSubtitle": "From first idea to launch — this is how we work with you.",
     "cta": "Work with us",
+    "ctaTitle": "Start a new digital chapter with us",
+    "ctaButton": "Get in touch now",
     "statsLabel": "Numbers & Facts",
-    "statsTitle": "What our results speak"
+    "statsTitle": "What our results speak",
+    "value1Title": "Results-driven",
+    "value1Desc": "We measure ourselves by concrete, measurable results — not by activities.",
+    "value2Title": "Partnership-oriented",
+    "value2Desc": "We work on equal footing, transparently and with clear communication.",
+    "value3Title": "Pragmatic",
+    "value3Desc": "Solutions that work — without unnecessary complexity.",
+    "value4Title": "Data-driven",
+    "value4Desc": "Decisions based on data, not gut feeling.",
+    "step1Title": "Discovery & Analysis",
+    "step1Desc": "We get to know your company, your goals and your challenges.",
+    "step2Title": "Strategy & Concept",
+    "step2Desc": "Together we develop a clear plan with defined goals and KPIs.",
+    "step3Title": "Implementation",
+    "step3Desc": "Agile implementation in short sprints — with regular updates and feedback loops.",
+    "step4Title": "Launch & Optimization",
+    "step4Desc": "Go-live, monitoring and continuous improvement based on real data.",
+    "stat1Label": "Projects completed",
+    "stat2Label": "Client satisfaction",
+    "stat3Label": "Years of experience",
+    "stat4Label": "Avg. ROI of our clients"
   },
   "insights": {
     "pageLabel": "Blog & Insights",
@@ -130,6 +160,8 @@
       "error": "Something went wrong. Please try again."
     },
     "infoTitle": "Contact Details",
+    "call": "Call",
+    "whatsapp": "WhatsApp",
     "faqTitle": "Frequently Asked Questions"
   },
   "faq": {

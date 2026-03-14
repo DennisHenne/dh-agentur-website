@@ -1,59 +1,35 @@
 <template>
   <div>
-    <!-- Hero -->
-    <section class="relative pb-16 pt-32 md:pt-40">
-      <div class="container">
-        <UiBadge class="mb-4">{{ t('about.label') }}</UiBadge>
-        <h1 class="section-title mb-6 max-w-3xl">{{ t('about.title') }}</h1>
-        <p class="section-subtitle max-w-2xl">{{ t('about.subtitle') }}</p>
-      </div>
-    </section>
-
-    <!-- Team -->
-    <section class="section">
-      <div class="container">
-        <div class="mb-12 text-center">
-          <UiBadge class="mb-4">{{ t('about.teamLabel') }}</UiBadge>
-          <h2 class="section-title mb-4">{{ t('about.teamTitle') }}</h2>
-          <p class="section-subtitle mx-auto max-w-2xl">{{ t('about.teamSubtitle') }}</p>
-        </div>
-        <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          <div
-            v-for="member in team"
-            :key="member.name"
-            class="card text-center"
-          >
-            <div class="mb-4 mx-auto flex h-20 w-20 items-center justify-center rounded-2xl text-2xl font-display font-bold" style="background:linear-gradient(135deg,#31493C,#7A9E7E); color:#B3EFB2;">
-              {{ member.initials }}
+    <!-- Hero mit Profilbild -->
+    <section class="relative overflow-hidden pb-16 pt-32 md:pt-40">
+      <!-- Dezentes Hintergrundmuster -->
+      <div class="absolute inset-0 opacity-[0.03]" style="background-image: radial-gradient(circle at 2px 2px, #B3EFB2 1px, transparent 0); background-size: 32px 32px;" />
+      <div class="container relative">
+        <div class="flex flex-col md:flex-row items-center gap-8 md:gap-12">
+          <div class="flex-shrink-0 order-2 md:order-1">
+            <div class="relative">
+              <img
+                src="/Profilbild (2).JPG"
+                alt="Dennis Henne"
+                class="w-36 h-36 sm:w-44 sm:h-44 md:w-52 md:h-52 rounded-2xl object-cover border-2 shadow-2xl ring-4 ring-white/5"
+                style="border-color: rgba(179,239,178,0.25); box-shadow: 0 25px 50px -12px rgba(0,0,0,0.4), 0 0 0 1px rgba(179,239,178,0.1);"
+              />
             </div>
-            <h3 class="mb-1 font-display text-lg font-bold text-light">{{ member.name }}</h3>
-            <p class="mb-3 text-sm" style="color:#B3EFB2;">{{ member.role }}</p>
-            <p class="text-sm text-white/60">{{ member.bio }}</p>
+          </div>
+          <div class="flex-1 order-1 md:order-2 text-center md:text-left">
+            <UiBadge class="mb-4">{{ t('about.label') }}</UiBadge>
+            <h1 class="section-title mb-6 max-w-3xl">{{ t('about.title') }}</h1>
+            <p class="section-subtitle max-w-2xl mb-6">{{ t('about.subtitle') }}</p>
+            <div class="flex flex-col items-center md:items-start gap-1">
+              <span class="font-display font-bold text-light text-lg">Dennis Henne</span>
+              <span class="text-white/60 text-sm">{{ t('about.founder') }}</span>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Values -->
-    <section class="section">
-      <div class="container">
-        <div class="mb-12 text-center">
-          <UiBadge class="mb-4">{{ t('about.valuesLabel') }}</UiBadge>
-          <h2 class="section-title mb-4">{{ t('about.valuesTitle') }}</h2>
-        </div>
-        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          <div
-            v-for="value in values"
-            :key="value.title"
-            class="card"
-          >
-            <div class="mb-4 text-3xl">{{ value.icon }}</div>
-            <h3 class="mb-2 font-display font-bold text-light">{{ value.title }}</h3>
-            <p class="text-sm text-white/60">{{ value.desc }}</p>
-          </div>
-        </div>
-      </div>
-    </section>
+    
 
     <!-- Process -->
     <section class="section">
@@ -104,21 +80,61 @@
         </div>
       </div>
     </section>
+    <!-- Referenzen / Testimonials -->
+    <section class="section pt-4 sm:pt-6 md:pt-8 lg:pt-10">
+      <div class="container">
+        <h2 class="mb-10 text-2xl font-display font-bold text-white">{{ t('work.refsTitle') }}</h2>
 
-    <!-- CTA -->
+        <!-- Testimonials -->
+        <div class="grid gap-6 md:grid-cols-3">
+          <div v-for="t2 in testimonials" :key="t2.name" class="card">
+            <div class="mb-4 flex gap-1">
+              <svg v-for="i in 5" :key="i" class="h-4 w-4 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+              </svg>
+            </div>
+            <p class="mb-5 text-sm text-white/60 italic leading-relaxed">"{{ t2.quote }}"</p>
+            <div class="flex items-center gap-3">
+              <div class="flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold" style="background:linear-gradient(135deg,#B3EFB2,#7A9E7E); color:#001A23;">
+                {{ t2.name[0] }}
+              </div>
+              <div>
+                <div class="text-sm font-semibold text-white">{{ t2.name }}</div>
+                <div class="text-xs text-white/40">{{ t2.role }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA (wie Startseite) -->
     <section class="section">
       <div class="container">
-        <div class="relative overflow-hidden rounded-3xl p-12 text-center md:p-20" style="border:1px solid rgba(122,158,126,0.22); background:linear-gradient(135deg,#31493C 0%,#0c2a35 60%,#001A23 100%)">
-          <div class="absolute top-0 left-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl" style="background:rgba(179,239,178,0.1)" />
-          <div class="relative">
-            <h2 class="section-title mb-4">{{ t('about.ctaTitle') }}</h2>
-            <p class="section-subtitle mx-auto mb-8 max-w-xl">{{ t('about.ctaSubtitle') }}</p>
-            <NuxtLink to="/contact" class="btn-primary">
-              {{ t('about.ctaButton') }}
-              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </NuxtLink>
+        <div class="relative overflow-hidden rounded-[50px] text-center min-h-[280px] sm:min-h-[360px] md:min-h-[420px]" style="background: #0a1f28; border: 1px solid rgba(122,158,126,0.12);">
+          <video
+            autoplay
+            muted
+            loop
+            playsinline
+            class="absolute inset-0 h-full w-full object-cover"
+          >
+            <source src="/rocket.mp4" type="video/mp4">
+          </video>
+          <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70" />
+          <div class="relative flex flex-col items-center justify-center gap-6 p-12 md:p-20 min-h-[420px]">
+            <h2 class="section-title text-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl">{{ t('about.ctaTitle') }}</h2>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <NuxtLink to="/contact" class="btn-primary text-base px-8 py-4">
+                {{ t('about.ctaButton') }}
+                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </NuxtLink>
+              <NuxtLink to="/work" class="btn-secondary text-base px-8 py-4">
+                {{ t('home.workAll') }}
+              </NuxtLink>
+            </div>
           </div>
         </div>
       </div>
@@ -127,17 +143,15 @@
 </template>
 
 <script setup lang="ts">
-const { t } = useI18n()
+const { t, locale } = useI18n()
 
 useSeoMeta({
-  title: () => t('seo.aboutTitle'),
-  description: () => t('seo.aboutDescription'),
+  title: () => t('meta.about.title'),
+  description: () => t('meta.about.description'),
 })
 
 const team = [
-  { initials: 'DH', name: 'David Hofer', role: 'Founder & CEO', bio: 'Visionär und strategischer Kopf hinter DH Agentur. Experte für digitale Transformation.' },
-  { initials: 'MK', name: 'Maria Klein', role: 'Head of Development', bio: 'Full-Stack-Entwicklerin mit Leidenschaft für sauberen Code und performante Lösungen.' },
-  { initials: 'JS', name: 'Jonas Schwarz', role: 'Digital Marketing Lead', bio: 'SEO-, SEA- und Content-Stratege mit über 8 Jahren Erfahrung in wachstumsstarken Märkten.' },
+  { initials: 'DH', name: 'Dennis Henne', role: 'Inhaber', bio: 'Gründer und Inhaber der DH Online&Eventagentur. Experte für digitale Transformation und Events.' },
 ]
 
 const values = [
@@ -147,18 +161,48 @@ const values = [
   { icon: '🔬', title: 'Datengetrieben', desc: 'Entscheidungen auf Basis von Daten, nicht Bauchgefühl.' },
 ]
 
-const processSteps = [
-  { title: 'Kennenlernen & Analyse', desc: 'Wir lernen euer Unternehmen, eure Ziele und eure Herausforderungen kennen.' },
-  { title: 'Strategie & Konzept', desc: 'Gemeinsam entwickeln wir einen klaren Plan mit definierten Zielen und KPIs.' },
-  { title: 'Umsetzung', desc: 'Agile Umsetzung in kurzen Sprints — mit regelmäßigen Updates und Feedback-Schleifen.' },
-  { title: 'Launch & Optimierung', desc: 'Go-live, Monitoring und kontinuierliche Verbesserung auf Basis von echten Daten.' },
-]
+const processSteps = computed(() => {
+  void locale.value // Reaktivität bei Sprachwechsel
+  return [
+    { title: t('about.step1Title'), desc: t('about.step1Desc') },
+    { title: t('about.step2Title'), desc: t('about.step2Desc') },
+    { title: t('about.step3Title'), desc: t('about.step3Desc') },
+    { title: t('about.step4Title'), desc: t('about.step4Desc') },
+  ]
+})
 
-const stats = [
-  { value: '50+', label: 'Projekte abgeschlossen' },
-  { value: '98%', label: 'Kundenzufriedenheit' },
-  { value: '5+', label: 'Jahre Erfahrung' },
-  { value: '3×', label: 'Ø ROI unserer Kunden' },
-]
+const stats = computed(() => {
+  void locale.value // Reaktivität bei Sprachwechsel
+  return [
+    { value: '50+', label: t('about.stat1Label') },
+    { value: '98%', label: t('about.stat2Label') },
+    { value: '5+', label: t('about.stat3Label') },
+    { value: '3×', label: t('about.stat4Label') },
+  ]
+})
+
+const testimonials = computed(() => [
+  {
+    quote: locale.value === 'de'
+      ? 'DH Agentur hat unser Projekt pünktlich und genau nach unseren Vorstellungen umgesetzt. Absolute Empfehlung!'
+      : 'DH Agentur delivered our project on time and exactly to our specifications. Highly recommended!',
+    name: 'Anna Müller',
+    role: locale.value === 'de' ? 'Geschäftsführerin, Acme GmbH' : 'CEO, Acme GmbH',
+  },
+  {
+    quote: locale.value === 'de'
+      ? 'Das Co-Working-System hat unser Business komplett transformiert. Buchungen laufen jetzt vollautomatisch.'
+      : 'The co-working system completely transformed our business. Bookings now run fully automatically.',
+    name: 'Thomas Bauer',
+    role: locale.value === 'de' ? 'Gründer, Vienna Co-Work' : 'Founder, Vienna Co-Work',
+  },
+  {
+    quote: locale.value === 'de'
+      ? 'Die Testwebsite-Plattform hat unsere Präsentationszeit um 60% reduziert. Einfach genial.'
+      : 'The test website platform reduced our presentation time by 60%. Simply brilliant.',
+    name: 'Sarah Weber',
+    role: locale.value === 'de' ? 'Creative Director, TechStart' : 'Creative Director, TechStart',
+  },
+])
 </script>
 

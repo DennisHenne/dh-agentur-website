@@ -22,10 +22,10 @@
               {{ locale === 'de' ? '1. Verantwortlicher' : '1. Controller' }}
             </h2>
             <p class="text-white/70 leading-relaxed">
-              DH Agentur<br>
-              Wipplingerstraße 1<br>
-              1010 Wien, Österreich<br>
-              E-Mail: hallo@dh-agentur.at
+              DH Online&Eventagentur<br>
+              An der Stadtgärtnerei 47<br>
+              46485 Wesel, Deutschland<br>
+              E-Mail: dennish@dhagentur.de
             </p>
           </div>
 

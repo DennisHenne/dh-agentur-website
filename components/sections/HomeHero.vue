@@ -45,7 +45,7 @@
               <span class="dot bg-[#ff5f57]" />
               <span class="dot bg-[#febc2e]" />
               <span class="dot bg-[#28c840]" />
-              <span class="console-title">dh-agentur — console</span>
+              <span class="console-title">dh-onlineagentur — console</span>
             </div>
 
             <!-- Output history (fixed height, scrollable) -->
@@ -62,7 +62,7 @@
 
             <!-- Input row: hidden real input + displayed text + cursor -->
             <div class="console-input-row">
-              <span class="console-prompt">~/dh-agentur %&nbsp;</span>
+              <span class="console-prompt">~/dh-onlineagentur %&nbsp;</span>
               <span class="console-slash">/</span>
               <span class="console-typed">{{ inputValue }}</span>
               <span v-if="isFocused" class="console-cursor">▌</span>
@@ -140,7 +140,7 @@ function handleCommand() {
 
   // echo the typed command
   addLine(
-    `<span style="color:rgba(255,255,255,0.35)">~/dh-agentur %</span> <span style="color:#B3EFB2">/</span><span style="color:#fff">${escapeHtml(raw)}</span>`,
+    `<span style="color:rgba(255,255,255,0.35)">~/dh-onlineagentur %</span> <span style="color:#B3EFB2">/</span><span style="color:#fff">${escapeHtml(raw)}</span>`,
   )
 
   if (cmd === '/help') {

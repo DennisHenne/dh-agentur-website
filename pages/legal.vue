@@ -22,10 +22,10 @@
               {{ locale === 'de' ? 'Anbieter' : 'Provider' }}
             </h2>
             <p class="text-white/70 leading-relaxed">
-              DH Agentur<br>
-              Wipplingerstraße 1<br>
-              1010 Wien<br>
-              Österreich
+              DH Online&Eventagentur<br>
+              An der Stadtgärtnerei 47<br>
+              46485 Wesel<br>
+              Deutschland
             </p>
           </div>
 
@@ -34,8 +34,8 @@
               {{ locale === 'de' ? 'Kontakt' : 'Contact' }}
             </h2>
             <p class="text-white/70 leading-relaxed">
-              E-Mail: hallo@dh-agentur.at<br>
-              Telefon: +43 1 234 5678
+              E-Mail: dennish@dhagentur.de<br>
+              Telefon: 0159 01078280
             </p>
           </div>
 
@@ -44,8 +44,8 @@
               {{ locale === 'de' ? 'Umsatzsteuer-ID' : 'VAT ID' }}
             </h2>
             <p class="text-white/70 leading-relaxed">
-              {{ locale === 'de' ? 'Umsatzsteuer-Identifikationsnummer gemäß § 27a Umsatzsteuergesetz' : 'VAT identification number according to § 27a Austrian VAT Act' }}<br>
-              ATU12345678
+              {{ locale === 'de' ? 'Umsatzsteuer-Identifikationsnummer gemäß § 27a Umsatzsteuergesetz' : 'VAT identification number according to § 27a German VAT Act' }}<br>
+              DE123456789
             </p>
           </div>
 
@@ -54,9 +54,10 @@
               {{ locale === 'de' ? 'Verantwortlich für den Inhalt' : 'Responsible for content' }}
             </h2>
             <p class="text-white/70 leading-relaxed">
-              DH Agentur<br>
-              Wipplingerstraße 1<br>
-              1010 Wien
+              Dennis Henne<br>
+              DH Online&Eventagentur<br>
+              An der Stadtgärtnerei 47<br>
+              46485 Wesel
             </p>
           </div>
 

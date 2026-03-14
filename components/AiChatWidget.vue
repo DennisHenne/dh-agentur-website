@@ -179,7 +179,7 @@ function getAutoReply(text: string): string {
       return 'Ein Projekt startet immer mit einem kostenlosen Erstgespräch. Danach: Angebot → Kickoff → agile Entwicklung → Launch. Klingt gut?'
     }
     if (lower.includes('kontakt') || lower.includes('gespräch') || lower.includes('termin')) {
-      return 'Kein Problem! Am schnellsten erreichen Sie uns über das Kontaktformular auf /contact oder direkt per E-Mail: hallo@dh-agentur.at'
+      return 'Kein Problem! Am schnellsten erreichen Sie uns über das Kontaktformular auf /contact oder direkt per E-Mail: dennish@dhagentur.de'
     }
     return 'Danke für Ihre Frage! Für eine detaillierte Antwort empfehle ich unser kostenloses Erstgespräch. Soll ich Ihnen den Link zum Kontaktformular geben?'
   } else {
@@ -193,7 +193,7 @@ function getAutoReply(text: string): string {
       return 'A project always starts with a free discovery call. Then: proposal → kickoff → agile development → launch. Sounds good?'
     }
     if (lower.includes('contact') || lower.includes('call') || lower.includes('meeting')) {
-      return 'No problem! The fastest way to reach us is via the contact form at /contact or directly by email: hallo@dh-agentur.at'
+      return 'No problem! The fastest way to reach us is via the contact form at /contact or directly by email: dennish@dhagentur.de'
     }
     return 'Thanks for your question! For a detailed answer, I recommend our free discovery call. Can I give you the link to the contact form?'
   }

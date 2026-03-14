@@ -7,6 +7,8 @@
     "careers": "Karriere",
     "contact": "Kontakt",
     "contactButton": "Kontaktieren",
+    "call": "Anrufen",
+    "whatsapp": "WhatsApp",
     "stats": {
       "projects": "Projekte abgeschlossen",
       "satisfaction": "Kundenzufriedenheit",
@@ -80,15 +82,43 @@
     "backToServices": "← Zurück zu Leistungen"
   },
   "about": {
+    "label": "Über uns",
+    "title": "Das sind wir",
+    "subtitle": "Ein Team aus Entwicklern, Strategen und Kreativen — vereint durch den Anspruch, wirklich gute digitale Arbeit zu leisten.",
+    "founder": "Gründer",
     "pageLabel": "Über uns",
     "pageTitle": "Das sind wir",
     "pageSubtitle": "Ein Team aus Entwicklern, Strategen und Kreativen — vereint durch den Anspruch, wirklich gute digitale Arbeit zu leisten.",
     "teamTitle": "Unser Team",
     "valuesTitle": "Unsere Werte",
+    "processLabel": "Prozess",
     "processTitle": "Unsere Arbeitsweise",
+    "processSubtitle": "Von der ersten Idee bis zum Launch — so arbeiten wir mit Ihnen zusammen.",
     "cta": "Gemeinsam arbeiten",
+    "ctaTitle": "Starten Sie mit uns zusammen in ein neues digitales Kapitel",
+    "ctaButton": "Jetzt Kontakt aufnehmen",
     "statsLabel": "Zahlen & Fakten",
-    "statsTitle": "Das sagen unsere Ergebnisse"
+    "statsTitle": "Das sagen unsere Ergebnisse",
+    "value1Title": "Ergebnisorientiert",
+    "value1Desc": "Wir messen uns an konkreten, messbaren Ergebnissen — nicht an Aktivitäten.",
+    "value2Title": "Partnerschaftlich",
+    "value2Desc": "Wir arbeiten auf Augenhöhe, transparent und mit klarer Kommunikation.",
+    "value3Title": "Pragmatisch",
+    "value3Desc": "Lösungen, die funktionieren — ohne unnötige Komplexität.",
+    "value4Title": "Datengetrieben",
+    "value4Desc": "Entscheidungen auf Basis von Daten, nicht Bauchgefühl.",
+    "step1Title": "Kennenlernen & Analyse",
+    "step1Desc": "Wir lernen euer Unternehmen, eure Ziele und eure Herausforderungen kennen.",
+    "step2Title": "Strategie & Konzept",
+    "step2Desc": "Gemeinsam entwickeln wir einen klaren Plan mit definierten Zielen und KPIs.",
+    "step3Title": "Umsetzung",
+    "step3Desc": "Agile Umsetzung in kurzen Sprints — mit regelmäßigen Updates und Feedback-Schleifen.",
+    "step4Title": "Launch & Optimierung",
+    "step4Desc": "Go-live, Monitoring und kontinuierliche Verbesserung auf Basis von echten Daten.",
+    "stat1Label": "Projekte abgeschlossen",
+    "stat2Label": "Kundenzufriedenheit",
+    "stat3Label": "Jahre Erfahrung",
+    "stat4Label": "Ø ROI unserer Kunden"
   },
   "insights": {
     "pageLabel": "Blog & Insights",
@@ -130,6 +160,8 @@
       "error": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut."
     },
     "infoTitle": "Kontaktdaten",
+    "call": "Anrufen",
+    "whatsapp": "WhatsApp",
     "faqTitle": "Häufige Fragen"
   },
   "faq": {
