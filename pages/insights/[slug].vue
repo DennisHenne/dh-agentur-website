@@ -91,7 +91,10 @@
             prose-li:text-dark/70
             prose-img:rounded-xl prose-img:shadow-sm
             prose-hr:border-forest/10">
-            <ContentRenderer :value="article" />
+            <!-- API mode: content is pre-rendered HTML -->
+            <div v-if="isApiMode" v-html="article.content" />
+            <!-- Local/backend mode: let Nuxt Content render the Markdown -->
+            <ContentRenderer v-else :value="article" />
           </div>
 
           <!-- Citations -->
@@ -146,15 +149,20 @@
 <script setup lang="ts">
 const { t, locale } = useI18n()
 const route = useRoute()
+const config = useRuntimeConfig()
+const backendUrl = config.public.backendUrl
 
 const slugParam = route.params.slug
 const slug = typeof slugParam === 'string' ? slugParam : slugParam?.[0] ?? ''
 
-const { data: article } = await useAsyncData(`insight-${slug}`, () =>
-  slug
-    ? queryContent(`/insights/${slug}`).findOne()
-    : Promise.resolve(null),
-)
+const { data: article } = backendUrl
+  ? await useFetch<any>(`${backendUrl}/api/public/insights/${slug}`, { key: `insight-${slug}` })
+  : await useAsyncData(`insight-${slug}`, () =>
+      slug ? queryContent(`/insights/${slug}`).findOne() : Promise.resolve(null),
+    )
+
+// True when content was served via the API (HTML string vs Nuxt Content object)
+const isApiMode = computed(() => !!backendUrl)
 
 if (!article.value) {
   throw createError({ statusCode: 404, message: 'Article not found' })

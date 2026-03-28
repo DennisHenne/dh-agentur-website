@@ -83,6 +83,9 @@ export default defineNuxtConfig({
     adminPassword: process.env.ADMIN_PASSWORD || 'admin123',
     public: {
       siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'http://localhost:3000',
+      // When set, the frontend fetches content from this URL instead of
+      // reading local markdown files (used in the split-deployment setup).
+      backendUrl: process.env.NUXT_PUBLIC_BACKEND_URL || '',
     },
   },
 

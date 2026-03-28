@@ -1,34 +1,66 @@
+###############################################################################
+# Production split: backend on home server, frontend separate instance.
+#
+# Usage:
+#   docker compose up -d          ← starts both backend + frontend
+#   docker compose up backend -d  ← backend only
+#
+# Environment:
+#   Copy .env.example → .env and fill in the values before first run.
+###############################################################################
+
 services:
-  # ── Production preview (built image) ────────────────────────────────────────
-  app:
+
+  # ── Backend (admin panel + public API + content management) ─────────────────
+  backend:
     build:
       context: .
       dockerfile: Dockerfile
-      target: runner
-    container_name: dh-agentur-app
+      args:
+        IS_BACKEND: "true"
+        NUXT_PUBLIC_SITE_URL: ${BACKEND_URL:-http://localhost:3001}
+        NUXT_PUBLIC_BACKEND_URL: ""   # backend reads files directly, no API hop needed
+    container_name: dh-backend
     ports:
-      - '3000:3000'
+      - "3001:3000"
     environment:
-      - NODE_ENV=production
-      - NUXT_PUBLIC_SITE_URL=http://localhost:3000
+      NODE_ENV: production
+      NUXT_PORT: "3000"
+      IS_BACKEND: "true"
+      JWT_SECRET: ${JWT_SECRET}
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-admin@dh-agentur.de}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-changeme}
+      NUXT_PUBLIC_SITE_URL: ${BACKEND_URL:-http://localhost:3001}
+      FRONTEND_URL: ${FRONTEND_URL:-*}   # CORS allow-origin for /api/public/*
+    volumes:
+      - content:/app/content           # markdown files (shared with frontend)
+      - uploads:/app/public/uploads    # uploaded images
+      - db:/app/data                   # SQLite database
     restart: unless-stopped
 
-  # ── Development with hot-reload ──────────────────────────────────────────────
-  dev:
-    image: node:22-alpine
-    container_name: dh-agentur-dev
-    working_dir: /app
+  # ── Frontend (public website, reads content via backend API) ─────────────────
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        IS_BACKEND: "false"
+        NUXT_PUBLIC_SITE_URL: ${FRONTEND_URL:-http://localhost:3000}
+        NUXT_PUBLIC_BACKEND_URL: ${BACKEND_URL:-http://backend:3001}
+    container_name: dh-frontend
     ports:
-      - '3000:3000'
-    volumes:
-      - .:/app
-      - /app/node_modules
-      # .nuxt must stay on the bind mount so route manifests match pages/ on the host.
-      # An anonymous volume here caused stale routes after renaming/removing page files.
+      - "3000:3000"
     environment:
-      - NODE_ENV=development
-      - HOST=0.0.0.0
-      - PORT=3000
-    command: sh -c "npm install --legacy-peer-deps && npm run dev"
-    profiles:
-      - dev
+      NODE_ENV: production
+      NUXT_PORT: "3000"
+      IS_BACKEND: "false"
+      NUXT_PUBLIC_SITE_URL: ${FRONTEND_URL:-http://localhost:3000}
+      NUXT_PUBLIC_BACKEND_URL: ${BACKEND_URL:-http://backend:3001}
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  content:
+  uploads:
+  db:

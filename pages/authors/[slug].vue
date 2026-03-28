@@ -71,8 +71,8 @@
       </div>
     </section>
 
-    <!-- Extended bio (rich Nuxt Content) -->
-    <section v-if="author.body" class="pb-12">
+    <!-- Extended bio (rich content) -->
+    <section v-if="author.body || (isApiMode && author.content)" class="pb-12">
       <div class="container max-w-3xl">
         <div class="prose prose-lg max-w-none
           prose-headings:font-display prose-headings:font-bold prose-headings:text-dark
@@ -80,7 +80,8 @@
           prose-a:text-brand-600 prose-a:no-underline hover:prose-a:underline
           prose-strong:text-dark
           prose-li:text-dark/70">
-          <ContentRenderer :value="author" />
+          <div v-if="isApiMode" v-html="author.content" />
+          <ContentRenderer v-else :value="author" />
         </div>
       </div>
     </section>
@@ -98,7 +99,7 @@
         <div v-if="authorPosts?.length" class="grid sm:grid-cols-2 gap-6">
           <NuxtLink
             v-for="post in authorPosts"
-            :key="post._path"
+            :key="post._path || post.slug"
             :to="post._path || `/insights/${post.slug}`"
             class="group card flex flex-col gap-3"
           >
@@ -137,17 +138,27 @@
 <script setup lang="ts">
 const { locale } = useI18n()
 const route = useRoute()
+const config = useRuntimeConfig()
+const backendUrl = config.public.backendUrl
 const slug = route.params.slug as string
 
-const { data: author } = await useAsyncData(`author-${slug}`, () =>
-  queryContent(`/authors/${slug}`).findOne().catch(() => null),
-)
+// In API mode the backend returns author + posts in one call.
+// In local mode we make two separate queryContent calls.
+const { data: author } = backendUrl
+  ? await useFetch<any>(`${backendUrl}/api/public/authors/${slug}`, { key: `author-${slug}` })
+  : await useAsyncData(`author-${slug}`, () =>
+      queryContent(`/authors/${slug}`).findOne().catch(() => null),
+    )
 
-const { data: authorPosts } = await useAsyncData(`author-posts-${slug}`, () =>
-  author.value?.name
-    ? queryContent('/insights').where({ author: author.value.name }).sort({ date: -1 }).find().catch(() => [])
-    : Promise.resolve([]),
-)
+const { data: authorPosts } = backendUrl
+  ? { data: computed(() => author.value?.posts || []) }
+  : await useAsyncData(`author-posts-${slug}`, () =>
+      author.value?.name
+        ? queryContent('/insights').where({ author: author.value.name }).sort({ date: -1 }).find().catch(() => [])
+        : Promise.resolve([]),
+    )
+
+const isApiMode = computed(() => !!backendUrl)
 
 if (!author.value) {
   throw createError({ statusCode: 404, message: 'Author not found' })

@@ -133,7 +133,10 @@ useSeoMeta({
 })
 
 // Fetch live career listings from the backend
-const { data: apiJobs } = await useFetch<any[]>('/api/public/careers').catch(() => ({ data: ref([]) }))
+const config = useRuntimeConfig()
+const backendUrl = config.public.backendUrl
+const careersUrl = backendUrl ? `${backendUrl}/api/public/careers` : '/api/public/careers'
+const { data: apiJobs } = await useFetch<any[]>(careersUrl).catch(() => ({ data: ref([]) }))
 
 const perks = computed(() => [
   {

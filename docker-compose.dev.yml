@@ -1,0 +1,29 @@
+###############################################################################
+# Local development — hot-reload, no Docker volumes needed for source code.
+#
+# Usage:
+#   docker compose -f docker-compose.dev.yml up
+###############################################################################
+
+services:
+
+  # ── Single dev server (monolith mode, uses Nuxt Content directly) ──────────
+  dev:
+    image: node:22-alpine
+    container_name: dh-dev
+    working_dir: /app
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      NODE_ENV: development
+      HOST: 0.0.0.0
+      PORT: "3000"
+      # Leave BACKEND_URL unset so pages use queryContent / local SQLite
+      JWT_SECRET: dev-secret-do-not-use-in-production
+      ADMIN_EMAIL: admin@dh-agentur.de
+      ADMIN_PASSWORD: admin123
+      IS_BACKEND: "true"
+    command: sh -c "npm install --legacy-peer-deps && npm run dev"

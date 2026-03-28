@@ -91,14 +91,24 @@ const categories = computed(() => [
   { key: 'strategy', label: t('insights.categories.strategy') },
 ])
 
-const { data: articles } = await useAsyncData('insights', () =>
-  queryContent('/insights').sort({ date: -1 }).find()
+const config = useRuntimeConfig()
+const backendUrl = config.public.backendUrl
+
+const { data: articles } = backendUrl
+  ? await useFetch<any[]>(`${backendUrl}/api/public/insights`, { key: 'insights' })
+  : await useAsyncData('insights', () => queryContent('/insights').sort({ date: -1 }).find())
+
+// Normalize: Nuxt Content uses _path, API response uses slug
+const normalizedArticles = computed(() =>
+  (articles.value || []).map((a: any) => ({
+    ...a,
+    _path: a._path || `/insights/${a.slug}`,
+  }))
 )
 
 const filteredArticles = computed(() => {
-  if (!articles.value) return []
-  if (activeCategory.value === 'all') return articles.value
-  return articles.value.filter((a: any) => a.category === activeCategory.value)
+  if (activeCategory.value === 'all') return normalizedArticles.value
+  return normalizedArticles.value.filter((a: any) => a.category === activeCategory.value)
 })
 
 function getCategoryLabel(key: string) {
