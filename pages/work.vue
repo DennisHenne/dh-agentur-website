@@ -16,33 +16,12 @@
       </div>
     </section>
 
-    <!-- Filter bar -->
-    <section class="pb-8">
-      <div class="container">
-        <div class="flex flex-wrap gap-2 justify-center">
-          <button
-            v-for="f in filters"
-            :key="f"
-            @click="activeFilter = f"
-            :class="[
-              'rounded-full border px-4 py-1.5 text-xs font-semibold transition-all duration-200',
-              activeFilter === f
-                ? 'border-forest/60 bg-forest text-white'
-                : 'border-forest/20 bg-white/60 text-dark/60 hover:border-forest/40 hover:text-dark'
-            ]"
-          >
-            {{ f }}
-          </button>
-        </div>
-      </div>
-    </section>
-
     <!-- Projects grid -->
     <section class="section pt-0">
       <div class="container">
         <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           <div
-            v-for="project in filteredProjects"
+            v-for="project in projects"
             :key="project.slug"
             class="group card overflow-hidden p-0"
           >
@@ -232,21 +211,4 @@ const projects = computed(() => [
   },
 ])
 
-const allFilters = computed(() => [
-  locale.value === 'de' ? 'Alle' : 'All',
-  ...new Set(projects.value.map(p => p.type)),
-])
-
-const filters = allFilters
-const activeFilter = ref(computed(() => locale.value === 'de' ? 'Alle' : 'All').value)
-
-watch(locale, () => {
-  activeFilter.value = locale.value === 'de' ? 'Alle' : 'All'
-})
-
-const filteredProjects = computed(() => {
-  const all = locale.value === 'de' ? 'Alle' : 'All'
-  if (activeFilter.value === all) return projects.value
-  return projects.value.filter(p => p.type === activeFilter.value)
-})
 </script>
