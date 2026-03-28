@@ -70,52 +70,22 @@ useSeoMeta({
 
 const services = computed(() => [
   {
-    slug: 'web-development',
-    icon: '<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>',
-    title: locale.value === 'de' ? 'Webentwicklung' : 'Web Development',
-    desc: locale.value === 'de' ? 'Moderne, schnelle Websites und Webpräsenzen auf Top-Niveau.' : 'Modern, fast websites and web presences at top level.',
-  },
-  {
     slug: 'process-optimization',
     icon: '<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>',
     title: locale.value === 'de' ? 'Prozessoptimierung' : 'Process Optimization',
     desc: locale.value === 'de' ? 'Digitalisierung und Automatisierung Ihrer Geschäftsprozesse.' : 'Digitization and automation of your business processes.',
   },
   {
-    slug: 'digital-marketing',
-    icon: '<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" /></svg>',
-    title: 'Digital Marketing',
-    desc: locale.value === 'de' ? 'Strategisches Online-Marketing für nachhaltiges Wachstum.' : 'Strategic online marketing for sustainable growth.',
+    slug: 'web-development',
+    icon: '<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>',
+    title: locale.value === 'de' ? 'Webentwicklung' : 'Web Development',
+    desc: locale.value === 'de' ? 'Moderne, schnelle Websites und Webpräsenzen auf Top-Niveau.' : 'Modern, fast websites and web presences at top level.',
   },
   {
-    slug: 'ai-projects',
-    icon: '<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17H3a2 2 0 01-2-2V5a2 2 0 012-2h14a2 2 0 012 2v10a2 2 0 01-2 2h-2" /></svg>',
-    title: locale.value === 'de' ? 'KI-Projekte' : 'AI Projects',
-    desc: locale.value === 'de' ? 'KI-Integration, Chatbots und intelligente Automatisierung.' : 'AI integration, chatbots and intelligent automation.',
-  },
-  {
-    slug: 'google-management',
-    icon: '<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>',
-    title: 'Google Management',
-    desc: locale.value === 'de' ? 'Google Ads, SEO und My Business — vollständig betreut.' : 'Google Ads, SEO and My Business — fully managed.',
-  },
-  {
-    slug: 'custom-web-apps',
-    icon: '<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" /></svg>',
-    title: locale.value === 'de' ? 'Individual-Webapps' : 'Custom Web Apps',
-    desc: locale.value === 'de' ? 'Maßgeschneiderte Webanwendungen nach Ihren Anforderungen.' : 'Tailored web applications to your requirements.',
-  },
-  {
-    slug: 'it-security-cloud',
-    icon: '<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>',
-    title: locale.value === 'de' ? 'IT-Sicherheit & Cloud' : 'IT Security & Cloud',
-    desc: locale.value === 'de' ? 'Sichere Infrastruktur, Cloud-Migration und IT-Beratung.' : 'Secure infrastructure, cloud migration and IT consulting.',
-  },
-  {
-    slug: 'digital-marketing-boost',
-    icon: '<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>',
-    title: locale.value === 'de' ? 'Marketing Boost' : 'Digital Marketing Boost',
-    desc: locale.value === 'de' ? 'Schnelle Wachstumsimpulse durch gezielte Maßnahmen.' : 'Rapid growth through targeted marketing measures.',
+    slug: 'hardware',
+    icon: '<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18" /></svg>',
+    title: 'Hardware',
+    desc: locale.value === 'de' ? 'Beschaffung, Einrichtung und Wartung von IT-Hardware für Ihr Unternehmen.' : 'Procurement, setup and maintenance of IT hardware for your business.',
   },
   {
     slug: 'e-commerce',
@@ -124,22 +94,52 @@ const services = computed(() => [
     desc: locale.value === 'de' ? 'Online-Shops und Verkaufsplattformen, die verkaufen.' : 'Online shops and sales platforms that convert.',
   },
   {
+    slug: 'consulting',
+    icon: '<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>',
+    title: 'Consulting',
+    desc: locale.value === 'de' ? 'Strategische IT- und Digitalberatung für nachhaltige Unternehmensentwicklung.' : 'Strategic IT and digital consulting for sustainable business development.',
+  },
+  {
+    slug: 'custom-web-apps',
+    icon: '<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" /></svg>',
+    title: locale.value === 'de' ? 'Web-Apps' : 'Web Apps',
+    desc: locale.value === 'de' ? 'Maßgeschneiderte Webanwendungen nach Ihren Anforderungen.' : 'Tailored web applications to your requirements.',
+  },
+  {
+    slug: 'security-technology',
+    icon: '<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 10l4.553-2.069A1 1 0 0121 8.82v6.36a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z" /></svg>',
+    title: locale.value === 'de' ? 'Sicherheitstechnik' : 'Security Technology',
+    desc: locale.value === 'de' ? 'Überwachungskameras, Zugangssysteme und professionelle Sicherheitstechnik.' : 'Surveillance cameras, access systems and professional security technology.',
+  },
+  {
+    slug: 'google-management',
+    icon: '<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>',
+    title: 'Google Management',
+    desc: locale.value === 'de' ? 'Google Ads, SEO und My Business — vollständig betreut.' : 'Google Ads, SEO and My Business — fully managed.',
+  },
+  {
+    slug: 'it-security-cloud',
+    icon: '<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>',
+    title: locale.value === 'de' ? 'IT-Sicherheit & Cloud' : 'IT Security & Cloud',
+    desc: locale.value === 'de' ? 'Sichere Infrastruktur, Cloud-Migration und IT-Beratung.' : 'Secure infrastructure, cloud migration and IT consulting.',
+  },
+  {
+    slug: 'ai-projects',
+    icon: '<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17H3a2 2 0 01-2-2V5a2 2 0 012-2h14a2 2 0 012 2v10a2 2 0 01-2 2h-2" /></svg>',
+    title: locale.value === 'de' ? 'KI-Projekte' : 'AI Projects',
+    desc: locale.value === 'de' ? 'KI-Integration, Chatbots und intelligente Automatisierung.' : 'AI integration, chatbots and intelligent automation.',
+  },
+  {
+    slug: 'smarthome',
+    icon: '<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>',
+    title: 'Smarthome',
+    desc: locale.value === 'de' ? 'Intelligente Heimautomatisierung — Licht, Heizung, Sicherheit vernetzt gesteuert.' : 'Intelligent home automation — lighting, heating and security centrally controlled.',
+  },
+  {
     slug: 'social-media-marketing',
     icon: '<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" /></svg>',
-    title: locale.value === 'de' ? 'Social Media Marketing' : 'Social Media Marketing',
+    title: locale.value === 'de' ? 'Social Media' : 'Social Media',
     desc: locale.value === 'de' ? 'Strategische Präsenz auf Instagram, LinkedIn, TikTok und mehr.' : 'Strategic presence on Instagram, LinkedIn, TikTok and more.',
-  },
-  {
-    slug: 'content-strategy',
-    icon: '<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" /></svg>',
-    title: locale.value === 'de' ? 'Content Strategie' : 'Content Strategy',
-    desc: locale.value === 'de' ? 'Redaktionelle Konzepte und Content-Planung für Ihre Kanäle.' : 'Editorial concepts and content planning for your channels.',
-  },
-  {
-    slug: 'ux-ui-design',
-    icon: '<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" /></svg>',
-    title: locale.value === 'de' ? 'UX/UI Design' : 'UX/UI Design',
-    desc: locale.value === 'de' ? 'Benutzerfreundliche Interfaces und durchdachte Nutzererlebnisse.' : 'User-friendly interfaces and well-thought-out user experiences.',
   },
 ])
 

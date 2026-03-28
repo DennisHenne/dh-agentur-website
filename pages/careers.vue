@@ -17,8 +17,8 @@
         <h2 class="mb-10 text-2xl font-display font-bold text-dark text-center">
           {{ locale === 'de' ? 'Warum DH Agentur?' : 'Why DH Agentur?' }}
         </h2>
-        <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          <div v-for="perk in perks" :key="perk.title" class="card">
+        <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 items-stretch">
+          <div v-for="perk in perks" :key="perk.title" class="card h-full">
             <div class="mb-3 text-2xl">{{ perk.emoji }}</div>
             <h3 class="mb-2 font-semibold text-dark">{{ perk.title }}</h3>
             <p class="text-sm text-dark/60">{{ perk.desc }}</p>
@@ -112,9 +112,9 @@ const perks = computed(() => [
     desc: locale.value === 'de' ? 'Arbeite von überall — wir sind ein remote-freundliches Team.' : 'Work from anywhere — we are a remote-friendly team.',
   },
   {
-    emoji: '📚',
-    title: locale.value === 'de' ? 'Weiterbildung' : 'Learning & Development',
-    desc: locale.value === 'de' ? 'Budget für Kurse, Konferenzen und Weiterbildung.' : 'Budget for courses, conferences and development.',
+    emoji: '🤝',
+    title: locale.value === 'de' ? 'Dienstleister' : 'Service Partners',
+    desc: locale.value === 'de' ? 'Wir arbeiten mit einem großen Netz an externen Dienstleistern zusammen — werde Teil dieses Netzwerkes mit deinem eigenen Business.' : 'We work with a large network of external service partners — become part of this network with your own business.',
   },
   {
     emoji: '⚡',

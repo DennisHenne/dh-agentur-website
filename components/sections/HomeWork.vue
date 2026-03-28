@@ -27,26 +27,136 @@ const { t, locale } = useI18n()
 const projects = computed(() => {
   return [
     {
-      slug: 'testwebsites',
-      type: 'Web Development',
-      title: locale.value === 'de' ? 'Testwebsites Plattform' : 'Test Websites Platform',
+      slug: 'techvision',
+      type: 'IT Consulting',
+      title: 'TechVision GmbH',
       desc: locale.value === 'de'
-        ? 'Entwicklung einer Plattform zum schnellen Prototyping und Testing von Webseiten-Konzepten.'
-        : 'Development of a platform for rapid prototyping and testing of website concepts.',
-      tags: ['Nuxt 3', 'Vue 3', 'Tailwind CSS', 'Supabase'],
-      color: '#4a5eff',
-      image: '/Schwarz-transparent.svg',
+        ? 'Komplette IT-Infrastruktur und Cloud-Migration für ein wachsendes Technologieunternehmen.'
+        : 'Complete IT infrastructure and cloud migration for a growing technology company.',
+      tags: ['Nuxt 3', 'Tailwind CSS', 'Cloud', 'SEO'],
+      color: '#4a90d9',
+      image: '/logo-techvision.jpg',
     },
     {
-      slug: 'co-working-space',
-      type: 'Custom Web App',
-      title: locale.value === 'de' ? 'Co-Working Space' : 'Co-Working Space',
+      slug: 'greenleaf',
+      type: 'E-Commerce',
+      title: 'GreenLeaf Organics',
       desc: locale.value === 'de'
-        ? 'Buchungs- und Verwaltungssystem für einen modernen Co-Working-Anbieter in Wien.'
-        : 'Booking and management system for a modern co-working provider in Vienna.',
-      tags: ['Nuxt 3', 'Node.js', 'PostgreSQL', 'Stripe'],
-      color: '#a855f7',
-      image: '/Schwarz-transparent.svg',
+        ? 'Moderner Online-Shop für Bio-Produkte mit nahtloser Zahlungsabwicklung und Kundenverwaltung.'
+        : 'Modern online shop for organic products with seamless payment processing and customer management.',
+      tags: ['Nuxt 3', 'Stripe', 'Supabase', 'Tailwind CSS'],
+      color: '#6fcf97',
+      image: '/logo-greenleaf.jpg',
+    },
+    {
+      slug: 'urbanspace',
+      type: 'Web App',
+      title: 'UrbanSpace',
+      desc: locale.value === 'de'
+        ? 'Buchungs- und Verwaltungsplattform für Immobilien und Co-Working-Spaces in Wien.'
+        : 'Booking and management platform for real estate and co-working spaces in Vienna.',
+      tags: ['Vue 3', 'Node.js', 'PostgreSQL', 'Stripe'],
+      color: '#f5a623',
+      image: '/logo-urbanspace.jpg',
+    },
+    {
+      slug: 'swiftdrop',
+      type: 'Mobile App',
+      title: 'SwiftDrop',
+      desc: locale.value === 'de'
+        ? 'Echtzeit-Lieferverfolgung und Logistik-Dashboard für einen modernen Kurierdienst.'
+        : 'Real-time delivery tracking and logistics dashboard for a modern courier service.',
+      tags: ['React Native', 'Node.js', 'Maps API', 'Firebase'],
+      color: '#7c3aed',
+      image: '/logo-swiftdrop.jpg',
+    },
+    {
+      slug: 'medcore',
+      type: 'Web App',
+      title: 'MedCore Klinik',
+      desc: locale.value === 'de'
+        ? 'Digitales Patientenportal mit Terminbuchung, Befundansicht und sicherer Kommunikation.'
+        : 'Digital patient portal with appointment booking, results view and secure communication.',
+      tags: ['Nuxt 3', 'Vue 3', 'Supabase', 'DSGVO'],
+      color: '#00b8a9',
+      image: '/logo-medcore.jpg',
+    },
+    {
+      slug: 'bauwerk',
+      type: 'Web Development',
+      title: 'BauWerk Konstruktion',
+      desc: locale.value === 'de'
+        ? 'Professioneller Unternehmensauftritt mit Projektportfolio und integrierter Anfragenverwaltung.'
+        : 'Professional company website with project portfolio and integrated inquiry management.',
+      tags: ['Nuxt 3', 'Tailwind CSS', 'Strapi CMS'],
+      color: '#f5c518',
+      image: '/logo-bauwerk.jpg',
+    },
+    {
+      slug: 'finedge',
+      type: 'Fintech Dashboard',
+      title: 'FinEdge Capital',
+      desc: locale.value === 'de'
+        ? 'Investmentplattform mit Echtzeit-Marktdaten, Portfolio-Analyse und KI-gestützten Empfehlungen.'
+        : 'Investment platform with real-time market data, portfolio analysis and AI-driven recommendations.',
+      tags: ['Vue 3', 'D3.js', 'Node.js', 'PostgreSQL'],
+      color: '#c9a84c',
+      image: '/logo-finedge.jpg',
+    },
+    {
+      slug: 'foodbox',
+      type: 'Mobile App',
+      title: 'FoodBox',
+      desc: locale.value === 'de'
+        ? 'Lieferdienst-App mit Echtzeit-Tracking, Restaurantsuche und integriertem Zahlungssystem.'
+        : 'Food delivery app with real-time tracking, restaurant search and integrated payment system.',
+      tags: ['React Native', 'Firebase', 'Stripe', 'Maps'],
+      color: '#ff4757',
+      image: '/logo-foodbox.jpg',
+    },
+    {
+      slug: 'edupath',
+      type: 'E-Learning',
+      title: 'EduPath',
+      desc: locale.value === 'de'
+        ? 'Lernplattform mit interaktiven Kursen, Fortschrittstracking und Zertifikatsvergabe.'
+        : 'Learning platform with interactive courses, progress tracking and certificate issuance.',
+      tags: ['Nuxt 3', 'Supabase', 'Video Streaming', 'Stripe'],
+      color: '#5c6bc0',
+      image: '/logo-edupath.jpg',
+    },
+    {
+      slug: 'sportpulse',
+      type: 'Booking System',
+      title: 'SportPulse Fitness',
+      desc: locale.value === 'de'
+        ? 'Online-Buchungssystem für Fitnesskurse mit Mitgliederverwaltung und automatisierten Erinnerungen.'
+        : 'Online booking system for fitness classes with member management and automated reminders.',
+      tags: ['Vue 3', 'Node.js', 'Stripe', 'Tailwind CSS'],
+      color: '#e63946',
+      image: '/logo-sportpulse.jpg',
+    },
+    {
+      slug: 'legalhub',
+      type: 'Legal Tech',
+      title: 'LegalHub',
+      desc: locale.value === 'de'
+        ? 'Dokumentenmanagement-Plattform für Kanzleien mit KI-gestützter Vertragsprüfung.'
+        : 'Document management platform for law firms with AI-powered contract review.',
+      tags: ['Nuxt 3', 'OpenAI API', 'Supabase', 'PDF.js'],
+      color: '#4a7c59',
+      image: '/logo-legalhub.jpg',
+    },
+    {
+      slug: 'solartech',
+      type: 'Web Development',
+      title: 'SolarTech Energy',
+      desc: locale.value === 'de'
+        ? 'Unternehmenswebsite mit Live-Energiedaten-Dashboard und Angebotskonfigurator für Solaranlagen.'
+        : 'Company website with live energy data dashboard and solar system quote configurator.',
+      tags: ['Nuxt 3', 'Chart.js', 'Tailwind CSS', 'API'],
+      color: '#ffd166',
+      image: '/logo-solartech.jpg',
     },
   ]
 })

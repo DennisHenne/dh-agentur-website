@@ -44,18 +44,18 @@ const router = useRouter()
 const navigateTo = (path: string) => router.push(path)
 
 const references = computed(() => [
-  { slug: 'reference-1', title: locale.value === 'de' ? 'Referenzprojekt 1' : 'Reference Project 1', desc: locale.value === 'de' ? 'Placeholder Beschreibung für Projekt 1.' : 'Placeholder description for project 1.' },
-  { slug: 'reference-2', title: locale.value === 'de' ? 'Referenzprojekt 2' : 'Reference Project 2', desc: locale.value === 'de' ? 'Placeholder Beschreibung für Projekt 2.' : 'Placeholder description for project 2.' },
-  { slug: 'reference-3', title: locale.value === 'de' ? 'Referenzprojekt 3' : 'Reference Project 3', desc: locale.value === 'de' ? 'Placeholder Beschreibung für Projekt 3.' : 'Placeholder description for project 3.' },
-  { slug: 'reference-4', title: locale.value === 'de' ? 'Referenzprojekt 4' : 'Reference Project 4', desc: locale.value === 'de' ? 'Placeholder Beschreibung für Projekt 4.' : 'Placeholder description for project 4.' },
-  { slug: 'reference-5', title: locale.value === 'de' ? 'Referenzprojekt 5' : 'Reference Project 5', desc: locale.value === 'de' ? 'Placeholder Beschreibung für Projekt 5.' : 'Placeholder description for project 5.' },
-  { slug: 'reference-6', title: locale.value === 'de' ? 'Referenzprojekt 6' : 'Reference Project 6', desc: locale.value === 'de' ? 'Placeholder Beschreibung für Projekt 6.' : 'Placeholder description for project 6.' },
-  { slug: 'reference-7', title: locale.value === 'de' ? 'Referenzprojekt 7' : 'Reference Project 7', desc: locale.value === 'de' ? 'Placeholder Beschreibung für Projekt 7.' : 'Placeholder description for project 7.' },
-  { slug: 'reference-8', title: locale.value === 'de' ? 'Referenzprojekt 8' : 'Reference Project 8', desc: locale.value === 'de' ? 'Placeholder Beschreibung für Projekt 8.' : 'Placeholder description for project 8.' },
-  { slug: 'reference-9', title: locale.value === 'de' ? 'Referenzprojekt 9' : 'Reference Project 9', desc: locale.value === 'de' ? 'Placeholder Beschreibung für Projekt 9.' : 'Placeholder description for project 9.' },
-  { slug: 'reference-10', title: locale.value === 'de' ? 'Referenzprojekt 10' : 'Reference Project 10', desc: locale.value === 'de' ? 'Placeholder Beschreibung für Projekt 10.' : 'Placeholder description for project 10.' },
-  { slug: 'reference-11', title: locale.value === 'de' ? 'Referenzprojekt 11' : 'Reference Project 11', desc: locale.value === 'de' ? 'Placeholder Beschreibung für Projekt 11.' : 'Placeholder description for project 11.' },
-  { slug: 'reference-12', title: locale.value === 'de' ? 'Referenzprojekt 12' : 'Reference Project 12', desc: locale.value === 'de' ? 'Placeholder Beschreibung für Projekt 12.' : 'Placeholder description for project 12.' },
+  { slug: 'techvision',  image: '/logo-techvision.jpg',  title: 'TechVision GmbH',       type: 'IT Consulting'     },
+  { slug: 'greenleaf',   image: '/logo-greenleaf.jpg',   title: 'GreenLeaf Organics',     type: 'E-Commerce'        },
+  { slug: 'urbanspace',  image: '/logo-urbanspace.jpg',  title: 'UrbanSpace',             type: 'Web App'           },
+  { slug: 'swiftdrop',   image: '/logo-swiftdrop.jpg',   title: 'SwiftDrop',              type: 'Mobile App'        },
+  { slug: 'medcore',     image: '/logo-medcore.jpg',     title: 'MedCore Klinik',         type: 'Web App'           },
+  { slug: 'bauwerk',     image: '/logo-bauwerk.jpg',     title: 'BauWerk Konstruktion',   type: 'Web Development'   },
+  { slug: 'finedge',     image: '/logo-finedge.jpg',     title: 'FinEdge Capital',        type: 'Fintech Dashboard' },
+  { slug: 'foodbox',     image: '/logo-foodbox.jpg',     title: 'FoodBox',               type: 'Mobile App'        },
+  { slug: 'edupath',     image: '/logo-edupath.jpg',     title: 'EduPath',               type: 'E-Learning'        },
+  { slug: 'sportpulse',  image: '/logo-sportpulse.jpg',  title: 'SportPulse Fitness',     type: 'Booking System'    },
+  { slug: 'legalhub',    image: '/logo-legalhub.jpg',    title: 'LegalHub',              type: 'Legal Tech'        },
+  { slug: 'solartech',   image: '/logo-solartech.jpg',   title: 'SolarTech Energy',       type: 'Web Development'   },
 ])
 
 const threeContainer = ref<HTMLDivElement>();
@@ -110,15 +110,15 @@ function getCardIndexAtScreenX(clientX: number): number {
   const rect = threeContainer.value.getBoundingClientRect();
   const clickX = Math.max(0, Math.min(rect.width, clientX - rect.left));
   const vec = new THREE.Vector3();
-  let bestIdx = 0;
+  let bestIdx = getTargetIndex();
   let bestDist = Infinity;
   const W = rect.width;
   for (let i = 0; i < referenceObjects.length; i++) {
     referenceObjects[i].getWorldPosition(vec);
+    if (vec.z > camera.position.z) continue;
     vec.project(camera);
     const screenX = (vec.x * 0.5 + 0.5) * W;
-    let d = Math.abs(screenX - clickX);
-    if (d > W / 2) d = W - d;
+    const d = Math.abs(screenX - clickX);
     if (d < bestDist) { bestDist = d; bestIdx = i; }
   }
   return bestIdx;
@@ -171,7 +171,7 @@ function stopDrag(e?: MouseEvent | TouchEvent) {
     velocity = 0;
     const clientX = e ? ('changedTouches' in e && e.changedTouches[0] ? e.changedTouches[0].clientX : (e as MouseEvent).clientX) : lastX;
     const idx = e ? getCardIndexAtScreenX(clientX) : getTargetIndex();
-    navigateTo(`/work/${references.value[idx].slug}`);
+    navigateTo(`/work`);
     return;
   }
 
@@ -342,7 +342,7 @@ const createReferenceCards = () => {
 
     el.innerHTML = `
       <div class="reference-card-content" style="
-        background-image: url('/test-pitcture-carussel.jpg');
+        background-image: url('${ref.image}');
         background-size: cover;
         background-position: center;
         width: 100%;
@@ -365,7 +365,7 @@ const createReferenceCards = () => {
       </div>`;
 
     el.addEventListener('click', () => {
-      if (!dragMoved && !wasCoasting) navigateTo(`/work/${ref.slug}`);
+      if (!dragMoved && !wasCoasting) navigateTo(`/work`);
     });
 
     const obj = new CSS3DObject(el);

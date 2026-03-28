@@ -66,88 +66,76 @@ console.log('Component setup executed');
 const services = computed(() => {
   return [
   {
-    slug: 'web-development',
-    gradient: 'linear-gradient(135deg, #0c2a35 0%, #1a4a3a 50%, #0d3328 100%)',
-    icon: '<svg class="h-9 w-9" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>',
-    title: locale.value === 'de' ? 'Webentwicklung' : 'Web Development',
-    desc:  locale.value === 'de' ? 'Schnelle, moderne Websites mit Top-Performance & sauberem Code.' : 'Fast, modern websites with top performance & clean code.',
-  },
-  {
     slug: 'process-optimization',
-    gradient: 'linear-gradient(135deg, #0f2d1a 0%, #1c4030 50%, #0f2918 100%)',
-    icon: '<svg class="h-9 w-9" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>',
+    image: '/prozess-optimierung.jpg',
     title: locale.value === 'de' ? 'Prozessoptimierung' : 'Process Optimization',
     desc:  locale.value === 'de' ? 'Automatisierung & Digitalisierung Ihrer Geschäftsprozesse.' : 'Automation & digitization of your business processes.',
   },
   {
-    slug: 'digital-marketing',
-    gradient: 'linear-gradient(135deg, #071e26 0%, #163a2a 50%, #0a1f1c 100%)',
-    icon: '<svg class="h-9 w-9" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/></svg>',
-    title: 'Digital Marketing',
-    desc:  locale.value === 'de' ? 'Strategisches Online-Marketing für nachhaltiges Wachstum.' : 'Strategic online marketing for sustainable growth.',
+    slug: 'web-development',
+    image: '/Websites.jpg',
+    title: locale.value === 'de' ? 'Webentwicklung' : 'Web Development',
+    desc:  locale.value === 'de' ? 'Schnelle, moderne Websites mit Top-Performance & sauberem Code.' : 'Fast, modern websites with top performance & clean code.',
   },
   {
-    slug: 'ai-projects',
-    gradient: 'linear-gradient(135deg, #0a2630 0%, #1a3d30 50%, #0c2820 100%)',
-    icon: '<svg class="h-9 w-9" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17H3a2 2 0 01-2-2V5a2 2 0 012-2h14a2 2 0 012 2v10a2 2 0 01-2 2h-2"/></svg>',
-    title: locale.value === 'de' ? 'KI-Projekte' : 'AI Projects',
-    desc:  locale.value === 'de' ? 'KI-Integration und Automatisierung für Ihr Unternehmen.' : 'AI integration and automation for your business.',
-  },
-  {
-    slug: 'google-management',
-    gradient: 'linear-gradient(135deg, #081c24 0%, #153525 50%, #0a1f1a 100%)',
-    icon: '<svg class="h-9 w-9" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>',
-    title: 'Google Management',
-    desc:  locale.value === 'de' ? 'Google Ads, SEO & My Business — alles aus einer Hand.' : 'Google Ads, SEO & My Business — all from one source.',
-  },
-  {
-    slug: 'custom-web-apps',
-    gradient: 'linear-gradient(135deg, #0c2a35 0%, #1a4535 50%, #0d2f25 100%)',
-    icon: '<svg class="h-9 w-9" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"/></svg>',
-    title: locale.value === 'de' ? 'Individual-Webapps' : 'Custom Web Apps',
-    desc:  locale.value === 'de' ? 'Maßgeschneiderte Webanwendungen für komplexe Anforderungen.' : 'Tailored web applications for complex requirements.',
-  },
-  {
-    slug: 'it-security-cloud',
-    gradient: 'linear-gradient(135deg, #091e28 0%, #163828 50%, #0a1f1d 100%)',
-    icon: '<svg class="h-9 w-9" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>',
-    title: locale.value === 'de' ? 'IT-Sicherheit & Cloud' : 'IT Security & Cloud',
-    desc:  locale.value === 'de' ? 'Sichere Infrastruktur und Cloud-Lösungen für Ihr Business.' : 'Secure infrastructure and cloud solutions.',
-  },
-  {
-    slug: 'digital-marketing-boost',
-    gradient: 'linear-gradient(135deg, #0e2c1a 0%, #1c4530 50%, #0f2f1f 100%)',
-    icon: '<svg class="h-9 w-9" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>',
-    title: locale.value === 'de' ? 'Marketing Boost' : 'Digital Marketing Boost',
-    desc:  locale.value === 'de' ? 'Schnelle Wachstumsimpulse durch gezielte Maßnahmen.' : 'Rapid growth through targeted measures.',
+    slug: 'hardware',
+    image: '/hardware.jpg',
+    title: 'Hardware',
+    desc:  locale.value === 'de' ? 'Beschaffung, Einrichtung und Wartung von IT-Hardware.' : 'Procurement, setup and maintenance of IT hardware.',
   },
   {
     slug: 'e-commerce',
-    gradient: 'linear-gradient(135deg, #0d2535 0%, #1a3f45 50%, #0b2a30 100%)',
-    icon: '<svg class="h-9 w-9" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>',
-    title: locale.value === 'de' ? 'E-Commerce' : 'E-Commerce',
+    image: '/e-comerce.jpg',
+    title: 'E-Commerce',
     desc:  locale.value === 'de' ? 'Professionelle Online-Shops mit maximaler Conversion-Rate.' : 'Professional online shops with maximum conversion rate.',
   },
   {
     slug: 'consulting',
-    gradient: 'linear-gradient(135deg, #112030 0%, #1e3d2a 50%, #0e2820 100%)',
-    icon: '<svg class="h-9 w-9" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>',
-    title: locale.value === 'de' ? 'Beratung & Strategie' : 'Consulting & Strategy',
-    desc:  locale.value === 'de' ? 'Digitale Strategie und Transformation für Ihr Unternehmen.' : 'Digital strategy and transformation for your business.',
+    image: '/consulting.jpg',
+    title: 'Consulting',
+    desc:  locale.value === 'de' ? 'Strategische IT- und Digitalberatung für Ihr Unternehmen.' : 'Strategic IT and digital consulting for your business.',
   },
   {
-    slug: 'branding',
-    gradient: 'linear-gradient(135deg, #0a1e2a 0%, #163530 50%, #0b2420 100%)',
-    icon: '<svg class="h-9 w-9" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/></svg>',
-    title: locale.value === 'de' ? 'Branding & Design' : 'Branding & Design',
-    desc:  locale.value === 'de' ? 'Einzigartiges Markendesign, das im Gedächtnis bleibt.' : 'Unique brand design that stays in memory.',
+    slug: 'custom-web-apps',
+    image: '/web-apps.jpg',
+    title: locale.value === 'de' ? 'Web-Apps' : 'Web Apps',
+    desc:  locale.value === 'de' ? 'Maßgeschneiderte Webanwendungen für komplexe Anforderungen.' : 'Tailored web applications for complex requirements.',
   },
   {
-    slug: 'support',
-    gradient: 'linear-gradient(135deg, #0c2030 0%, #1a3d28 50%, #0d2a1e 100%)',
-    icon: '<svg class="h-9 w-9" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/></svg>',
-    title: locale.value === 'de' ? 'Support & Wartung' : 'Support & Maintenance',
-    desc:  locale.value === 'de' ? 'Zuverlässiger technischer Support und laufende Pflege.' : 'Reliable technical support and ongoing maintenance.',
+    slug: 'security-technology',
+    image: '/Sicherheitstechnik.jpg',
+    title: locale.value === 'de' ? 'Sicherheitstechnik' : 'Security Technology',
+    desc:  locale.value === 'de' ? 'Überwachungskameras, Zugangssysteme und Alarmanlagen.' : 'Surveillance cameras, access systems and alarm systems.',
+  },
+  {
+    slug: 'google-management',
+    image: '/google.jpg',
+    title: 'Google Management',
+    desc:  locale.value === 'de' ? 'Google Ads, SEO & My Business — alles aus einer Hand.' : 'Google Ads, SEO & My Business — all from one source.',
+  },
+  {
+    slug: 'it-security-cloud',
+    image: '/it-sicherheit.jpg',
+    title: locale.value === 'de' ? 'IT-Sicherheit & Cloud' : 'IT Security & Cloud',
+    desc:  locale.value === 'de' ? 'Sichere Infrastruktur und Cloud-Lösungen für Ihr Business.' : 'Secure infrastructure and cloud solutions.',
+  },
+  {
+    slug: 'ai-projects',
+    image: '/ki-projekte.jpg',
+    title: locale.value === 'de' ? 'KI-Projekte' : 'AI Projects',
+    desc:  locale.value === 'de' ? 'KI-Integration und Automatisierung für Ihr Unternehmen.' : 'AI integration and automation for your business.',
+  },
+  {
+    slug: 'smarthome',
+    image: '/Smarthome.jpg',
+    title: 'Smarthome',
+    desc:  locale.value === 'de' ? 'Intelligente Heimautomatisierung — vernetzt gesteuert.' : 'Intelligent home automation — centrally controlled.',
+  },
+  {
+    slug: 'social-media-marketing',
+    image: '/social-media.jpg',
+    title: locale.value === 'de' ? 'Social Media' : 'Social Media',
+    desc:  locale.value === 'de' ? 'Strategische Präsenz auf Instagram, LinkedIn, TikTok und mehr.' : 'Strategic presence on Instagram, LinkedIn, TikTok and more.',
   },
 ]
 })
@@ -214,15 +202,16 @@ function getCardIndexAtScreenX(clientX: number): number {
   const rect = threeContainer.value.getBoundingClientRect();
   const clickX = Math.max(0, Math.min(rect.width, clientX - rect.left));
   const vec = new THREE.Vector3();
-  let bestIdx = 0;
+  let bestIdx = getTargetIndex();
   let bestDist = Infinity;
   const W = rect.width;
   for (let i = 0; i < serviceObjects.length; i++) {
     serviceObjects[i].getWorldPosition(vec);
+    // Skip cards behind the camera — their projections produce garbage screen positions
+    if (vec.z > camera.position.z) continue;
     vec.project(camera);
     const screenX = (vec.x * 0.5 + 0.5) * W;
-    let d = Math.abs(screenX - clickX);
-    if (d > W / 2) d = W - d;
+    const d = Math.abs(screenX - clickX);
     if (d < bestDist) { bestDist = d; bestIdx = i; }
   }
   return bestIdx;
@@ -490,18 +479,17 @@ const createServiceCards = () => {
 
     el.innerHTML = `
       <div class="service-card-content" style="
-        background-image: url('/test-pitcture-carussel.jpg');
+        background-image: url('${service.image}');
         background-size: cover;
         background-position: center;
         width: 100%;
         height: 100%;
         border-radius: 50px;
-        padding: 20px;
         display: flex;
         flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
+        justify-content: flex-end;
+        align-items: flex-start;
+        text-align: left;
         color: white;
         box-shadow: 0 8px 32px rgba(0,0,0,0.3);
         backface-visibility: hidden;
@@ -509,22 +497,34 @@ const createServiceCards = () => {
         transition: transform 0.35s ease, box-shadow 0.35s ease, opacity 0.35s ease;
         opacity: 1;
         box-sizing: border-box;
+        overflow: hidden;
+        position: relative;
       ">
-        <!-- Schrift vorerst auskommentiert
-        <div style="margin-bottom:14px; opacity:0.9;">${service.icon}</div>
-        <h3 style="
-          font-size: ${CARD_W >= 612 ? '1.5rem' : CARD_W >= 468 ? '1.25rem' : '1rem'};
-          font-weight: 600;
-          margin: 0 0 8px;
-          line-height: 1.3;
-        ">${service.title}</h3>
-        <p style="
-          font-size: ${CARD_W >= 612 ? '1rem' : CARD_W >= 468 ? '0.875rem' : '0.8rem'};
-          opacity: 0.85;
-          line-height: 1.4;
-          margin: 0;
-        ">${service.desc}</p>
-        -->
+        <!-- Dark gradient overlay for readability -->
+        <div style="
+          position: absolute;
+          inset: 0;
+          border-radius: 50px;
+          background: linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.35) 45%, rgba(0,0,0,0) 100%);
+          pointer-events: none;
+        "></div>
+        <!-- Text content -->
+        <div style="
+          position: relative;
+          z-index: 1;
+          padding: ${CARD_W >= 612 ? '36px' : CARD_W >= 468 ? '28px' : '22px'};
+          width: 100%;
+        ">
+          <h3 style="
+            font-size: ${CARD_W >= 612 ? '1.75rem' : CARD_W >= 468 ? '1.4rem' : '1.1rem'};
+            font-weight: 800;
+            margin: 0;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+            text-shadow: 0 2px 12px rgba(0,0,0,0.6);
+            color: #ffffff;
+          ">${service.title}</h3>
+        </div>
       </div>`;
     // Fire click only when:
     // • pointer didn't move (no committed drag), AND
