@@ -51,7 +51,7 @@
         </div>
 
         <!-- Messages -->
-        <div ref="messagesEl" class="flex-1 overflow-y-auto p-4 space-y-4">
+        <div ref="messagesEl" class="chat-messages-scroll flex-1 overflow-y-auto p-4 space-y-4">
           <div
             v-for="(msg, i) in messages"
             :key="i"
@@ -211,6 +211,17 @@ function scrollToBottom() {
 </script>
 
 <style scoped>
+/* No second vertical scrollbar next to the page rail — scroll still works */
+.chat-messages-scroll {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.chat-messages-scroll::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
 .chat-enter-active {
   transition: opacity 0.25s ease, transform 0.25s ease;
 }

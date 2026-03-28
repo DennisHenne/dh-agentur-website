@@ -3,15 +3,25 @@
 @tailwind utilities;
 
 @layer base {
+  /*
+   * Single document scroll root: scroll lives on body only (html is non-scrolling).
+   * Prevents a second vertical scrollbar when both html and body act as scroll containers.
+   * scroll-behavior: auto — avoids janky wheel with scroll-smooth on long pages.
+   */
   html {
-    @apply scroll-smooth;
-    overflow-x: hidden;
+    height: 100%;
+    overflow: hidden;
+    scroll-behavior: auto;
   }
 
   body {
+    height: 100%;
+    margin: 0;
     overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     /* #E8F1F2 — gleiche Farbe wie Menü */
-    background-color: #E8F1F2;
+    background-color: #e8f1f2;
     @apply text-dark antialiased;
   }
 
@@ -122,11 +132,6 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Smooth scrolling on iOS */
-html {
-  -webkit-overflow-scrolling: touch;
-}
-
 /* Ensure images and media scale */
 img, video {
   max-width: 100%;
@@ -142,8 +147,60 @@ img, video {
   .right-safe { right: calc(1.5rem + env(safe-area-inset-right)); }
 }
 
-::-webkit-scrollbar { width: 5px; }
-::-webkit-scrollbar-track  { background: #E8F1F2; }
-::-webkit-scrollbar-thumb  { border-radius: 99px; background: rgba(49,73,60,0.25); }
-::-webkit-scrollbar-thumb:hover { background: rgba(122,158,126,0.5); }
-::-webkit-scrollbar-corner { background: #E8F1F2; }
+/*
+ * One visible, styled scrollbar: viewport (body) only — desktop / fine pointer.
+ * Touch devices: overlay scroll, no custom rail (carousel, horizontal strips stay usable).
+ */
+@media (min-width: 1024px) and (hover: hover) and (pointer: fine) {
+  body {
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(49, 73, 60, 0.42) rgba(232, 241, 242, 0.65);
+  }
+
+  body::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  body::-webkit-scrollbar-track {
+    background: rgba(232, 241, 242, 0.45);
+    border-radius: 999px;
+  }
+
+  body::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background: linear-gradient(
+      180deg,
+      rgba(49, 73, 60, 0.28) 0%,
+      rgba(122, 158, 126, 0.42) 100%
+    );
+    border: 2px solid rgba(232, 241, 242, 0.5);
+    background-clip: padding-box;
+  }
+
+  body::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(
+      180deg,
+      rgba(49, 73, 60, 0.4) 0%,
+      rgba(122, 158, 126, 0.55) 100%
+    );
+    background-clip: padding-box;
+  }
+
+  body::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+}
+
+@media (max-width: 1023px), (hover: none) {
+  body {
+    scrollbar-gutter: auto;
+    scrollbar-width: none;
+  }
+
+  body::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+}

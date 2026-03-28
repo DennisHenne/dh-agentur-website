@@ -1,5 +1,7 @@
 <template>
-  <section class="relative flex min-h-[85vh] sm:min-h-[90vh] md:min-h-[92vh] flex-col items-center justify-center">
+  <section
+    class="home-hero relative flex min-h-[85vh] sm:min-h-[90vh] md:min-h-[92vh] flex-col items-center justify-center"
+  >
 
 
     <!-- Layer 2: video card — centered, behind text, moved up -->
@@ -192,6 +194,12 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
+/* Hero selbst kein Scroll-Container — nur .console-output scrollt intern */
+.home-hero {
+  overflow-x: clip;
+  overflow-y: visible;
+}
+
 /* ── 3D video tilt ──────────────────────────────────────── */
 .video-tilt {
   transform-style: preserve-3d;
@@ -272,9 +280,10 @@ onUnmounted(() => {
   .console-title { font-size: 11px; }
 }
 
-/* scrollable output fills remaining space */
+/* scrollable output fills remaining space — einziger Scroll im Hero; keine zweite Leiste */
 .console-output {
   flex: 1;
+  min-height: 0;
   overflow-y: auto;
   padding: 10px 16px 4px;
   font-family: ui-monospace, 'Cascadia Code', 'Fira Code', monospace;
@@ -282,7 +291,9 @@ onUnmounted(() => {
   line-height: 1.7;
   scrollbar-width: none;
 }
-.console-output::-webkit-scrollbar { display: none; }
+.console-output::-webkit-scrollbar {
+  display: none;
+}
 
 .console-line {
   display: block;

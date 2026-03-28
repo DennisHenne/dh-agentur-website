@@ -23,7 +23,8 @@ services:
     volumes:
       - .:/app
       - /app/node_modules
-      - /app/.nuxt
+      # .nuxt must stay on the bind mount so route manifests match pages/ on the host.
+      # An anonymous volume here caused stale routes after renaming/removing page files.
     environment:
       - NODE_ENV=development
       - HOST=0.0.0.0

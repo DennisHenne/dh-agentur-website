@@ -89,8 +89,13 @@
 const { t, locale } = useI18n()
 const route = useRoute()
 
-const { data: article } = await useAsyncData(`insight-${route.params.slug}`, () =>
-  queryContent('/insights', route.params.slug as string).findOne()
+const slugParam = route.params.slug
+const slug = typeof slugParam === 'string' ? slugParam : slugParam?.[0] ?? ''
+
+const { data: article } = await useAsyncData(`insight-${slug}`, () =>
+  slug
+    ? queryContent(`/insights/${slug}`).findOne()
+    : Promise.resolve(null),
 )
 
 if (!article.value) {
