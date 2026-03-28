@@ -31,6 +31,7 @@
                 :src="project.image"
                 :alt="project.title"
                 class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                loading="lazy"
               />
               <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
               <span class="absolute bottom-3 left-4 rounded-full border border-white/20 bg-black/30 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">
@@ -97,7 +98,7 @@ const projects = computed(() => [
       ? 'Komplette IT-Infrastruktur und Cloud-Migration für ein wachsendes Technologieunternehmen.'
       : 'Complete IT infrastructure and cloud migration for a growing technology company.',
     tags: ['Nuxt 3', 'Tailwind CSS', 'Cloud', 'SEO'],
-    image: '/work-techvision.jpg',
+    image: '/work-techvision.webp',
   },
   {
     slug: 'greenleaf',
@@ -107,7 +108,7 @@ const projects = computed(() => [
       ? 'Moderner Online-Shop für Bio-Produkte mit nahtloser Zahlungsabwicklung und Kundenverwaltung.'
       : 'Modern online shop for organic products with seamless payment processing and customer management.',
     tags: ['Nuxt 3', 'Stripe', 'Supabase', 'Tailwind CSS'],
-    image: '/work-greenleaf.jpg',
+    image: '/work-greenleaf.webp',
   },
   {
     slug: 'urbanspace',
@@ -117,7 +118,7 @@ const projects = computed(() => [
       ? 'Buchungs- und Verwaltungsplattform für Immobilien und Co-Working-Spaces in Wien.'
       : 'Booking and management platform for real estate and co-working spaces in Vienna.',
     tags: ['Vue 3', 'Node.js', 'PostgreSQL', 'Stripe'],
-    image: '/work-urbanspace.jpg',
+    image: '/work-urbanspace.webp',
   },
   {
     slug: 'swiftdrop',
@@ -127,7 +128,7 @@ const projects = computed(() => [
       ? 'Echtzeit-Lieferverfolgung und Logistik-Dashboard für einen modernen Kurierdienst.'
       : 'Real-time delivery tracking and logistics dashboard for a modern courier service.',
     tags: ['React Native', 'Node.js', 'Maps API', 'Firebase'],
-    image: '/work-swiftdrop.jpg',
+    image: '/work-swiftdrop.webp',
   },
   {
     slug: 'medcore',
@@ -137,7 +138,7 @@ const projects = computed(() => [
       ? 'Digitales Patientenportal mit Terminbuchung, Befundansicht und sicherer Kommunikation.'
       : 'Digital patient portal with appointment booking, results view and secure communication.',
     tags: ['Nuxt 3', 'Vue 3', 'Supabase', 'DSGVO'],
-    image: '/work-medcore.jpg',
+    image: '/work-medcore.webp',
   },
   {
     slug: 'bauwerk',
@@ -147,7 +148,7 @@ const projects = computed(() => [
       ? 'Professioneller Unternehmensauftritt mit Projektportfolio und integrierter Anfragenverwaltung.'
       : 'Professional company website with project portfolio and integrated inquiry management.',
     tags: ['Nuxt 3', 'Tailwind CSS', 'Strapi CMS'],
-    image: '/work-bauwerk.jpg',
+    image: '/work-bauwerk.webp',
   },
   {
     slug: 'finedge',
@@ -157,7 +158,7 @@ const projects = computed(() => [
       ? 'Investmentplattform mit Echtzeit-Marktdaten, Portfolio-Analyse und KI-gestützten Empfehlungen.'
       : 'Investment platform with real-time market data, portfolio analysis and AI-driven recommendations.',
     tags: ['Vue 3', 'D3.js', 'Node.js', 'PostgreSQL'],
-    image: '/work-finedge.jpg',
+    image: '/work-finedge.webp',
   },
   {
     slug: 'foodbox',
@@ -167,7 +168,7 @@ const projects = computed(() => [
       ? 'Lieferdienst-App mit Echtzeit-Tracking, Restaurantsuche und integriertem Zahlungssystem.'
       : 'Food delivery app with real-time tracking, restaurant search and integrated payment system.',
     tags: ['React Native', 'Firebase', 'Stripe', 'Maps'],
-    image: '/work-foodbox.jpg',
+    image: '/work-foodbox.webp',
   },
   {
     slug: 'edupath',
@@ -177,7 +178,7 @@ const projects = computed(() => [
       ? 'Lernplattform mit interaktiven Kursen, Fortschrittstracking und Zertifikatsvergabe.'
       : 'Learning platform with interactive courses, progress tracking and certificate issuance.',
     tags: ['Nuxt 3', 'Supabase', 'Video Streaming', 'Stripe'],
-    image: '/work-edupath.jpg',
+    image: '/work-edupath.webp',
   },
   {
     slug: 'sportpulse',
@@ -187,7 +188,7 @@ const projects = computed(() => [
       ? 'Online-Buchungssystem für Fitnesskurse mit Mitgliederverwaltung und automatisierten Erinnerungen.'
       : 'Online booking system for fitness classes with member management and automated reminders.',
     tags: ['Vue 3', 'Node.js', 'Stripe', 'Tailwind CSS'],
-    image: '/work-sportpulse.jpg',
+    image: '/work-sportpulse.webp',
   },
   {
     slug: 'legalhub',
@@ -197,7 +198,7 @@ const projects = computed(() => [
       ? 'Dokumentenmanagement-Plattform für Kanzleien mit KI-gestützter Vertragsprüfung.'
       : 'Document management platform for law firms with AI-powered contract review.',
     tags: ['Nuxt 3', 'OpenAI API', 'Supabase', 'PDF.js'],
-    image: '/work-legalhub.jpg',
+    image: '/work-legalhub.webp',
   },
   {
     slug: 'solartech',
@@ -207,7 +208,7 @@ const projects = computed(() => [
       ? 'Unternehmenswebsite mit Live-Energiedaten-Dashboard und Angebotskonfigurator für Solaranlagen.'
       : 'Company website with live energy data dashboard and solar system quote configurator.',
     tags: ['Nuxt 3', 'Chart.js', 'Tailwind CSS', 'API'],
-    image: '/work-solartech.jpg',
+    image: '/work-solartech.webp',
   },
 ])
 

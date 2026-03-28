@@ -15,7 +15,8 @@
         style="pointer-events:auto; width:min(520px, 80vw);"
         :style="tiltStyle"
       >
-        <video autoplay muted loop playsinline class="video-card">
+        <video autoplay muted loop playsinline class="video-card" poster="/herovideo-poster.webp">
+          <source src="/herovideo.webm" type="video/webm" />
           <source src="/herovideo.mp4" type="video/mp4" />
         </video>
         <div class="vignette" />

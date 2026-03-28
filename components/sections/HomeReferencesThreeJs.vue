@@ -44,18 +44,18 @@ const router = useRouter()
 const navigateTo = (path: string) => router.push(path)
 
 const references = computed(() => [
-  { slug: 'techvision',  image: '/logo-techvision.jpg',  title: 'TechVision GmbH',       type: 'IT Consulting'     },
-  { slug: 'greenleaf',   image: '/logo-greenleaf.jpg',   title: 'GreenLeaf Organics',     type: 'E-Commerce'        },
-  { slug: 'urbanspace',  image: '/logo-urbanspace.jpg',  title: 'UrbanSpace',             type: 'Web App'           },
-  { slug: 'swiftdrop',   image: '/logo-swiftdrop.jpg',   title: 'SwiftDrop',              type: 'Mobile App'        },
-  { slug: 'medcore',     image: '/logo-medcore.jpg',     title: 'MedCore Klinik',         type: 'Web App'           },
-  { slug: 'bauwerk',     image: '/logo-bauwerk.jpg',     title: 'BauWerk Konstruktion',   type: 'Web Development'   },
-  { slug: 'finedge',     image: '/logo-finedge.jpg',     title: 'FinEdge Capital',        type: 'Fintech Dashboard' },
-  { slug: 'foodbox',     image: '/logo-foodbox.jpg',     title: 'FoodBox',               type: 'Mobile App'        },
-  { slug: 'edupath',     image: '/logo-edupath.jpg',     title: 'EduPath',               type: 'E-Learning'        },
-  { slug: 'sportpulse',  image: '/logo-sportpulse.jpg',  title: 'SportPulse Fitness',     type: 'Booking System'    },
-  { slug: 'legalhub',    image: '/logo-legalhub.jpg',    title: 'LegalHub',              type: 'Legal Tech'        },
-  { slug: 'solartech',   image: '/logo-solartech.jpg',   title: 'SolarTech Energy',       type: 'Web Development'   },
+  { slug: 'techvision',  image: '/logo-techvision.webp',  title: 'TechVision GmbH',       type: 'IT Consulting'     },
+  { slug: 'greenleaf',   image: '/logo-greenleaf.webp',   title: 'GreenLeaf Organics',     type: 'E-Commerce'        },
+  { slug: 'urbanspace',  image: '/logo-urbanspace.webp',  title: 'UrbanSpace',             type: 'Web App'           },
+  { slug: 'swiftdrop',   image: '/logo-swiftdrop.webp',   title: 'SwiftDrop',              type: 'Mobile App'        },
+  { slug: 'medcore',     image: '/logo-medcore.webp',     title: 'MedCore Klinik',         type: 'Web App'           },
+  { slug: 'bauwerk',     image: '/logo-bauwerk.webp',     title: 'BauWerk Konstruktion',   type: 'Web Development'   },
+  { slug: 'finedge',     image: '/logo-finedge.webp',     title: 'FinEdge Capital',        type: 'Fintech Dashboard' },
+  { slug: 'foodbox',     image: '/logo-foodbox.webp',     title: 'FoodBox',               type: 'Mobile App'        },
+  { slug: 'edupath',     image: '/logo-edupath.webp',     title: 'EduPath',               type: 'E-Learning'        },
+  { slug: 'sportpulse',  image: '/logo-sportpulse.webp',  title: 'SportPulse Fitness',     type: 'Booking System'    },
+  { slug: 'legalhub',    image: '/logo-legalhub.webp',    title: 'LegalHub',              type: 'Legal Tech'        },
+  { slug: 'solartech',   image: '/logo-solartech.webp',   title: 'SolarTech Energy',       type: 'Web Development'   },
 ])
 
 const threeContainer = ref<HTMLDivElement>();
@@ -264,6 +264,22 @@ function updateCardStates() {
   });
 }
 
+// ─── Visibility (IntersectionObserver) ───────────────────────────────────────
+let isVisible = false;
+let visibilityObserver: IntersectionObserver | null = null;
+
+function startAnimationLoop() {
+  if (animationId) return;
+  animate(performance.now());
+}
+
+function stopAnimationLoop() {
+  if (animationId) {
+    cancelAnimationFrame(animationId);
+    animationId = 0;
+  }
+}
+
 const initThreeJs = () => {
   if (!threeContainer.value) return;
   scene = new THREE.Scene();
@@ -288,33 +304,34 @@ const initThreeJs = () => {
 
   createReferenceCards();
   updateCardStates();
+};
 
-  let lastFrameTime = 0;
-  const animate = (now: number) => {
-    animationId = requestAnimationFrame(animate);
-    const dt = lastFrameTime ? Math.min((now - lastFrameTime) / 1000, 0.1) : 0.016;
-    lastFrameTime = now;
+// ─── Animation loop ───────────────────────────────────────────────────────────
 
-    scrollOffset += (targetScrollOffset - scrollOffset) * (1 - Math.pow(1 - SCROLL_SMOOTH, 60 * dt));
-    scene.rotation.y = scrollOffset;
+let lastFrameTime = 0;
+const animate = (now: number) => {
+  animationId = requestAnimationFrame(animate);
+  const dt = lastFrameTime ? Math.min((now - lastFrameTime) / 1000, 0.1) : 0.016;
+  lastFrameTime = now;
 
-    if (dragging && dragMoved) {
-      const diff = targetRotation - carouselGroup.rotation.y;
-      carouselGroup.rotation.y += diff * (1 - Math.pow(1 - FOLLOW_LERP, 60 * dt));
-      updateCardStates();
-    } else if (!snapping && Math.abs(velocity) > 0.0003) {
-      carouselGroup.rotation.y -= velocity * COAST_FACTOR * (60 * dt);
-      velocity *= Math.pow(FRICTION, 60 * dt);
-      updateCardStates();
-      if (Math.abs(velocity) < 0.003) {
-        const corrVRads = Math.abs(velocity) * COAST_FACTOR * 60;
-        velocity = 0;
-        snapToIndex(getTargetIndex(), corrVRads);
-      }
+  scrollOffset += (targetScrollOffset - scrollOffset) * (1 - Math.pow(1 - SCROLL_SMOOTH, 60 * dt));
+  scene.rotation.y = scrollOffset;
+
+  if (dragging && dragMoved) {
+    const diff = targetRotation - carouselGroup.rotation.y;
+    carouselGroup.rotation.y += diff * (1 - Math.pow(1 - FOLLOW_LERP, 60 * dt));
+    updateCardStates();
+  } else if (!snapping && Math.abs(velocity) > 0.0003) {
+    carouselGroup.rotation.y -= velocity * COAST_FACTOR * (60 * dt);
+    velocity *= Math.pow(FRICTION, 60 * dt);
+    updateCardStates();
+    if (Math.abs(velocity) < 0.003) {
+      const corrVRads = Math.abs(velocity) * COAST_FACTOR * 60;
+      velocity = 0;
+      snapToIndex(getTargetIndex(), corrVRads);
     }
-    css3dRenderer.render(scene, camera);
-  };
-  animate(performance.now());
+  }
+  css3dRenderer.render(scene, camera);
 };
 
 const createReferenceCards = () => {
@@ -405,10 +422,26 @@ onMounted(async () => {
   window.addEventListener('resize', handleResize);
   window.addEventListener('mouseup', onWindowMouseUp);
   window.addEventListener('touchend', onWindowMouseUp, { passive: true });
+
+  // Only run the animation loop while the section is visible in the viewport
+  visibilityObserver = new IntersectionObserver(
+    (entries) => {
+      isVisible = entries[0].isIntersecting;
+      if (isVisible) {
+        lastFrameTime = 0;
+        startAnimationLoop();
+      } else {
+        stopAnimationLoop();
+      }
+    },
+    { threshold: 0.01 },
+  );
+  if (threeContainer.value) visibilityObserver.observe(threeContainer.value);
 });
 
 onUnmounted(() => {
-  if (animationId) cancelAnimationFrame(animationId);
+  stopAnimationLoop();
+  visibilityObserver?.disconnect();
   if (css3dRenderer && threeContainer.value) {
     threeContainer.value.removeChild(css3dRenderer.domElement);
   }

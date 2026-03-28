@@ -27,26 +27,30 @@
       </div>
     </section>
 
-    <!-- Open Positions -->
+    <!-- Open Positions (from admin backend) -->
     <section class="section">
       <div class="container">
         <h2 class="mb-10 text-2xl font-display font-bold text-dark">{{ t('careers.openPositions') }}</h2>
         <div class="space-y-4">
           <div
-            v-for="job in jobs"
-            :key="job.title"
+            v-for="job in apiJobs"
+            :key="job.id"
             class="group rounded-2xl border border-forest/15 bg-white/60 p-6 transition-all hover:border-forest/25 hover:bg-white/80"
           >
             <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
               <div>
                 <div class="mb-2 flex items-center gap-3 flex-wrap">
                   <span class="rounded-full border border-brand-500/30 bg-brand-500/10 px-3 py-1 text-xs font-semibold text-brand-400">
-                    {{ job.type }}
+                    {{ locale === 'en' && job.type_en ? job.type_en : job.type }}
                   </span>
-                  <span class="text-xs text-dark/50">{{ job.location }}</span>
+                  <span class="text-xs text-dark/50">{{ locale === 'en' && job.location_en ? job.location_en : job.location }}</span>
                 </div>
-                <h3 class="mb-1 text-lg font-display font-bold text-dark">{{ job.title }}</h3>
-                <p class="text-sm text-dark/60">{{ job.desc }}</p>
+                <h3 class="mb-1 text-lg font-display font-bold text-dark">
+                  {{ locale === 'en' && job.title_en ? job.title_en : job.title }}
+                </h3>
+                <p class="text-sm text-dark/60">
+                  {{ locale === 'en' && job.description_en ? job.description_en : job.description }}
+                </p>
               </div>
               <NuxtLink to="/contact" class="btn-outline flex-shrink-0">
                 {{ t('careers.apply') }}
@@ -56,6 +60,29 @@
               </NuxtLink>
             </div>
           </div>
+          <!-- Fallback to hardcoded jobs if API returns nothing -->
+          <template v-if="!apiJobs?.length">
+            <div
+              v-for="job in jobs"
+              :key="job.title"
+              class="group rounded-2xl border border-forest/15 bg-white/60 p-6 transition-all hover:border-forest/25 hover:bg-white/80"
+            >
+              <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div>
+                  <div class="mb-2 flex items-center gap-3 flex-wrap">
+                    <span class="rounded-full border border-brand-500/30 bg-brand-500/10 px-3 py-1 text-xs font-semibold text-brand-400">{{ job.type }}</span>
+                    <span class="text-xs text-dark/50">{{ job.location }}</span>
+                  </div>
+                  <h3 class="mb-1 text-lg font-display font-bold text-dark">{{ job.title }}</h3>
+                  <p class="text-sm text-dark/60">{{ job.desc }}</p>
+                </div>
+                <NuxtLink to="/contact" class="btn-outline flex-shrink-0">
+                  {{ t('careers.apply') }}
+                  <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+                </NuxtLink>
+              </div>
+            </div>
+          </template>
         </div>
       </div>
     </section>
@@ -104,6 +131,9 @@ useSeoMeta({
   title: t('meta.careers.title'),
   description: t('meta.careers.description'),
 })
+
+// Fetch live career listings from the backend
+const { data: apiJobs } = await useFetch<any[]>('/api/public/careers').catch(() => ({ data: ref([]) }))
 
 const perks = computed(() => [
   {

@@ -35,7 +35,7 @@ const projects = computed(() => {
         : 'Complete IT infrastructure and cloud migration for a growing technology company.',
       tags: ['Nuxt 3', 'Tailwind CSS', 'Cloud', 'SEO'],
       color: '#4a90d9',
-      image: '/logo-techvision.jpg',
+      image: '/logo-techvision.webp',
     },
     {
       slug: 'greenleaf',
@@ -46,7 +46,7 @@ const projects = computed(() => {
         : 'Modern online shop for organic products with seamless payment processing and customer management.',
       tags: ['Nuxt 3', 'Stripe', 'Supabase', 'Tailwind CSS'],
       color: '#6fcf97',
-      image: '/logo-greenleaf.jpg',
+      image: '/logo-greenleaf.webp',
     },
     {
       slug: 'urbanspace',
@@ -57,7 +57,7 @@ const projects = computed(() => {
         : 'Booking and management platform for real estate and co-working spaces in Vienna.',
       tags: ['Vue 3', 'Node.js', 'PostgreSQL', 'Stripe'],
       color: '#f5a623',
-      image: '/logo-urbanspace.jpg',
+      image: '/logo-urbanspace.webp',
     },
     {
       slug: 'swiftdrop',
@@ -68,7 +68,7 @@ const projects = computed(() => {
         : 'Real-time delivery tracking and logistics dashboard for a modern courier service.',
       tags: ['React Native', 'Node.js', 'Maps API', 'Firebase'],
       color: '#7c3aed',
-      image: '/logo-swiftdrop.jpg',
+      image: '/logo-swiftdrop.webp',
     },
     {
       slug: 'medcore',
@@ -79,7 +79,7 @@ const projects = computed(() => {
         : 'Digital patient portal with appointment booking, results view and secure communication.',
       tags: ['Nuxt 3', 'Vue 3', 'Supabase', 'DSGVO'],
       color: '#00b8a9',
-      image: '/logo-medcore.jpg',
+      image: '/logo-medcore.webp',
     },
     {
       slug: 'bauwerk',
@@ -90,7 +90,7 @@ const projects = computed(() => {
         : 'Professional company website with project portfolio and integrated inquiry management.',
       tags: ['Nuxt 3', 'Tailwind CSS', 'Strapi CMS'],
       color: '#f5c518',
-      image: '/logo-bauwerk.jpg',
+      image: '/logo-bauwerk.webp',
     },
     {
       slug: 'finedge',
@@ -101,7 +101,7 @@ const projects = computed(() => {
         : 'Investment platform with real-time market data, portfolio analysis and AI-driven recommendations.',
       tags: ['Vue 3', 'D3.js', 'Node.js', 'PostgreSQL'],
       color: '#c9a84c',
-      image: '/logo-finedge.jpg',
+      image: '/logo-finedge.webp',
     },
     {
       slug: 'foodbox',
@@ -112,7 +112,7 @@ const projects = computed(() => {
         : 'Food delivery app with real-time tracking, restaurant search and integrated payment system.',
       tags: ['React Native', 'Firebase', 'Stripe', 'Maps'],
       color: '#ff4757',
-      image: '/logo-foodbox.jpg',
+      image: '/logo-foodbox.webp',
     },
     {
       slug: 'edupath',
@@ -123,7 +123,7 @@ const projects = computed(() => {
         : 'Learning platform with interactive courses, progress tracking and certificate issuance.',
       tags: ['Nuxt 3', 'Supabase', 'Video Streaming', 'Stripe'],
       color: '#5c6bc0',
-      image: '/logo-edupath.jpg',
+      image: '/logo-edupath.webp',
     },
     {
       slug: 'sportpulse',
@@ -134,7 +134,7 @@ const projects = computed(() => {
         : 'Online booking system for fitness classes with member management and automated reminders.',
       tags: ['Vue 3', 'Node.js', 'Stripe', 'Tailwind CSS'],
       color: '#e63946',
-      image: '/logo-sportpulse.jpg',
+      image: '/logo-sportpulse.webp',
     },
     {
       slug: 'legalhub',
@@ -145,7 +145,7 @@ const projects = computed(() => {
         : 'Document management platform for law firms with AI-powered contract review.',
       tags: ['Nuxt 3', 'OpenAI API', 'Supabase', 'PDF.js'],
       color: '#4a7c59',
-      image: '/logo-legalhub.jpg',
+      image: '/logo-legalhub.webp',
     },
     {
       slug: 'solartech',
@@ -156,7 +156,7 @@ const projects = computed(() => {
         : 'Company website with live energy data dashboard and solar system quote configurator.',
       tags: ['Nuxt 3', 'Chart.js', 'Tailwind CSS', 'API'],
       color: '#ffd166',
-      image: '/logo-solartech.jpg',
+      image: '/logo-solartech.webp',
     },
   ]
 })

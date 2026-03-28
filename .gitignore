@@ -27,3 +27,7 @@ node_modules
 public/herovideo.mp4
 *.mp4
 *.mov
+
+# Admin database (contains passwords — never commit)
+data/*.db
+data/

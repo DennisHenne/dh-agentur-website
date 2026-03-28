@@ -67,73 +67,73 @@ const services = computed(() => {
   return [
   {
     slug: 'process-optimization',
-    image: '/prozess-optimierung.jpg',
+    image: '/prozess-optimierung.webp',
     title: locale.value === 'de' ? 'Prozessoptimierung' : 'Process Optimization',
     desc:  locale.value === 'de' ? 'Automatisierung & Digitalisierung Ihrer Geschäftsprozesse.' : 'Automation & digitization of your business processes.',
   },
   {
     slug: 'web-development',
-    image: '/Websites.jpg',
+    image: '/Websites.webp',
     title: locale.value === 'de' ? 'Webentwicklung' : 'Web Development',
     desc:  locale.value === 'de' ? 'Schnelle, moderne Websites mit Top-Performance & sauberem Code.' : 'Fast, modern websites with top performance & clean code.',
   },
   {
     slug: 'hardware',
-    image: '/hardware.jpg',
+    image: '/hardware.webp',
     title: 'Hardware',
     desc:  locale.value === 'de' ? 'Beschaffung, Einrichtung und Wartung von IT-Hardware.' : 'Procurement, setup and maintenance of IT hardware.',
   },
   {
     slug: 'e-commerce',
-    image: '/e-comerce.jpg',
+    image: '/e-comerce.webp',
     title: 'E-Commerce',
     desc:  locale.value === 'de' ? 'Professionelle Online-Shops mit maximaler Conversion-Rate.' : 'Professional online shops with maximum conversion rate.',
   },
   {
     slug: 'consulting',
-    image: '/consulting.jpg',
+    image: '/consulting.webp',
     title: 'Consulting',
     desc:  locale.value === 'de' ? 'Strategische IT- und Digitalberatung für Ihr Unternehmen.' : 'Strategic IT and digital consulting for your business.',
   },
   {
     slug: 'custom-web-apps',
-    image: '/web-apps.jpg',
+    image: '/web-apps.webp',
     title: locale.value === 'de' ? 'Web-Apps' : 'Web Apps',
     desc:  locale.value === 'de' ? 'Maßgeschneiderte Webanwendungen für komplexe Anforderungen.' : 'Tailored web applications for complex requirements.',
   },
   {
     slug: 'security-technology',
-    image: '/Sicherheitstechnik.jpg',
+    image: '/Sicherheitstechnik.webp',
     title: locale.value === 'de' ? 'Sicherheitstechnik' : 'Security Technology',
     desc:  locale.value === 'de' ? 'Überwachungskameras, Zugangssysteme und Alarmanlagen.' : 'Surveillance cameras, access systems and alarm systems.',
   },
   {
     slug: 'google-management',
-    image: '/google.jpg',
+    image: '/google.webp',
     title: 'Google Management',
     desc:  locale.value === 'de' ? 'Google Ads, SEO & My Business — alles aus einer Hand.' : 'Google Ads, SEO & My Business — all from one source.',
   },
   {
     slug: 'it-security-cloud',
-    image: '/it-sicherheit.jpg',
+    image: '/it-sicherheit.webp',
     title: locale.value === 'de' ? 'IT-Sicherheit & Cloud' : 'IT Security & Cloud',
     desc:  locale.value === 'de' ? 'Sichere Infrastruktur und Cloud-Lösungen für Ihr Business.' : 'Secure infrastructure and cloud solutions.',
   },
   {
     slug: 'ai-projects',
-    image: '/ki-projekte.jpg',
+    image: '/ki-projekte.webp',
     title: locale.value === 'de' ? 'KI-Projekte' : 'AI Projects',
     desc:  locale.value === 'de' ? 'KI-Integration und Automatisierung für Ihr Unternehmen.' : 'AI integration and automation for your business.',
   },
   {
     slug: 'smarthome',
-    image: '/Smarthome.jpg',
+    image: '/Smarthome.webp',
     title: 'Smarthome',
     desc:  locale.value === 'de' ? 'Intelligente Heimautomatisierung — vernetzt gesteuert.' : 'Intelligent home automation — centrally controlled.',
   },
   {
     slug: 'social-media-marketing',
-    image: '/social-media.jpg',
+    image: '/social-media.webp',
     title: locale.value === 'de' ? 'Social Media' : 'Social Media',
     desc:  locale.value === 'de' ? 'Strategische Präsenz auf Instagram, LinkedIn, TikTok und mehr.' : 'Strategic presence on Instagram, LinkedIn, TikTok and more.',
   },
@@ -377,6 +377,22 @@ function handleServiceClick(index: number) {
   router.push(`/services/${services.value[index].slug}`);
 }
 
+// ─── Visibility (IntersectionObserver) ───────────────────────────────────────
+let isVisible = false;
+let visibilityObserver: IntersectionObserver | null = null;
+
+function startAnimationLoop() {
+  if (animationId) return;
+  animate(performance.now());
+}
+
+function stopAnimationLoop() {
+  if (animationId) {
+    cancelAnimationFrame(animationId);
+    animationId = 0;
+  }
+}
+
 // ─── Three.js setup ───────────────────────────────────────────────────────────
 
 const initThreeJs = () => {
@@ -413,36 +429,37 @@ const initThreeJs = () => {
 
   createServiceCards();
   updateCardStates();
-
-  let lastFrameTime = 0;
-  const animate = (now: number) => {
-    animationId = requestAnimationFrame(animate);
-    const dt = lastFrameTime ? Math.min((now - lastFrameTime) / 1000, 0.1) : 0.016;
-    lastFrameTime = now;
-
-    scrollOffset += (targetScrollOffset - scrollOffset) * (1 - Math.pow(1 - SCROLL_SMOOTH, 60 * dt));
-    scene.rotation.y = scrollOffset;
-
-    if (dragging && dragMoved) {
-      const diff = targetRotation - carouselGroup.rotation.y;
-      carouselGroup.rotation.y += diff * (1 - Math.pow(1 - FOLLOW_LERP, 60 * dt));
-      updateCardStates();
-    } else if (!snapping && Math.abs(velocity) > 0.0003) {
-      carouselGroup.rotation.y -= velocity * COAST_FACTOR * (60 * dt);
-      velocity *= Math.pow(FRICTION, 60 * dt);
-      updateCardStates();
-      if (Math.abs(velocity) < 0.003) {
-        const corrVRads = Math.abs(velocity) * COAST_FACTOR * 60;
-        velocity = 0;
-        snapToIndex(getTargetIndex(), corrVRads);
-      }
-    }
-    css3dRenderer.render(scene, camera);
-  };
-  animate(performance.now());
 };
 
-// ─── Card factory ─────────────────────────────────────────────────────────────
+// ─── Animation loop ───────────────────────────────────────────────────────────
+
+let lastFrameTime = 0;
+const animate = (now: number) => {
+  animationId = requestAnimationFrame(animate);
+  const dt = lastFrameTime ? Math.min((now - lastFrameTime) / 1000, 0.1) : 0.016;
+  lastFrameTime = now;
+
+  scrollOffset += (targetScrollOffset - scrollOffset) * (1 - Math.pow(1 - SCROLL_SMOOTH, 60 * dt));
+  scene.rotation.y = scrollOffset;
+
+  if (dragging && dragMoved) {
+    const diff = targetRotation - carouselGroup.rotation.y;
+    carouselGroup.rotation.y += diff * (1 - Math.pow(1 - FOLLOW_LERP, 60 * dt));
+    updateCardStates();
+  } else if (!snapping && Math.abs(velocity) > 0.0003) {
+    carouselGroup.rotation.y -= velocity * COAST_FACTOR * (60 * dt);
+    velocity *= Math.pow(FRICTION, 60 * dt);
+    updateCardStates();
+    if (Math.abs(velocity) < 0.003) {
+      const corrVRads = Math.abs(velocity) * COAST_FACTOR * 60;
+      velocity = 0;
+      snapToIndex(getTargetIndex(), corrVRads);
+    }
+  }
+  css3dRenderer.render(scene, camera);
+};
+
+// ─── Resize ───────────────────────────────────────────────────────────────────
 
 const createServiceCards = () => {
   const N = services.value.length;
@@ -578,12 +595,26 @@ onMounted(async () => {
   window.addEventListener('resize',  handleResize);
   window.addEventListener('mouseup', onWindowMouseUp);
   window.addEventListener('touchend', onWindowMouseUp, { passive: true });
+
+  // Only run the animation loop while the section is visible in the viewport
+  visibilityObserver = new IntersectionObserver(
+    (entries) => {
+      isVisible = entries[0].isIntersecting;
+      if (isVisible) {
+        lastFrameTime = 0;
+        startAnimationLoop();
+      } else {
+        stopAnimationLoop();
+      }
+    },
+    { threshold: 0.01 },
+  );
+  if (threeContainer.value) visibilityObserver.observe(threeContainer.value);
 });
 
 onUnmounted(() => {
-  if (animationId) {
-    cancelAnimationFrame(animationId);
-  }
+  stopAnimationLoop();
+  visibilityObserver?.disconnect();
   if (css3dRenderer && threeContainer.value) {
     threeContainer.value.removeChild(css3dRenderer.domElement);
   }

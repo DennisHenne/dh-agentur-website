@@ -18,7 +18,15 @@ export default defineNuxtConfig({
     '@nuxtjs/i18n',
     '@nuxt/content',
     '@pinia/nuxt',
+    '@nuxt/fonts',
   ],
+
+  fonts: {
+    families: [
+      { name: 'Inter', provider: 'google', weights: [300, 400, 500, 600, 700, 800, 900] },
+      { name: 'Syne', provider: 'google', weights: [700, 800] },
+    ],
+  },
 
   i18n: {
     strategy: 'no_prefix',
@@ -65,26 +73,22 @@ export default defineNuxtConfig({
       ],
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-        {
-          rel: 'preconnect',
-          href: 'https://fonts.googleapis.com',
-        },
-        {
-          rel: 'preconnect',
-          href: 'https://fonts.gstatic.com',
-          crossorigin: '',
-        },
-        {
-          rel: 'stylesheet',
-          href: 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Syne:wght@700;800&display=swap',
-        },
       ],
     },
   },
 
   runtimeConfig: {
+    jwtSecret: process.env.JWT_SECRET || 'change-me-in-production-min-32chars!!',
+    adminEmail: process.env.ADMIN_EMAIL || 'admin@dh-agentur.de',
+    adminPassword: process.env.ADMIN_PASSWORD || 'admin123',
     public: {
       siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'http://localhost:3000',
+    },
+  },
+
+  nitro: {
+    rollupConfig: {
+      external: ['better-sqlite3'],
     },
   },
 })

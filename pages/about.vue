@@ -9,7 +9,7 @@
           <div class="flex-shrink-0 order-2 md:order-1">
             <div class="relative">
               <img
-                src="/Profilbild (2).JPG"
+                src="/Profilbild (2).webp"
                 alt="Dennis Henne"
                 class="w-36 h-36 sm:w-44 sm:h-44 md:w-52 md:h-52 rounded-2xl object-cover border-2 shadow-2xl ring-4 ring-white/5"
                 style="border-color: rgba(179,239,178,0.25); box-shadow: 0 25px 50px -12px rgba(0,0,0,0.4), 0 0 0 1px rgba(179,239,178,0.1);"
@@ -119,7 +119,8 @@
             playsinline
             class="absolute inset-0 h-full w-full object-cover"
           >
-            <source src="/rocket.mp4" type="video/mp4">
+            <source src="/rocket.webm" type="video/webm">
+          <source src="/rocket.mp4" type="video/mp4">
           </video>
           <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70" />
           <div class="relative flex flex-col items-center justify-center gap-6 p-12 md:p-20 min-h-[420px]">

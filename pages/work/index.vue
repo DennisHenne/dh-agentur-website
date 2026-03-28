@@ -24,9 +24,10 @@
           >
             <div class="aspect-square overflow-hidden rounded-t-3xl">
               <img
-                src="/test-pitcture-carussel.jpg"
+                src="/test-pitcture-carussel.webp"
                 :alt="ref.title"
                 class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                loading="lazy"
               />
             </div>
             <div class="p-5">
