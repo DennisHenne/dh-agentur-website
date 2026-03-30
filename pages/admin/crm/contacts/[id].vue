@@ -56,6 +56,92 @@
           </div>
         </div>
 
+        <!-- ── Kundenordner (above time tracking) ──────────────────────── -->
+        <div class="admin-card">
+          <!-- Header row -->
+          <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center gap-2">
+              <div class="flex h-8 w-8 items-center justify-center rounded-lg flex-shrink-0" style="background:rgba(122,158,126,0.15);border:1px solid rgba(122,158,126,0.2);">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="#B3EFB2" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" />
+                </svg>
+              </div>
+              <div>
+                <p class="text-sm font-semibold leading-none" style="color:#e2e8f0;">Kundenordner</p>
+                <p class="text-xs mt-0.5" style="color:rgba(255,255,255,0.35);">Nextcloud, Drive, SharePoint …</p>
+              </div>
+            </div>
+            <!-- Bearbeiten toggle (only when link is set and not in edit mode) -->
+            <button
+              v-if="form.folder_url && !folderEditing"
+              class="text-xs flex items-center gap-1 px-2.5 py-1.5 rounded-lg transition-all"
+              style="color:rgba(255,255,255,0.4);background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);"
+              @click="folderEditing = true"
+            >
+              <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+              </svg>
+              Bearbeiten
+            </button>
+          </div>
+
+          <!-- VIEW mode: link is set, not editing -->
+          <template v-if="form.folder_url && !folderEditing">
+            <a
+              :href="form.folder_url"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex w-full items-center justify-center gap-2 py-3 rounded-xl font-semibold text-sm transition-all"
+              style="background:rgba(122,158,126,0.18);color:#B3EFB2;border:1px solid rgba(122,158,126,0.3);"
+            >
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" />
+              </svg>
+              Ordner öffnen
+              <svg class="w-3.5 h-3.5 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+            </a>
+          </template>
+
+          <!-- EMPTY mode: no link set yet -->
+          <template v-else-if="!form.folder_url && !folderEditing">
+            <button
+              class="flex w-full items-center justify-center gap-2 py-3 rounded-xl text-sm transition-all"
+              style="background:rgba(255,255,255,0.03);color:rgba(255,255,255,0.3);border:1px dashed rgba(255,255,255,0.1);"
+              @click="folderEditing = true"
+            >
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+              </svg>
+              Link hinterlegen
+            </button>
+          </template>
+
+          <!-- EDIT mode -->
+          <template v-else>
+            <div class="space-y-2">
+              <input
+                ref="folderInput"
+                v-model="folderDraft"
+                type="url"
+                class="admin-input w-full text-sm"
+                placeholder="https://cloud.example.com/s/xyz …"
+                @keyup.enter="saveFolder"
+                @keyup.escape="cancelFolder"
+              />
+              <div class="flex gap-2 justify-end">
+                <button class="text-xs px-3 py-1.5 rounded-lg transition-colors" style="color:rgba(255,255,255,0.4);" @click="cancelFolder">
+                  Abbrechen
+                </button>
+                <button class="admin-btn-primary text-xs" @click="saveFolder">
+                  Speichern
+                </button>
+              </div>
+            </div>
+          </template>
+        </div>
+
         <!-- ── Time tracking ─────────────────────────────────────────────── -->
         <div class="admin-card">
           <div class="flex items-center justify-between mb-4">
@@ -99,54 +185,6 @@
             </div>
             <div v-if="!timeEntries.length" class="text-xs text-center py-2" style="color:rgba(255,255,255,0.25);">Noch keine Einträge</div>
           </div>
-        </div>
-
-        <!-- ── Kundenordner ──────────────────────────────────────────────── -->
-        <div class="admin-card">
-          <div class="flex items-center gap-2 mb-3">
-            <div class="flex h-8 w-8 items-center justify-center rounded-lg flex-shrink-0" style="background:rgba(122,158,126,0.15);border:1px solid rgba(122,158,126,0.2);">
-              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="#B3EFB2" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" />
-              </svg>
-            </div>
-            <div>
-              <p class="text-sm font-semibold leading-none" style="color:#e2e8f0;">Kundenordner</p>
-              <p class="text-xs mt-0.5" style="color:rgba(255,255,255,0.35);">Link zu Nextcloud, Drive o.ä.</p>
-            </div>
-          </div>
-
-          <div class="flex gap-2">
-            <input
-              v-model="form.folder_url"
-              type="url"
-              class="admin-input flex-1 text-sm"
-              placeholder="https://cloud.example.com/s/xyz …"
-              @keyup.enter="saveContact"
-            />
-            <a
-              v-if="form.folder_url"
-              :href="form.folder_url"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold flex-shrink-0 transition-all"
-              style="background:rgba(122,158,126,0.2);color:#B3EFB2;border:1px solid rgba(122,158,126,0.3);"
-              title="Ordner öffnen"
-            >
-              <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-              </svg>
-              Öffnen
-            </a>
-            <span
-              v-else
-              class="flex items-center px-3 py-2 rounded-lg text-xs flex-shrink-0"
-              style="background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.07);"
-            >Kein Link</span>
-          </div>
-
-          <p v-if="form.folder_url" class="mt-2 text-xs truncate" style="color:rgba(255,255,255,0.25);">
-            {{ form.folder_url }}
-          </p>
         </div>
       </div>
 
@@ -450,7 +488,28 @@ async function deleteContact() {
   })
 }
 
-// ── Activity helpers ──────────────────────────────────────────────────────────
+// ── Folder link ───────────────────────────────────────────────────────────────
+const folderEditing = ref(false)
+const folderDraft = ref('')
+const folderInput = ref<HTMLInputElement | null>(null)
+
+watch(() => form.folder_url, (v) => { folderDraft.value = v }, { immediate: true })
+
+function cancelFolder() {
+  folderDraft.value = form.folder_url
+  folderEditing.value = false
+}
+
+async function saveFolder() {
+  form.folder_url = folderDraft.value.trim()
+  folderEditing.value = false
+  await saveContact()
+}
+
+// Open edit mode and focus input
+watch(folderEditing, (v) => {
+  if (v) nextTick(() => folderInput.value?.focus())
+})
 const activityTypes = [
   { value:'note',    label:'Notiz',     icon:'📝', color:'#94a3b8' },
   { value:'call',    label:'Anruf',     icon:'📞', color:'#60a5fa' },

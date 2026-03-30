@@ -21,6 +21,19 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 401, message: 'Invalid credentials' })
   }
 
+  // If 2FA is enabled, issue a short-lived pending cookie instead of the full session
+  if (user.totp_enabled) {
+    const pendingToken = await signToken({ pendingUserId: user.id })
+    setCookie(event, 'pending_2fa', pendingToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 60 * 5, // 5 minutes
+      path: '/',
+    })
+    return { requires2fa: true }
+  }
+
   const token = await signToken({ userId: user.id, email: user.email })
 
   setCookie(event, 'admin_token', token, {

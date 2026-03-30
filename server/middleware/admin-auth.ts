@@ -3,8 +3,9 @@ import { verifyToken } from '../utils/auth'
 export default defineEventHandler(async (event) => {
   const path = getRequestURL(event).pathname
 
-  // Only guard /api/admin/* routes, skip /api/admin/auth/login
-  if (!path.startsWith('/api/admin/') || path === '/api/admin/auth/login') return
+  // Only guard /api/admin/* routes, skip login and 2FA verify (they handle their own auth)
+  const publicAuthPaths = ['/api/admin/auth/login', '/api/admin/auth/2fa/verify']
+  if (!path.startsWith('/api/admin/') || publicAuthPaths.includes(path)) return
 
   const token = getCookie(event, 'admin_token')
   if (!token) {

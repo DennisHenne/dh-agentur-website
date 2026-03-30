@@ -169,6 +169,8 @@ function runMigrations(db: Database.Database) {
     'ALTER TABLE crm_activities ADD COLUMN sort_order INTEGER NOT NULL DEFAULT 0',
     'ALTER TABLE crm_activities ADD COLUMN in_planning INTEGER NOT NULL DEFAULT 0',
     "ALTER TABLE crm_contacts ADD COLUMN folder_url TEXT NOT NULL DEFAULT ''",
+    'ALTER TABLE users ADD COLUMN totp_secret TEXT',
+    'ALTER TABLE users ADD COLUMN totp_enabled INTEGER DEFAULT 0',
   ]
   for (const sql of cols) {
     try { db.exec(sql) } catch { /* column already exists — safe to ignore */ }
